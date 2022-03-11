@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:my_books/domain/usecases/auth/login_usecase.dart';
 import 'package:my_books/presentation/widgets/auth_text_field.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -10,6 +11,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final LoginUseCase _loginUseCase = LoginUseCase();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,13 +25,20 @@ class _LoginScreenState extends State<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            AuthTextField(labelText: AppLocalizations.of(context)?.email ?? ''),
             AuthTextField(
-                obscureText: true,
-                labelText: AppLocalizations.of(context)?.password ?? ''),
+              labelText: AppLocalizations.of(context)?.email ?? '',
+            ),
+            AuthTextField(
+              obscureText: true,
+              labelText: AppLocalizations.of(context)?.password ?? '',
+            ),
             ElevatedButton(
-              child: Text(AppLocalizations.of(context)?.login ?? ''),
-              onPressed: () {},
+              child: Text(
+                AppLocalizations.of(context)?.login ?? '',
+              ),
+              onPressed: () async {
+                _loginUseCase.call("hi@mail.ru", "123456");
+              },
             ),
             ElevatedButton(
               child: Text(AppLocalizations.of(context)?.register ?? ''),
