@@ -1,4 +1,8 @@
 {
   "app_name": "myBooks",
-  "login_screen_app_bar_title": "Login"
+  "login": "Login",
+  "email": "E-mail",
+  "password": "Password",
+  "register": "Register",
+  "forgot_password": "Forgot password"
 }
