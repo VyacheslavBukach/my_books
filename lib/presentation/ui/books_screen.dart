@@ -18,7 +18,7 @@ class BooksScreen extends StatelessWidget {
       ),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is UnAuthenticatedState) {
+          if (state is UnAuthenticated) {
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => const SignInScreen()),
               (route) => false,

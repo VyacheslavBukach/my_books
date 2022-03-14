@@ -9,7 +9,6 @@ class FirebaseAuthRepositoryImpl implements AuthRepository {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
-      print('OKKKKKKKKKKK');
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
@@ -20,9 +19,19 @@ class FirebaseAuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<void> signUp(String email, String password) {
-    // TODO: implement signUp
-    throw UnimplementedError();
+  Future<void> signUp(String email, String password) async {
+    try {
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        throw Exception('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        throw Exception('The account already exists for that email.');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
   }
 
   @override

@@ -3,18 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_books/blocs/auth_bloc/auth_bloc.dart';
 import 'package:my_books/presentation/ui/books_screen.dart';
-import 'package:my_books/presentation/ui/sign_up_screen.dart';
 
 import '../widgets/auth_text_field.dart';
 
-class SignInScreen extends StatelessWidget {
-  const SignInScreen({Key? key}) : super(key: key);
+class SignUpScreen extends StatelessWidget {
+  const SignUpScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)?.login ?? ''),
+        title: Text(AppLocalizations.of(context)?.register ?? ''),
       ),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
@@ -28,7 +27,9 @@ class SignInScreen extends StatelessWidget {
           }
           if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.error)),
+              SnackBar(
+                content: Text(state.error),
+              ),
             );
           }
         },
@@ -55,28 +56,16 @@ class SignInScreen extends StatelessWidget {
                       labelText: AppLocalizations.of(context)?.password ?? '',
                     ),
                     ElevatedButton(
-                      child: Text(
-                        AppLocalizations.of(context)?.login ?? '',
-                      ),
+                      child: Text(AppLocalizations.of(context)?.register ?? ''),
                       onPressed: () {
                         _authenticateWithEmailAndPassword(context);
                       },
                     ),
-                    ElevatedButton(
-                      child: Text(AppLocalizations.of(context)?.register ?? ''),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SignUpScreen(),
-                          ),
-                        );
-                      },
-                    ),
                     TextButton(
-                      child: Text(
-                          AppLocalizations.of(context)?.forgot_password ?? ''),
-                      onPressed: () {},
+                      child: Text(AppLocalizations.of(context)?.login ?? ''),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                     ),
                   ],
                 ),
@@ -92,7 +81,7 @@ class SignInScreen extends StatelessWidget {
 
   void _authenticateWithEmailAndPassword(context) {
     BlocProvider.of<AuthBloc>(context).add(
-      SignInRequested("hi@mail.ru", "123456"),
+      SignUpRequested("hi1@mail.ru", "123456"),
     );
   }
 }
