@@ -11,7 +11,6 @@ class BooksScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Getting the user from the FirebaseAuth Instance
     final user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       appBar: AppBar(
@@ -20,7 +19,6 @@ class BooksScreen extends StatelessWidget {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is UnAuthenticatedState) {
-            // Navigate to the sign in screen when the user Signs Out
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => const SignInScreen()),
               (route) => false,
@@ -36,17 +34,10 @@ class BooksScreen extends StatelessWidget {
                 style: const TextStyle(fontSize: 24),
                 textAlign: TextAlign.center,
               ),
-              user?.photoURL != null
-                  ? Image.network("${user?.photoURL}")
-                  : Container(),
-              user?.displayName != null
-                  ? Text("${user?.displayName}")
-                  : Container(),
               const SizedBox(height: 16),
               ElevatedButton(
                 child: const Text('Sign Out'),
                 onPressed: () {
-                  // Signing out the user
                   context.read<AuthBloc>().add(SignOutRequested());
                 },
               ),
