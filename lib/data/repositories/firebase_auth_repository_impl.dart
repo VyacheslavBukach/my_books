@@ -2,17 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:my_books/domain/repositories/auth_repository.dart';
 
 class FirebaseAuthRepositoryImpl implements AuthRepository {
-  @override
-  Future<void> logOut() {
-    // TODO: implement logOut
-    throw UnimplementedError();
-  }
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   @override
-  Future<void> login(String email, String password) async {
-    FirebaseAuth auth = FirebaseAuth.instance;
+  Future<void> signIn(String email, String password) async {
     try {
-      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+      await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
       print('OKKKKKKKKKKK');
     } on FirebaseAuthException catch (e) {
@@ -25,8 +20,14 @@ class FirebaseAuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<void> registration(String email, String password) {
-    // TODO: implement registration
+  Future<void> signUp(String email, String password) {
+    // TODO: implement signUp
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> signOut() {
+    // TODO: implement signOut
     throw UnimplementedError();
   }
 }

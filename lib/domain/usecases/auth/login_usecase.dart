@@ -3,9 +3,11 @@ import 'package:my_books/domain/repositories/auth_repository.dart';
 
 class LoginUseCase {
   // TODO add repo in constructor
-  final AuthRepository _authRepo = FirebaseAuthRepositoryImpl();
+  LoginUseCase({required this.authRepo});
+
+  final AuthRepository authRepo;
 
   Future call(String email, String password) async {
-    return await _authRepo.login(email, password);
+    return await authRepo.signIn(email, password);
   }
 }
