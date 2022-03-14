@@ -16,12 +16,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (event, emit) async {
         emit(LoadingState());
         try {
-          _loginUseCase.call(event.email, event.password);
+          await _loginUseCase.call(event.email, event.password);
           emit(AuthenticatedState());
         } catch (e) {
           emit(AuthErrorState(e.toString()));
           emit(UnAuthenticatedState());
         }
+      },
+    );
+    on<SignOutRequested>(
+      (event, emit) async {
+        emit(LoadingState());
+        await authRepository.signOut();
+        emit(UnAuthenticatedState());
       },
     );
   }

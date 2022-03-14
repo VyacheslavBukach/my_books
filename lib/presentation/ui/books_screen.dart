@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_books/presentation/ui/sign_in_screen.dart';
 
 import '../../blocs/auth_bloc/auth_bloc.dart';
@@ -14,7 +15,7 @@ class BooksScreen extends StatelessWidget {
     final user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Dashboard'),
+        title: Text(AppLocalizations.of(context)?.app_name ?? ''),
       ),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
