@@ -1,9 +1,9 @@
 import 'package:my_books/domain/repositories/auth_repository.dart';
 
 class AuthUseCase {
-  AuthUseCase({required this.authRepo});
-
   final AuthRepository authRepo;
+
+  AuthUseCase({required this.authRepo});
 
   Future login(String email, String password) async {
     return await authRepo.signIn(email, password);

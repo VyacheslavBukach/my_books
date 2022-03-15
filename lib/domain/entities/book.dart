@@ -1,13 +1,13 @@
 class Book {
+  String uuid;
+  String title;
+  String author;
+
   Book({
     required this.uuid,
     required this.title,
     required this.author,
   });
-
-  String uuid;
-  String title;
-  String author;
 
   Book.fromJson(Map<String, dynamic> json)
       : uuid = json['uuid'],

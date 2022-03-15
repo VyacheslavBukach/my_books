@@ -10,7 +10,7 @@ class Authenticated extends AuthState {}
 class UnAuthenticated extends AuthState {}
 
 class AuthError extends AuthState {
-  AuthError(this.error);
-
   final String error;
+
+  AuthError(this.error);
 }

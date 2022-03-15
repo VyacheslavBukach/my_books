@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class AuthTextField extends StatelessWidget {
+  final String labelText;
+  final bool? obscureText;
+
   const AuthTextField({
     Key? key,
     this.obscureText,
     required this.labelText,
   }) : super(key: key);
-
-  final String labelText;
-  final bool? obscureText;
 
   @override
   Widget build(BuildContext context) {
