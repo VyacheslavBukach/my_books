@@ -1,19 +1,27 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:my_books/domain/usecases/auth/auth_usecase.dart';
+import 'package:my_books/domain/usecases/auth/login_usecase.dart';
+import 'package:my_books/domain/usecases/auth/logout_usecase.dart';
+import 'package:my_books/domain/usecases/auth/register_usecase.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final AuthUseCase authUseCase;
+  final LoginUseCase loginUseCase;
+  final LogoutUseCase logoutUseCase;
+  final RegisterUseCase registerUseCase;
 
-  AuthBloc({required this.authUseCase}) : super(UnAuthenticated()) {
+  AuthBloc({
+    required this.loginUseCase,
+    required this.logoutUseCase,
+    required this.registerUseCase,
+  }) : super(UnAuthenticated()) {
     on<SignInRequested>(
       (event, emit) async {
         emit(Loading());
         try {
-          await authUseCase.login(event.email, event.password);
+          await loginUseCase.login(event.email, event.password);
           emit(Authenticated());
         } catch (e) {
           emit(AuthError(e.toString()));
@@ -25,7 +33,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (event, emit) async {
         emit(Loading());
         try {
-          await authUseCase.register(event.email, event.password);
+          await registerUseCase.register(event.email, event.password);
           emit(Authenticated());
         } catch (e) {
           emit(AuthError(e.toString()));
@@ -36,7 +44,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignOutRequested>(
       (event, emit) async {
         emit(Loading());
-        await authUseCase.logout();
+        await logoutUseCase.logout();
         emit(UnAuthenticated());
       },
     );
