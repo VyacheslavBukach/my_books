@@ -1,6 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:my_books/domain/repositories/auth_repository.dart';
 
+const _kUserNotFound = 'user-not-found';
+const _kWrongPassword = 'wrong-password';
+const _kWeakPassword = 'weak-password';
+const _kEmailAlreadyInUse = 'email-already-in-use';
+
 class FirebaseAuthRepositoryImpl implements AuthRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
@@ -10,9 +15,9 @@ class FirebaseAuthRepositoryImpl implements AuthRepository {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
+      if (e.code == _kUserNotFound) {
         print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
+      } else if (e.code == _kWrongPassword) {
         print('Wrong password provided for that user.');
       }
     }
@@ -24,9 +29,9 @@ class FirebaseAuthRepositoryImpl implements AuthRepository {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
+      if (e.code == _kWeakPassword) {
         throw Exception('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
+      } else if (e.code == _kEmailAlreadyInUse) {
         throw Exception('The account already exists for that email.');
       }
     } catch (e) {

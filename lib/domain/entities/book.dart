@@ -1,3 +1,7 @@
+const _kUuid = 'uuid';
+const _kTitle = 'title';
+const _kAuthor = 'author';
+
 class Book {
   String uuid;
   String title;
@@ -10,13 +14,13 @@ class Book {
   });
 
   Book.fromJson(Map<String, dynamic> json)
-      : uuid = json['uuid'],
-        title = json['title'],
-        author = json['author'];
+      : uuid = json[_kUuid],
+        title = json[_kTitle],
+        author = json[_kAuthor];
 
   Map<String, dynamic> toJson() => {
-        'uuid': uuid,
-        'title': title,
-        'author': author,
+        _kUuid: uuid,
+        _kTitle: title,
+        _kAuthor: author,
       };
 }
