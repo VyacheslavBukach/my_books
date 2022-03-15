@@ -8,12 +8,14 @@ import 'package:my_books/data/repositories/firebase_auth_repository_impl.dart';
 import 'package:my_books/domain/usecases/auth/login_usecase.dart';
 import 'package:my_books/domain/usecases/auth/logout_usecase.dart';
 import 'package:my_books/domain/usecases/auth/register_usecase.dart';
+import 'package:my_books/di/locator.dart';
 import 'package:my_books/presentation/screens/books_screen.dart';
 import 'package:my_books/presentation/screens/sign_in_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  initGetIt();
   runApp(const MyApp());
 }
 
@@ -22,38 +24,28 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-      create: (context) => FirebaseAuthRepositoryImpl(),
-      child: BlocProvider(
-        create: (context) => AuthBloc(
-          loginUseCase: LoginUseCase(
-            authRepo:
-                RepositoryProvider.of<FirebaseAuthRepositoryImpl>(context),
-          ),
-          logoutUseCase: LogoutUseCase(
-            authRepo:
-                RepositoryProvider.of<FirebaseAuthRepositoryImpl>(context),
-          ),
-          registerUseCase: RegisterUseCase(
-            authRepo:
-                RepositoryProvider.of<FirebaseAuthRepositoryImpl>(context),
-          ),
-        ),
-        child: MaterialApp(
-          onGenerateTitle: (BuildContext context) =>
-              AppLocalizations.of(context)?.app_name ?? '',
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          home: StreamBuilder<User?>(
-            stream: FirebaseAuth.instance.authStateChanges(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return const BooksScreen();
-              }
+    final repo = getIt<FirebaseAuthRepositoryImpl>();
 
-              return const SignInScreen();
-            },
-          ),
+    return BlocProvider(
+      create: (context) => AuthBloc(
+        loginUseCase: LoginUseCase(authRepo: repo),
+        logoutUseCase: LogoutUseCase(authRepo: repo),
+        registerUseCase: RegisterUseCase(authRepo: repo),
+      ),
+      child: MaterialApp(
+        onGenerateTitle: (BuildContext context) =>
+            AppLocalizations.of(context)?.app_name ?? '',
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: StreamBuilder<User?>(
+          stream: repo.authStateChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return const BooksScreen();
+            }
+
+            return const SignInScreen();
+          },
         ),
       ),
     );

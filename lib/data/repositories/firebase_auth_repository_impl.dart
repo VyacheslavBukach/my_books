@@ -16,9 +16,9 @@ class FirebaseAuthRepositoryImpl implements AuthRepository {
           email: email, password: password);
     } on FirebaseAuthException catch (e) {
       if (e.code == _kUserNotFound) {
-        print('No user found for that email.');
+        throw Exception('No user found for that email.');
       } else if (e.code == _kWrongPassword) {
-        print('Wrong password provided for that user.');
+        throw Exception('Wrong password provided for that user.');
       }
     }
   }
@@ -26,8 +26,8 @@ class FirebaseAuthRepositoryImpl implements AuthRepository {
   @override
   Future<void> signUp(String email, String password) async {
     try {
-      await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
+      await _firebaseAuth.createUserWithEmailAndPassword(
+          email: email, password: password);
     } on FirebaseAuthException catch (e) {
       if (e.code == _kWeakPassword) {
         throw Exception('The password provided is too weak.');
@@ -47,4 +47,10 @@ class FirebaseAuthRepositoryImpl implements AuthRepository {
       throw Exception(e);
     }
   }
+
+  @override
+  Stream<User?> authStateChanges() => FirebaseAuth.instance.authStateChanges();
+
+  @override
+  User? getCurrentUser() => _firebaseAuth.currentUser;
 }
