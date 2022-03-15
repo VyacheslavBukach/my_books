@@ -15,7 +15,7 @@ class SignUpScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)?.register ?? ''),
       ),
-      body: BlocListener<AuthBloc, AuthState>(
+      body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is Authenticated) {
             Navigator.pushReplacement(
@@ -25,6 +25,7 @@ class SignUpScreen extends StatelessWidget {
               ),
             );
           }
+
           if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -33,48 +34,46 @@ class SignUpScreen extends StatelessWidget {
             );
           }
         },
-        child: BlocBuilder<AuthBloc, AuthState>(
-          builder: (context, state) {
-            if (state is Loading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
+        builder: (context, state) {
+          if (state is Loading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
 
-            if (state is UnAuthenticated) {
-              return Container(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    AuthTextField(
-                      labelText: AppLocalizations.of(context)?.email ?? '',
-                    ),
-                    AuthTextField(
-                      obscureText: true,
-                      labelText: AppLocalizations.of(context)?.password ?? '',
-                    ),
-                    ElevatedButton(
-                      child: Text(AppLocalizations.of(context)?.register ?? ''),
-                      onPressed: () {
-                        _authenticateWithEmailAndPassword(context);
-                      },
-                    ),
-                    TextButton(
-                      child: Text(AppLocalizations.of(context)?.login ?? ''),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ],
-                ),
-              );
-            }
+          if (state is UnAuthenticated) {
+            return Container(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  AuthTextField(
+                    labelText: AppLocalizations.of(context)?.email ?? '',
+                  ),
+                  AuthTextField(
+                    obscureText: true,
+                    labelText: AppLocalizations.of(context)?.password ?? '',
+                  ),
+                  ElevatedButton(
+                    child: Text(AppLocalizations.of(context)?.register ?? ''),
+                    onPressed: () {
+                      _authenticateWithEmailAndPassword(context);
+                    },
+                  ),
+                  TextButton(
+                    child: Text(AppLocalizations.of(context)?.login ?? ''),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            );
+          }
 
-            return Container();
-          },
-        ),
+          return Container();
+        },
       ),
     );
   }
