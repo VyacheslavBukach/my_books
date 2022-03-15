@@ -3,14 +3,14 @@ part of 'auth_bloc.dart';
 @immutable
 abstract class AuthState {}
 
-class Loading extends AuthState {}
+class LoadingState extends AuthState {}
 
-class Authenticated extends AuthState {}
+class AuthenticatedState extends AuthState {}
 
-class UnAuthenticated extends AuthState {}
+class UnauthenticatedState extends AuthState {}
 
-class AuthError extends AuthState {
+class AuthErrorState extends AuthState {
   final String error;
 
-  AuthError(this.error);
+  AuthErrorState(this.error);
 }

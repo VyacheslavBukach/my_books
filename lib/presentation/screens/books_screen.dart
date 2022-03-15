@@ -20,7 +20,7 @@ class BooksScreen extends StatelessWidget {
       ),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is UnAuthenticated) {
+          if (state is UnauthenticatedState) {
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => const SignInScreen()),
               (route) => false,
@@ -40,7 +40,7 @@ class BooksScreen extends StatelessWidget {
               ElevatedButton(
                 child: const Text('Sign Out'),
                 onPressed: () {
-                  context.read<AuthBloc>().add(SignOutRequested());
+                  context.read<AuthBloc>().add(SignOutEvent());
                 },
               ),
             ],

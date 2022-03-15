@@ -16,36 +16,36 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required this.loginUseCase,
     required this.logoutUseCase,
     required this.registerUseCase,
-  }) : super(UnAuthenticated()) {
-    on<SignInRequested>(
+  }) : super(UnauthenticatedState()) {
+    on<SignInEvent>(
       (event, emit) async {
-        emit(Loading());
+        emit(LoadingState());
         try {
           await loginUseCase.login(event.email, event.password);
-          emit(Authenticated());
+          emit(AuthenticatedState());
         } catch (e) {
-          emit(AuthError(e.toString()));
-          emit(UnAuthenticated());
+          emit(AuthErrorState(e.toString()));
+          emit(UnauthenticatedState());
         }
       },
     );
-    on<SignUpRequested>(
+    on<SignUpEvent>(
       (event, emit) async {
-        emit(Loading());
+        emit(LoadingState());
         try {
           await registerUseCase.register(event.email, event.password);
-          emit(Authenticated());
+          emit(AuthenticatedState());
         } catch (e) {
-          emit(AuthError(e.toString()));
-          emit(UnAuthenticated());
+          emit(AuthErrorState(e.toString()));
+          emit(UnauthenticatedState());
         }
       },
     );
-    on<SignOutRequested>(
+    on<SignOutEvent>(
       (event, emit) async {
-        emit(Loading());
+        emit(LoadingState());
         await logoutUseCase.logout();
-        emit(UnAuthenticated());
+        emit(UnauthenticatedState());
       },
     );
   }

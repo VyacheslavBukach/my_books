@@ -18,7 +18,7 @@ class SignInScreen extends StatelessWidget {
       ),
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is Authenticated) {
+          if (state is AuthenticatedState) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -26,20 +26,20 @@ class SignInScreen extends StatelessWidget {
               ),
             );
           }
-          if (state is AuthError) {
+          if (state is AuthErrorState) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.error)),
             );
           }
         },
         builder: (context, state) {
-          if (state is Loading) {
+          if (state is LoadingState) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
 
-          if (state is UnAuthenticated) {
+          if (state is UnauthenticatedState) {
             return Container(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -90,7 +90,7 @@ class SignInScreen extends StatelessWidget {
 
   void _authenticateWithEmailAndPassword(context) {
     BlocProvider.of<AuthBloc>(context).add(
-      SignInRequested("hi@mail.ru", "123456"),
+      SignInEvent("hi@mail.ru", "123456"),
     );
   }
 }
