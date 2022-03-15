@@ -6,8 +6,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_books/blocs/auth_bloc/auth_bloc.dart';
 import 'package:my_books/data/repositories/firebase_auth_repository_impl.dart';
 import 'package:my_books/domain/usecases/auth/auth_usecase.dart';
-import 'package:my_books/presentation/ui/books_screen.dart';
-import 'package:my_books/presentation/ui/sign_in_screen.dart';
+import 'package:my_books/presentation/screens/books_screen.dart';
+import 'package:my_books/presentation/screens/sign_in_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

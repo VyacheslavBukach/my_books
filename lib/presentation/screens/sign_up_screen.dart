@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_books/blocs/auth_bloc/auth_bloc.dart';
-import 'package:my_books/presentation/ui/books_screen.dart';
+import 'package:my_books/presentation/screens/books_screen.dart';
 
-import '../widgets/auth_text_field.dart';
+import '../ui_components/auth_text_field.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({Key? key}) : super(key: key);
