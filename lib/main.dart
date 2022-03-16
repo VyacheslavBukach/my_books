@@ -28,9 +28,9 @@ class MyApp extends StatelessWidget {
 
     return BlocProvider(
       create: (context) => AuthBloc(
-        loginUseCase: LoginUseCase(authRepo: repo),
-        logoutUseCase: LogoutUseCase(authRepo: repo),
-        registerUseCase: RegisterUseCase(authRepo: repo),
+        loginUseCase: getIt<LoginUseCase>(),
+        logoutUseCase: getIt<LogoutUseCase>(),
+        registerUseCase: getIt<RegisterUseCase>(),
       ),
       child: MaterialApp(
         onGenerateTitle: (BuildContext context) =>
