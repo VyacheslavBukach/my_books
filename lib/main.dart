@@ -5,12 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_books/blocs/auth_bloc/auth_bloc.dart';
 import 'package:my_books/data/repositories/firebase_auth_repository_impl.dart';
+import 'package:my_books/di/locator.dart';
 import 'package:my_books/domain/usecases/auth/login_usecase.dart';
 import 'package:my_books/domain/usecases/auth/logout_usecase.dart';
 import 'package:my_books/domain/usecases/auth/register_usecase.dart';
-import 'package:my_books/di/locator.dart';
 import 'package:my_books/presentation/screens/books_screen.dart';
-import 'package:my_books/presentation/screens/sign_in_screen.dart';
+import 'package:my_books/presentation/screens/main_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
               return const BooksScreen();
             }
 
-            return const SignInScreen();
+            return const MainScreen();
           },
         ),
       ),
