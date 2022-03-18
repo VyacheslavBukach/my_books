@@ -12,8 +12,9 @@ class AuthTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(bottom: 8.0),
+      padding: const EdgeInsets.only(bottom: 16.0),
       child: TextField(
+        style: const TextStyle(fontSize: 18),
         obscureText: obscureText ?? false,
         decoration: InputDecoration(
           prefixIcon: icon,
