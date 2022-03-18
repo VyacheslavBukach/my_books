@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class BookElement extends StatelessWidget {
+class BookCard extends StatelessWidget {
   final double? width;
   final double? height;
 
-  const BookElement({
+  const BookCard({
     Key? key,
     this.width,
     this.height,

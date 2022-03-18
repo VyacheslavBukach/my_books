@@ -7,7 +7,7 @@ import 'package:my_books/di/locator.dart';
 import 'package:my_books/presentation/screens/main_screen.dart';
 
 import '../../domain/usecases/auth/logout_usecase.dart';
-import '../ui_components/book_element.dart';
+import '../ui_components/book_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -51,9 +51,7 @@ class HomeScreen extends StatelessWidget {
                               children: [
                                 IconButton(
                                   onPressed: () {
-                                    context
-                                        .read<HomeBloc>()
-                                        .add(SignOutEvent());
+                                    _signOut(context);
                                   },
                                   icon: Icon(
                                     Icons.exit_to_app,
@@ -91,7 +89,7 @@ class HomeScreen extends StatelessWidget {
                                 itemCount: 5,
                                 scrollDirection: Axis.horizontal,
                                 itemBuilder: (context, index) =>
-                                    BookElement(width: 150),
+                                    BookCard(width: 150),
                               ),
                             ),
                             Row(
@@ -145,7 +143,7 @@ class HomeScreen extends StatelessWidget {
                                 itemCount: 5,
                                 scrollDirection: Axis.horizontal,
                                 itemBuilder: (context, index) =>
-                                    BookElement(width: 125),
+                                    BookCard(width: 125),
                               ),
                             )
                           ],
@@ -161,24 +159,11 @@ class HomeScreen extends StatelessWidget {
             return Container();
           },
         ),
-        // bottomNavigationBar: BottomNavigationBar(
-        //   showUnselectedLabels: false,
-        //   items: const [
-        //     BottomNavigationBarItem(
-        //       icon: Icon(Icons.home),
-        //       label: 'Home',
-        //     ),
-        //     BottomNavigationBarItem(
-        //       icon: Icon(Icons.favorite),
-        //       label: 'Favourite',
-        //     ),
-        //     BottomNavigationBarItem(
-        //       icon: Icon(Icons.store),
-        //       label: 'Store',
-        //     ),
-        //   ],
-        // ),
       ),
     );
+  }
+
+  void _signOut(context) {
+    BlocProvider.of<HomeBloc>(context).add(SignOutEvent());
   }
 }

@@ -7,6 +7,7 @@ import 'package:my_books/presentation/screens/home_screen.dart';
 import '../../di/locator.dart';
 import '../../domain/usecases/auth/register_usecase.dart';
 import '../ui_components/auth_text_field.dart';
+import '../ui_components/rounded_button.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -60,8 +61,9 @@ class SignUpScreen extends StatelessWidget {
                       obscureText: true,
                       labelText: AppLocalizations.of(context)?.password ?? '',
                     ),
-                    ElevatedButton(
-                      child: Text(AppLocalizations.of(context)?.register ?? ''),
+                    RoundedButton(
+                      transparent: true,
+                      label: AppLocalizations.of(context)?.register ?? '',
                       onPressed: () {
                         _authenticateWithEmailAndPassword(context);
                       },

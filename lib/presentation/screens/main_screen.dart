@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_books/presentation/screens/sign_in_screen.dart';
 import 'package:my_books/presentation/screens/sign_up_screen.dart';
+import 'package:my_books/presentation/ui_components/rounded_button.dart';
 
-const _kMainColor = Color(0xFF10acef);
+const kMainColor = Color(0xFF10acef);
 
 class MainScreen extends StatelessWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -11,7 +12,7 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _kMainColor,
+      backgroundColor: kMainColor,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -35,19 +36,9 @@ class MainScreen extends StatelessWidget {
             style: const TextStyle(color: Colors.white),
           ),
           const SizedBox(height: 100),
-          ElevatedButton(
-            style: ButtonStyle(
-              minimumSize: MaterialStateProperty.all(const Size(300, 50)),
-              backgroundColor: MaterialStateProperty.all(Colors.white),
-              foregroundColor: MaterialStateProperty.all(_kMainColor),
-              shape: MaterialStateProperty.all(
-                const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(20),
-                  ),
-                ),
-              ),
-            ),
+          RoundedButton(
+            transparent: false,
+            label: AppLocalizations.of(context)?.create_account ?? '',
             onPressed: () {
               Navigator.push(
                 context,
@@ -56,26 +47,11 @@ class MainScreen extends StatelessWidget {
                 ),
               );
             },
-            child: Text(AppLocalizations.of(context)?.create_account ?? ''),
           ),
-          const SizedBox(
-            height: 16,
-          ),
-          ElevatedButton(
-            style: ButtonStyle(
-              minimumSize: MaterialStateProperty.all(const Size(300, 50)),
-              overlayColor: MaterialStateProperty.all(Colors.transparent),
-              backgroundColor: MaterialStateProperty.all(_kMainColor),
-              shape: MaterialStateProperty.all(
-                const RoundedRectangleBorder(
-                  side: BorderSide(
-                    color: Colors.white,
-                    width: 1,
-                  ),
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                ),
-              ),
-            ),
+          const SizedBox(height: 16),
+          RoundedButton(
+            transparent: true,
+            label: AppLocalizations.of(context)?.sign_in ?? '',
             onPressed: () {
               Navigator.push(
                 context,
@@ -84,7 +60,6 @@ class MainScreen extends StatelessWidget {
                 ),
               );
             },
-            child: Text(AppLocalizations.of(context)?.sign_in ?? ''),
           ),
         ],
       ),

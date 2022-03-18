@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_books/blocs/login_bloc/login_bloc.dart';
 import 'package:my_books/presentation/screens/home_screen.dart';
+import 'package:my_books/presentation/ui_components/rounded_button.dart';
 
 import '../../di/locator.dart';
 import '../../domain/usecases/auth/login_usecase.dart';
@@ -56,10 +57,9 @@ class SignInScreen extends StatelessWidget {
                       obscureText: true,
                       labelText: AppLocalizations.of(context)?.password ?? '',
                     ),
-                    ElevatedButton(
-                      child: Text(
-                        AppLocalizations.of(context)?.login ?? '',
-                      ),
+                    RoundedButton(
+                      transparent: true,
+                      label: AppLocalizations.of(context)?.login ?? '',
                       onPressed: () {
                         _authenticateWithEmailAndPassword(context);
                       },
