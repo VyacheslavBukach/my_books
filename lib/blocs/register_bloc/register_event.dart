@@ -1,20 +1,20 @@
-part of 'auth_bloc.dart';
+part of 'register_bloc.dart';
 
 @immutable
-abstract class AuthEvent {}
+abstract class RegisterEvent {}
 
-class SignInEvent extends AuthEvent {
+class SignInEvent extends RegisterEvent {
   final String email;
   final String password;
 
   SignInEvent(this.email, this.password);
 }
 
-class SignUpEvent extends AuthEvent {
+class SignUpEvent extends RegisterEvent {
   final String email;
   final String password;
 
   SignUpEvent(this.email, this.password);
 }
 
-class SignOutEvent extends AuthEvent {}
+class SignOutEvent extends RegisterEvent {}

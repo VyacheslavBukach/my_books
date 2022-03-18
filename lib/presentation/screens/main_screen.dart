@@ -26,6 +26,7 @@ class MainScreen extends StatelessWidget {
             style: const TextStyle(
               color: Colors.white,
               fontSize: 50,
+              fontWeight: FontWeight.bold,
             ),
           ),
           const SizedBox(height: 16),
@@ -48,7 +49,7 @@ class MainScreen extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              Navigator.pushReplacement(
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const SignUpScreen(),
@@ -76,7 +77,7 @@ class MainScreen extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              Navigator.pushReplacement(
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const SignInScreen(),
