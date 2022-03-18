@@ -56,10 +56,12 @@ class SignUpScreen extends StatelessWidget {
                   children: [
                     AuthTextField(
                       labelText: AppLocalizations.of(context)?.email ?? '',
+                      icon: const Icon(Icons.email),
                     ),
                     AuthTextField(
                       obscureText: true,
                       labelText: AppLocalizations.of(context)?.password ?? '',
+                      icon: const Icon(Icons.lock),
                     ),
                     RoundedButton(
                       transparent: true,

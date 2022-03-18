@@ -52,10 +52,12 @@ class SignInScreen extends StatelessWidget {
                   children: [
                     AuthTextField(
                       labelText: AppLocalizations.of(context)?.email ?? '',
+                      icon: const Icon(Icons.email),
                     ),
                     AuthTextField(
                       obscureText: true,
                       labelText: AppLocalizations.of(context)?.password ?? '',
+                      icon: const Icon(Icons.lock),
                     ),
                     RoundedButton(
                       transparent: true,
@@ -65,6 +67,10 @@ class SignInScreen extends StatelessWidget {
                       },
                     ),
                     TextButton(
+                      style: ButtonStyle(
+                        overlayColor:
+                            MaterialStateProperty.all(Colors.transparent),
+                      ),
                       child: Text(
                           AppLocalizations.of(context)?.forgot_password ?? ''),
                       onPressed: () {},
