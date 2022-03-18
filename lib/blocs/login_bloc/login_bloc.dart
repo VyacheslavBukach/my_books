@@ -9,17 +9,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final LoginUseCase loginUseCase;
 
   LoginBloc({required this.loginUseCase}) : super(UnauthenticatedState()) {
-    on<SignInEvent>(
-      (event, emit) async {
-        emit(LoadingState());
-        try {
-          await loginUseCase.login(event.email, event.password);
-          emit(AuthenticatedState());
-        } catch (e) {
-          emit(AuthErrorState(e.toString()));
-          emit(UnauthenticatedState());
-        }
-      },
-    );
+    on<SignInEvent>((event, emit) async {
+      emit(LoadingState());
+      try {
+        await loginUseCase.login(event.email, event.password);
+        emit(AuthenticatedState());
+      } catch (e) {
+        emit(AuthErrorState(e.toString()));
+        emit(UnauthenticatedState());
+      }
+    });
   }
 }

@@ -30,8 +30,7 @@ class MyApp extends StatelessWidget {
         stream: repo.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            // TODO fix
-            return const MainScreen();
+            return const HomeScreen();
           }
 
           return const MainScreen();
