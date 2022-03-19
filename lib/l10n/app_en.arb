@@ -8,5 +8,6 @@
   "welcome_to_mybooks": "Welcome to myBooks",
   "app_desc": "Your library in your pocket. Any time. Any place.",
   "create_account": "Create account",
-  "sign_in": "Sign in"
+  "sign_in": "Sign in",
+  "sign_out": "Sign out"
 }

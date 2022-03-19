@@ -8,6 +8,7 @@ import '../../di/locator.dart';
 import '../../domain/usecases/auth/register_usecase.dart';
 import '../ui_components/auth_text_field.dart';
 import '../ui_components/rounded_button.dart';
+import 'main_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -18,9 +19,10 @@ class SignUpScreen extends StatelessWidget {
       create: (context) =>
           RegisterBloc(registerUseCase: getIt<RegisterUseCase>()),
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(AppLocalizations.of(context)?.register ?? ''),
-        ),
+        backgroundColor: kMainColor,
+        // appBar: AppBar(
+        //   title: Text(AppLocalizations.of(context)?.register ?? ''),
+        // ),
         body: BlocConsumer<RegisterBloc, RegisterState>(
           listener: (context, state) {
             if (state is AuthenticatedState) {
@@ -34,9 +36,7 @@ class SignUpScreen extends StatelessWidget {
 
             if (state is AuthErrorState) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.error),
-                ),
+                SnackBar(content: Text(state.error)),
               );
             }
           },
@@ -48,27 +48,60 @@ class SignUpScreen extends StatelessWidget {
             }
 
             if (state is UnauthenticatedState) {
-              return Container(
-                padding: const EdgeInsets.all(16.0),
+              return SafeArea(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    AuthTextField(
-                      labelText: AppLocalizations.of(context)?.email ?? '',
-                      icon: const Icon(Icons.email),
+                    Expanded(
+                      flex: 2,
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          AppLocalizations.of(context)?.sign_out ?? '',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 60,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
                     ),
-                    AuthTextField(
-                      obscureText: true,
-                      labelText: AppLocalizations.of(context)?.password ?? '',
-                      icon: const Icon(Icons.lock),
-                    ),
-                    RoundedButton(
-                      transparent: true,
-                      label: AppLocalizations.of(context)?.register ?? '',
-                      onPressed: () {
-                        _authenticateWithEmailAndPassword(context);
-                      },
+                    Expanded(
+                      flex: 5,
+                      child: Container(
+                        padding: const EdgeInsets.all(16.0),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(50),
+                            topRight: Radius.circular(50),
+                          ),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            AuthTextField(
+                              labelText:
+                                  AppLocalizations.of(context)?.email ?? '',
+                              icon: const Icon(Icons.email),
+                            ),
+                            AuthTextField(
+                              obscureText: true,
+                              labelText:
+                                  AppLocalizations.of(context)?.password ?? '',
+                              icon: const Icon(Icons.lock),
+                            ),
+                            RoundedButton(
+                              transparent: true,
+                              label:
+                                  AppLocalizations.of(context)?.register ?? '',
+                              onPressed: () {
+                                _authenticateWithEmailAndPassword(context);
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
