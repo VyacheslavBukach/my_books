@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_books/blocs/login_bloc/login_bloc.dart';
 import 'package:my_books/presentation/screens/home_screen.dart';
+import 'package:my_books/presentation/screens/main_screen.dart';
 import 'package:my_books/presentation/ui_components/rounded_button.dart';
 
 import '../../di/locator.dart';
@@ -17,9 +18,7 @@ class SignInScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => LoginBloc(loginUseCase: getIt<LoginUseCase>()),
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(AppLocalizations.of(context)?.login ?? ''),
-        ),
+        backgroundColor: kMainColor,
         body: BlocConsumer<LoginBloc, LoginState>(
           listener: (context, state) {
             if (state is AuthenticatedState) {
@@ -44,36 +43,69 @@ class SignInScreen extends StatelessWidget {
             }
 
             if (state is UnauthenticatedState) {
-              return Container(
-                padding: const EdgeInsets.all(16.0),
+              return SafeArea(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    AuthTextField(
-                      labelText: AppLocalizations.of(context)?.email ?? '',
-                      icon: const Icon(Icons.email),
-                    ),
-                    AuthTextField(
-                      obscureText: true,
-                      labelText: AppLocalizations.of(context)?.password ?? '',
-                      icon: const Icon(Icons.lock),
-                    ),
-                    RoundedButton(
-                      transparent: true,
-                      label: AppLocalizations.of(context)?.login ?? '',
-                      onPressed: () {
-                        _authenticateWithEmailAndPassword(context);
-                      },
-                    ),
-                    TextButton(
-                      style: ButtonStyle(
-                        overlayColor:
-                            MaterialStateProperty.all(Colors.transparent),
+                    Expanded(
+                      flex: 2,
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          AppLocalizations.of(context)?.sign_in ?? '',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 60,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
-                      child: Text(
-                          AppLocalizations.of(context)?.forgot_password ?? ''),
-                      onPressed: () {},
+                    ),
+                    Expanded(
+                      flex: 5,
+                      child: Container(
+                        padding: const EdgeInsets.all(16.0),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(50),
+                            topRight: Radius.circular(50),
+                          ),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            AuthTextField(
+                              labelText:
+                                  AppLocalizations.of(context)?.email ?? '',
+                              icon: const Icon(Icons.email),
+                            ),
+                            AuthTextField(
+                              obscureText: true,
+                              labelText:
+                                  AppLocalizations.of(context)?.password ?? '',
+                              icon: const Icon(Icons.lock),
+                            ),
+                            RoundedButton(
+                              transparent: true,
+                              label: AppLocalizations.of(context)?.login ?? '',
+                              onPressed: () {
+                                _authenticateWithEmailAndPassword(context);
+                              },
+                            ),
+                            TextButton(
+                              style: ButtonStyle(
+                                overlayColor: MaterialStateProperty.all(
+                                    Colors.transparent),
+                              ),
+                              child: Text(AppLocalizations.of(context)
+                                      ?.forgot_password ??
+                                  ''),
+                              onPressed: () {},
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
