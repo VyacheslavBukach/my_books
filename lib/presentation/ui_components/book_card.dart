@@ -17,7 +17,8 @@ class BookCard extends StatelessWidget {
       height: height,
       child: const Card(
         child: Icon(
-          Icons.star,
+          Icons.menu_book,
+          size: 100,
         ),
       ),
     );
