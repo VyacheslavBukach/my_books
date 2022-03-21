@@ -15,7 +15,7 @@ class BookCard extends StatelessWidget {
     return SizedBox(
       width: width,
       height: height,
-      child: Card(
+      child: const Card(
         child: Icon(
           Icons.star,
         ),

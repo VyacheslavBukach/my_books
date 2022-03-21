@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_books/blocs/home_bloc/home_bloc.dart';
 import 'package:my_books/data/repositories/firebase_auth_repository_impl.dart';
 import 'package:my_books/di/locator.dart';
@@ -36,7 +36,7 @@ class HomeScreen extends StatelessWidget {
                     Expanded(
                       child: Container(
                         padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Color(0xFF10acef),
                           borderRadius: BorderRadius.only(
                             bottomLeft: Radius.circular(50),
@@ -53,7 +53,7 @@ class HomeScreen extends StatelessWidget {
                                   onPressed: () {
                                     _signOut(context);
                                   },
-                                  icon: Icon(
+                                  icon: const Icon(
                                     Icons.exit_to_app,
                                     color: Colors.white,
                                   ),
@@ -62,23 +62,25 @@ class HomeScreen extends StatelessWidget {
                             ),
                             Text(
                               'Hello, ${user?.email}',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 25,
                                 color: Colors.white,
                               ),
                             ),
-                            SizedBox(height: 20),
+                            const SizedBox(height: 20),
                             Text(
-                              'What do you want to read?',
-                              style: TextStyle(
+                              AppLocalizations.of(context)
+                                      ?.what_do_you_want_to_read ??
+                                  '',
+                              style: const TextStyle(
                                 fontSize: 30,
                                 color: Colors.white,
                               ),
                             ),
-                            SizedBox(height: 20),
+                            const SizedBox(height: 20),
                             Text(
-                              'Popular',
-                              style: TextStyle(
+                              AppLocalizations.of(context)?.popular ?? '',
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
@@ -89,7 +91,7 @@ class HomeScreen extends StatelessWidget {
                                 itemCount: 5,
                                 scrollDirection: Axis.horizontal,
                                 itemBuilder: (context, index) =>
-                                    BookCard(width: 150),
+                                    const BookCard(width: 150),
                               ),
                             ),
                             Row(
@@ -101,10 +103,14 @@ class HomeScreen extends StatelessWidget {
                                     foregroundColor:
                                         MaterialStateProperty.all(Colors.white),
                                   ),
-                                  child: Row(children: [
-                                    Icon(Icons.favorite),
-                                    Text('My favourite'),
-                                  ]),
+                                  child: Row(
+                                    children: [
+                                      const Icon(Icons.favorite),
+                                      Text(AppLocalizations.of(context)
+                                              ?.my_favourite ??
+                                          ''),
+                                    ],
+                                  ),
                                 ),
                                 TextButton(
                                   onPressed: () {},
@@ -113,8 +119,9 @@ class HomeScreen extends StatelessWidget {
                                         MaterialStateProperty.all(Colors.white),
                                   ),
                                   child: Row(children: [
-                                    Icon(Icons.store),
-                                    Text('Store'),
+                                    const Icon(Icons.store),
+                                    Text(AppLocalizations.of(context)?.store ??
+                                        ''),
                                   ]),
                                 ),
                               ],
@@ -132,8 +139,8 @@ class HomeScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'New Releases',
-                              style: TextStyle(
+                              AppLocalizations.of(context)?.new_releases ?? '',
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
                               ),
@@ -143,7 +150,7 @@ class HomeScreen extends StatelessWidget {
                                 itemCount: 5,
                                 scrollDirection: Axis.horizontal,
                                 itemBuilder: (context, index) =>
-                                    BookCard(width: 125),
+                                    const BookCard(width: 125),
                               ),
                             )
                           ],

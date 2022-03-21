@@ -20,9 +20,6 @@ class SignUpScreen extends StatelessWidget {
           RegisterBloc(registerUseCase: getIt<RegisterUseCase>()),
       child: Scaffold(
         backgroundColor: kMainColor,
-        // appBar: AppBar(
-        //   title: Text(AppLocalizations.of(context)?.register ?? ''),
-        // ),
         body: BlocConsumer<RegisterBloc, RegisterState>(
           listener: (context, state) {
             if (state is AuthenticatedState) {

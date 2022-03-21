@@ -9,5 +9,11 @@
   "app_desc": "Your library in your pocket. Any time. Any place.",
   "create_account": "Create account",
   "sign_in": "Sign in",
-  "sign_out": "Sign out"
+  "sign_out": "Sign out",
+  "what_do_you_want_to_read": "What do you want to read?",
+  "popular": "Popular",
+  "my_favourite": "My favourite",
+  "store": "Store",
+  "new_releases": "New Releases",
+  "sign_in_headline": "Let\\'s sign you in.\\nWelcome back, you\\'ve been missed!"
 }
