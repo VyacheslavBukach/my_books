@@ -50,11 +50,13 @@ class SignInScreen extends StatelessWidget {
                       flex: 2,
                       child: Container(
                         alignment: Alignment.center,
+                        padding: const EdgeInsets.all(16.0),
                         child: Text(
-                          AppLocalizations.of(context)?.sign_in ?? '',
+                          'Let\'s sign you in.\nWelcome back, you\'ve been missed!',
+                          // AppLocalizations.of(context)?.sign_in ?? '',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 60,
+                            fontSize: 30,
                             color: Colors.white,
                           ),
                         ),
