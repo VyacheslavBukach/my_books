@@ -1,0 +1,7 @@
+{
+  "app_name": "myBooks",
+  "next_button_label": "Go to the 2nd screen",
+  "before_text_changed": "I am going to update this text",
+  "after_text_changed": "YOU CHOSE",
+  "nothing": "NOTHING"
+}
