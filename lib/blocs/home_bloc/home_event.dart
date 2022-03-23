@@ -4,3 +4,5 @@ part of 'home_bloc.dart';
 abstract class HomeEvent {}
 
 class SignOutEvent extends HomeEvent {}
+
+class LoadBooksEvent extends HomeEvent {}

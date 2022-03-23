@@ -5,12 +5,16 @@ abstract class HomeState {}
 
 class LoadingState extends HomeState {}
 
-class AuthenticatedState extends HomeState {}
+class AuthenticatedState extends HomeState {
+  final List<Book>? books;
+
+  AuthenticatedState({this.books});
+}
 
 class UnauthenticatedState extends HomeState {}
 
-class AuthErrorState extends HomeState {
+class ErrorState extends HomeState {
   final String error;
 
-  AuthErrorState(this.error);
+  ErrorState(this.error);
 }
