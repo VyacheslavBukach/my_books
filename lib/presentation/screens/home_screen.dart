@@ -30,7 +30,7 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = getIt<FirebaseAuthRepositoryImpl>().getCurrentUser();
+    final user = getIt<FirebaseAuthRepositoryImpl>().currentUser;
 
     return Scaffold(
       body: BlocConsumer<HomeBloc, HomeState>(

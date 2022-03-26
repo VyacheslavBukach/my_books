@@ -49,8 +49,8 @@ class FirebaseAuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Stream<User?> authStateChanges() => FirebaseAuth.instance.authStateChanges();
+  Stream<User?> authStateChanges() => _firebaseAuth.authStateChanges();
 
   @override
-  User? getCurrentUser() => _firebaseAuth.currentUser;
+  User? get currentUser => _firebaseAuth.currentUser;
 }
