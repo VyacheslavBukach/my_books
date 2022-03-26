@@ -26,18 +26,13 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class HomeView extends StatefulWidget {
+class HomeView extends StatelessWidget {
   const HomeView({Key? key}) : super(key: key);
 
   @override
-  State<HomeView> createState() => _HomeViewState();
-}
-
-class _HomeViewState extends State<HomeView> {
-  final user = getIt<FirebaseAuthRepositoryImpl>().getCurrentUser();
-
-  @override
   Widget build(BuildContext context) {
+    final user = getIt<FirebaseAuthRepositoryImpl>().getCurrentUser();
+
     return Scaffold(
       body: BlocConsumer<HomeBloc, HomeState>(
         listener: (context, state) {
