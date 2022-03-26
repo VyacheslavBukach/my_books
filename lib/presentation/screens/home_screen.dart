@@ -5,6 +5,7 @@ import 'package:my_books/blocs/home_bloc/home_bloc.dart';
 import 'package:my_books/data/repositories/firebase_auth_repository_impl.dart';
 import 'package:my_books/di/locator.dart';
 import 'package:my_books/domain/usecases/firestore/get_popular_books_usecase.dart';
+import 'package:my_books/presentation/screens/book_detail_screen.dart';
 import 'package:my_books/presentation/screens/main_screen.dart';
 
 import '../../domain/usecases/auth/logout_usecase.dart';
@@ -33,6 +34,7 @@ class HomeView extends StatelessWidget {
     final user = getIt<FirebaseAuthRepositoryImpl>().currentUser;
 
     return Scaffold(
+      backgroundColor: kMainColor,
       body: BlocConsumer<HomeBloc, HomeState>(
         listener: (context, state) {
           if (state is UnauthenticatedState) {
@@ -51,19 +53,19 @@ class HomeView extends StatelessWidget {
                     flex: 2,
                     child: Container(
                       padding: const EdgeInsets.all(8),
-                      decoration: const BoxDecoration(
-                        color: Color(0xFF10acef),
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(50),
-                          bottomRight: Radius.circular(50),
-                        ),
-                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
+                              Text(
+                                'Hello, ${user?.email}',
+                                style: const TextStyle(
+                                  fontSize: 25,
+                                  color: Colors.white,
+                                ),
+                              ),
                               IconButton(
                                 onPressed: () {
                                   _signOut(context);
@@ -74,13 +76,6 @@ class HomeView extends StatelessWidget {
                                 ),
                               ),
                             ],
-                          ),
-                          Text(
-                            'Hello, ${user?.email}',
-                            style: const TextStyle(
-                              fontSize: 25,
-                              color: Colors.white,
-                            ),
                           ),
                           const SizedBox(height: 20),
                           Text(
@@ -112,7 +107,14 @@ class HomeView extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => BookDetailScreen(),
+                                    ),
+                                  );
+                                },
                                 style: ButtonStyle(
                                   foregroundColor:
                                       MaterialStateProperty.all(Colors.white),
@@ -149,6 +151,7 @@ class HomeView extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: Container(
+                      color: Colors.white,
                       padding: const EdgeInsets.all(16),
                       width: double.infinity,
                       child: Column(
