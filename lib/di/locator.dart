@@ -6,6 +6,8 @@ import 'package:my_books/domain/usecases/auth/logout_usecase.dart';
 import 'package:my_books/domain/usecases/auth/register_usecase.dart';
 import 'package:my_books/domain/usecases/firestore/get_popular_books_usecase.dart';
 
+import '../domain/usecases/firestore/get_new_books_usecase.dart';
+
 final getIt = GetIt.instance;
 
 void initGetIt() {
@@ -21,4 +23,6 @@ void initGetIt() {
       LogoutUseCase(authRepo: getIt<FirebaseAuthRepositoryImpl>()));
   getIt.registerSingleton(GetPopularBooksUseCase(
       bookRepository: getIt<FirestoreBookRepositoryImpl>()));
+  getIt.registerSingleton(
+      GetNewBooksUseCase(bookRepository: getIt<FirestoreBookRepositoryImpl>()));
 }

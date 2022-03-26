@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -8,9 +7,9 @@ import 'package:my_books/di/locator.dart';
 import 'package:my_books/domain/usecases/firestore/get_popular_books_usecase.dart';
 import 'package:my_books/presentation/screens/main_screen.dart';
 
-import '../../domain/entities/book.dart';
 import '../../domain/usecases/auth/logout_usecase.dart';
-import '../ui_components/book_card.dart';
+import '../../domain/usecases/firestore/get_new_books_usecase.dart';
+import '../ui_components/book_list.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -102,8 +101,12 @@ class HomeView extends StatelessWidget {
                               fontSize: 20,
                             ),
                           ),
-                          const Expanded(
-                            child: BookList(),
+                          Expanded(
+                            child: BookList(
+                              bookWidth: 150,
+                              usecase: getIt<GetPopularBooksUseCase>()
+                                  .getPopularBooks(),
+                            ),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -158,14 +161,13 @@ class HomeView extends StatelessWidget {
                               fontSize: 20,
                             ),
                           ),
-                          // Expanded(
-                          //   child: ListView.builder(
-                          //     itemCount: 5,
-                          //     scrollDirection: Axis.horizontal,
-                          //     itemBuilder: (context, index) =>
-                          //         const BookCard(width: 125),
-                          //   ),
-                          // )
+                          Expanded(
+                            child: BookList(
+                              bookWidth: 125,
+                              usecase:
+                                  getIt<GetNewBooksUseCase>().getNewBooks(),
+                            ),
+                          )
                         ],
                       ),
                     ),
@@ -183,40 +185,5 @@ class HomeView extends StatelessWidget {
 
   void _signOut(context) {
     BlocProvider.of<HomeBloc>(context).add(SignOutEvent());
-  }
-}
-
-class BookList extends StatelessWidget {
-  const BookList({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<QuerySnapshot<Book>>(
-      future: getIt<GetPopularBooksUseCase>().getPopularBooks(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return const Text("Something went wrong");
-        }
-
-        if (snapshot.connectionState == ConnectionState.done) {
-          final data = snapshot.requireData;
-
-          return ListView.builder(
-            itemCount: data.size,
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) => BookCard(
-              width: 150,
-              title: data.docs[index].data().title,
-              author: data.docs[index].data().author,
-              posterUrl: data.docs[index].data().posterUrl,
-            ),
-          );
-        }
-
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      },
-    );
   }
 }
