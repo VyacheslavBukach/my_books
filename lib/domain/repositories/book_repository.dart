@@ -11,4 +11,6 @@ abstract class BookRepository {
   Future<void> deleteBookFromFavourite(int id);
 
   Future<QuerySnapshot<Book>> getPopularBooks();
+
+  Future<QuerySnapshot<Book>> getNewBooks();
 }

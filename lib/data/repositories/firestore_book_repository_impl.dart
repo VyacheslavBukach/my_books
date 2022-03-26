@@ -41,4 +41,17 @@ class FirestoreBookRepositoryImpl implements BookRepository {
         )
         .get();
   }
+
+  @override
+  Future<QuerySnapshot<Book>> getNewBooks() async {
+    return await _firestore
+        .collection('books')
+        .orderBy('createdAt', descending: true)
+        .limit(10)
+        .withConverter<Book>(
+          fromFirestore: (snapshot, _) => Book.fromJson(snapshot.data() ?? {}),
+          toFirestore: (book, _) => book.toJson(),
+        )
+        .get();
+  }
 }

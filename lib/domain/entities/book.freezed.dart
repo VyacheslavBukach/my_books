@@ -27,7 +27,7 @@ class _$BookTearOff {
       required String title,
       required String author,
       required double popular,
-      required bool isNewRelease,
+      required DateTime createdAt,
       required List<String> genre,
       required String description,
       required String posterUrl}) {
@@ -36,7 +36,7 @@ class _$BookTearOff {
       title: title,
       author: author,
       popular: popular,
-      isNewRelease: isNewRelease,
+      createdAt: createdAt,
       genre: genre,
       description: description,
       posterUrl: posterUrl,
@@ -57,7 +57,7 @@ mixin _$Book {
   String get title => throw _privateConstructorUsedError;
   String get author => throw _privateConstructorUsedError;
   double get popular => throw _privateConstructorUsedError;
-  bool get isNewRelease => throw _privateConstructorUsedError;
+  DateTime get createdAt => throw _privateConstructorUsedError;
   List<String> get genre => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   String get posterUrl => throw _privateConstructorUsedError;
@@ -76,7 +76,7 @@ abstract class $BookCopyWith<$Res> {
       String title,
       String author,
       double popular,
-      bool isNewRelease,
+      DateTime createdAt,
       List<String> genre,
       String description,
       String posterUrl});
@@ -96,7 +96,7 @@ class _$BookCopyWithImpl<$Res> implements $BookCopyWith<$Res> {
     Object? title = freezed,
     Object? author = freezed,
     Object? popular = freezed,
-    Object? isNewRelease = freezed,
+    Object? createdAt = freezed,
     Object? genre = freezed,
     Object? description = freezed,
     Object? posterUrl = freezed,
@@ -118,10 +118,10 @@ class _$BookCopyWithImpl<$Res> implements $BookCopyWith<$Res> {
           ? _value.popular
           : popular // ignore: cast_nullable_to_non_nullable
               as double,
-      isNewRelease: isNewRelease == freezed
-          ? _value.isNewRelease
-          : isNewRelease // ignore: cast_nullable_to_non_nullable
-              as bool,
+      createdAt: createdAt == freezed
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       genre: genre == freezed
           ? _value.genre
           : genre // ignore: cast_nullable_to_non_nullable
@@ -148,7 +148,7 @@ abstract class _$BookCopyWith<$Res> implements $BookCopyWith<$Res> {
       String title,
       String author,
       double popular,
-      bool isNewRelease,
+      DateTime createdAt,
       List<String> genre,
       String description,
       String posterUrl});
@@ -169,7 +169,7 @@ class __$BookCopyWithImpl<$Res> extends _$BookCopyWithImpl<$Res>
     Object? title = freezed,
     Object? author = freezed,
     Object? popular = freezed,
-    Object? isNewRelease = freezed,
+    Object? createdAt = freezed,
     Object? genre = freezed,
     Object? description = freezed,
     Object? posterUrl = freezed,
@@ -191,10 +191,10 @@ class __$BookCopyWithImpl<$Res> extends _$BookCopyWithImpl<$Res>
           ? _value.popular
           : popular // ignore: cast_nullable_to_non_nullable
               as double,
-      isNewRelease: isNewRelease == freezed
-          ? _value.isNewRelease
-          : isNewRelease // ignore: cast_nullable_to_non_nullable
-              as bool,
+      createdAt: createdAt == freezed
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       genre: genre == freezed
           ? _value.genre
           : genre // ignore: cast_nullable_to_non_nullable
@@ -219,7 +219,7 @@ class _$_Book implements _Book {
       required this.title,
       required this.author,
       required this.popular,
-      required this.isNewRelease,
+      required this.createdAt,
       required this.genre,
       required this.description,
       required this.posterUrl});
@@ -235,7 +235,7 @@ class _$_Book implements _Book {
   @override
   final double popular;
   @override
-  final bool isNewRelease;
+  final DateTime createdAt;
   @override
   final List<String> genre;
   @override
@@ -245,7 +245,7 @@ class _$_Book implements _Book {
 
   @override
   String toString() {
-    return 'Book(id: $id, title: $title, author: $author, popular: $popular, isNewRelease: $isNewRelease, genre: $genre, description: $description, posterUrl: $posterUrl)';
+    return 'Book(id: $id, title: $title, author: $author, popular: $popular, createdAt: $createdAt, genre: $genre, description: $description, posterUrl: $posterUrl)';
   }
 
   @override
@@ -257,8 +257,7 @@ class _$_Book implements _Book {
             const DeepCollectionEquality().equals(other.title, title) &&
             const DeepCollectionEquality().equals(other.author, author) &&
             const DeepCollectionEquality().equals(other.popular, popular) &&
-            const DeepCollectionEquality()
-                .equals(other.isNewRelease, isNewRelease) &&
+            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
             const DeepCollectionEquality().equals(other.genre, genre) &&
             const DeepCollectionEquality()
                 .equals(other.description, description) &&
@@ -272,7 +271,7 @@ class _$_Book implements _Book {
       const DeepCollectionEquality().hash(title),
       const DeepCollectionEquality().hash(author),
       const DeepCollectionEquality().hash(popular),
-      const DeepCollectionEquality().hash(isNewRelease),
+      const DeepCollectionEquality().hash(createdAt),
       const DeepCollectionEquality().hash(genre),
       const DeepCollectionEquality().hash(description),
       const DeepCollectionEquality().hash(posterUrl));
@@ -294,7 +293,7 @@ abstract class _Book implements Book {
       required String title,
       required String author,
       required double popular,
-      required bool isNewRelease,
+      required DateTime createdAt,
       required List<String> genre,
       required String description,
       required String posterUrl}) = _$_Book;
@@ -310,7 +309,7 @@ abstract class _Book implements Book {
   @override
   double get popular;
   @override
-  bool get isNewRelease;
+  DateTime get createdAt;
   @override
   List<String> get genre;
   @override
