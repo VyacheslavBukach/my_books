@@ -4,19 +4,21 @@ import 'package:my_books/data/repositories/firestore_book_repository_impl.dart';
 import 'package:my_books/domain/usecases/auth/login_usecase.dart';
 import 'package:my_books/domain/usecases/auth/logout_usecase.dart';
 import 'package:my_books/domain/usecases/auth/register_usecase.dart';
-import 'package:my_books/domain/usecases/firestore/get_books_usecase.dart';
+import 'package:my_books/domain/usecases/firestore/get_popular_books_usecase.dart';
 
 final getIt = GetIt.instance;
 
 void initGetIt() {
+  // Firebase
   getIt.registerSingleton(FirebaseAuthRepositoryImpl());
   getIt.registerSingleton(FirestoreBookRepositoryImpl());
+  // Use cases
   getIt.registerSingleton(
       LoginUseCase(authRepo: getIt<FirebaseAuthRepositoryImpl>()));
   getIt.registerSingleton(
       RegisterUseCase(authRepo: getIt<FirebaseAuthRepositoryImpl>()));
   getIt.registerSingleton(
       LogoutUseCase(authRepo: getIt<FirebaseAuthRepositoryImpl>()));
-  getIt.registerSingleton(
-      GetBooksUseCase(bookRepository: getIt<FirestoreBookRepositoryImpl>()));
+  getIt.registerSingleton(GetPopularBooksUseCase(
+      bookRepository: getIt<FirestoreBookRepositoryImpl>()));
 }

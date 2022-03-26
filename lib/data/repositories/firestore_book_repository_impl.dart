@@ -28,4 +28,17 @@ class FirestoreBookRepositoryImpl implements BookRepository {
     // TODO: implement getBook
     throw UnimplementedError();
   }
+
+  @override
+  Future<QuerySnapshot<Book>> getPopularBooks() async {
+    return await _firestore
+        .collection('books')
+        .orderBy('popular', descending: true)
+        .limit(10)
+        .withConverter<Book>(
+          fromFirestore: (snapshot, _) => Book.fromJson(snapshot.data() ?? {}),
+          toFirestore: (book, _) => book.toJson(),
+        )
+        .get();
+  }
 }

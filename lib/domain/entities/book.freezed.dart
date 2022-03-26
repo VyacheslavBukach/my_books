@@ -23,19 +23,19 @@ class _$BookTearOff {
   const _$BookTearOff();
 
   _Book call(
-      {required String uuid,
+      {required String id,
       required String title,
       required String author,
-      required bool isPopular,
+      required double popular,
       required bool isNewRelease,
-      required String genre,
+      required List<String> genre,
       required String description,
       required String posterUrl}) {
     return _Book(
-      uuid: uuid,
+      id: id,
       title: title,
       author: author,
-      isPopular: isPopular,
+      popular: popular,
       isNewRelease: isNewRelease,
       genre: genre,
       description: description,
@@ -53,12 +53,12 @@ const $Book = _$BookTearOff();
 
 /// @nodoc
 mixin _$Book {
-  String get uuid => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get author => throw _privateConstructorUsedError;
-  bool get isPopular => throw _privateConstructorUsedError;
+  double get popular => throw _privateConstructorUsedError;
   bool get isNewRelease => throw _privateConstructorUsedError;
-  String get genre => throw _privateConstructorUsedError;
+  List<String> get genre => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   String get posterUrl => throw _privateConstructorUsedError;
 
@@ -72,12 +72,12 @@ abstract class $BookCopyWith<$Res> {
   factory $BookCopyWith(Book value, $Res Function(Book) then) =
       _$BookCopyWithImpl<$Res>;
   $Res call(
-      {String uuid,
+      {String id,
       String title,
       String author,
-      bool isPopular,
+      double popular,
       bool isNewRelease,
-      String genre,
+      List<String> genre,
       String description,
       String posterUrl});
 }
@@ -92,19 +92,19 @@ class _$BookCopyWithImpl<$Res> implements $BookCopyWith<$Res> {
 
   @override
   $Res call({
-    Object? uuid = freezed,
+    Object? id = freezed,
     Object? title = freezed,
     Object? author = freezed,
-    Object? isPopular = freezed,
+    Object? popular = freezed,
     Object? isNewRelease = freezed,
     Object? genre = freezed,
     Object? description = freezed,
     Object? posterUrl = freezed,
   }) {
     return _then(_value.copyWith(
-      uuid: uuid == freezed
-          ? _value.uuid
-          : uuid // ignore: cast_nullable_to_non_nullable
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String,
       title: title == freezed
           ? _value.title
@@ -114,10 +114,10 @@ class _$BookCopyWithImpl<$Res> implements $BookCopyWith<$Res> {
           ? _value.author
           : author // ignore: cast_nullable_to_non_nullable
               as String,
-      isPopular: isPopular == freezed
-          ? _value.isPopular
-          : isPopular // ignore: cast_nullable_to_non_nullable
-              as bool,
+      popular: popular == freezed
+          ? _value.popular
+          : popular // ignore: cast_nullable_to_non_nullable
+              as double,
       isNewRelease: isNewRelease == freezed
           ? _value.isNewRelease
           : isNewRelease // ignore: cast_nullable_to_non_nullable
@@ -125,7 +125,7 @@ class _$BookCopyWithImpl<$Res> implements $BookCopyWith<$Res> {
       genre: genre == freezed
           ? _value.genre
           : genre // ignore: cast_nullable_to_non_nullable
-              as String,
+              as List<String>,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -144,12 +144,12 @@ abstract class _$BookCopyWith<$Res> implements $BookCopyWith<$Res> {
       __$BookCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String uuid,
+      {String id,
       String title,
       String author,
-      bool isPopular,
+      double popular,
       bool isNewRelease,
-      String genre,
+      List<String> genre,
       String description,
       String posterUrl});
 }
@@ -165,19 +165,19 @@ class __$BookCopyWithImpl<$Res> extends _$BookCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? uuid = freezed,
+    Object? id = freezed,
     Object? title = freezed,
     Object? author = freezed,
-    Object? isPopular = freezed,
+    Object? popular = freezed,
     Object? isNewRelease = freezed,
     Object? genre = freezed,
     Object? description = freezed,
     Object? posterUrl = freezed,
   }) {
     return _then(_Book(
-      uuid: uuid == freezed
-          ? _value.uuid
-          : uuid // ignore: cast_nullable_to_non_nullable
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String,
       title: title == freezed
           ? _value.title
@@ -187,10 +187,10 @@ class __$BookCopyWithImpl<$Res> extends _$BookCopyWithImpl<$Res>
           ? _value.author
           : author // ignore: cast_nullable_to_non_nullable
               as String,
-      isPopular: isPopular == freezed
-          ? _value.isPopular
-          : isPopular // ignore: cast_nullable_to_non_nullable
-              as bool,
+      popular: popular == freezed
+          ? _value.popular
+          : popular // ignore: cast_nullable_to_non_nullable
+              as double,
       isNewRelease: isNewRelease == freezed
           ? _value.isNewRelease
           : isNewRelease // ignore: cast_nullable_to_non_nullable
@@ -198,7 +198,7 @@ class __$BookCopyWithImpl<$Res> extends _$BookCopyWithImpl<$Res>
       genre: genre == freezed
           ? _value.genre
           : genre // ignore: cast_nullable_to_non_nullable
-              as String,
+              as List<String>,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -215,10 +215,10 @@ class __$BookCopyWithImpl<$Res> extends _$BookCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Book implements _Book {
   const _$_Book(
-      {required this.uuid,
+      {required this.id,
       required this.title,
       required this.author,
-      required this.isPopular,
+      required this.popular,
       required this.isNewRelease,
       required this.genre,
       required this.description,
@@ -227,17 +227,17 @@ class _$_Book implements _Book {
   factory _$_Book.fromJson(Map<String, dynamic> json) => _$$_BookFromJson(json);
 
   @override
-  final String uuid;
+  final String id;
   @override
   final String title;
   @override
   final String author;
   @override
-  final bool isPopular;
+  final double popular;
   @override
   final bool isNewRelease;
   @override
-  final String genre;
+  final List<String> genre;
   @override
   final String description;
   @override
@@ -245,7 +245,7 @@ class _$_Book implements _Book {
 
   @override
   String toString() {
-    return 'Book(uuid: $uuid, title: $title, author: $author, isPopular: $isPopular, isNewRelease: $isNewRelease, genre: $genre, description: $description, posterUrl: $posterUrl)';
+    return 'Book(id: $id, title: $title, author: $author, popular: $popular, isNewRelease: $isNewRelease, genre: $genre, description: $description, posterUrl: $posterUrl)';
   }
 
   @override
@@ -253,10 +253,10 @@ class _$_Book implements _Book {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Book &&
-            const DeepCollectionEquality().equals(other.uuid, uuid) &&
+            const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.title, title) &&
             const DeepCollectionEquality().equals(other.author, author) &&
-            const DeepCollectionEquality().equals(other.isPopular, isPopular) &&
+            const DeepCollectionEquality().equals(other.popular, popular) &&
             const DeepCollectionEquality()
                 .equals(other.isNewRelease, isNewRelease) &&
             const DeepCollectionEquality().equals(other.genre, genre) &&
@@ -268,10 +268,10 @@ class _$_Book implements _Book {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(uuid),
+      const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(title),
       const DeepCollectionEquality().hash(author),
-      const DeepCollectionEquality().hash(isPopular),
+      const DeepCollectionEquality().hash(popular),
       const DeepCollectionEquality().hash(isNewRelease),
       const DeepCollectionEquality().hash(genre),
       const DeepCollectionEquality().hash(description),
@@ -290,29 +290,29 @@ class _$_Book implements _Book {
 
 abstract class _Book implements Book {
   const factory _Book(
-      {required String uuid,
+      {required String id,
       required String title,
       required String author,
-      required bool isPopular,
+      required double popular,
       required bool isNewRelease,
-      required String genre,
+      required List<String> genre,
       required String description,
       required String posterUrl}) = _$_Book;
 
   factory _Book.fromJson(Map<String, dynamic> json) = _$_Book.fromJson;
 
   @override
-  String get uuid;
+  String get id;
   @override
   String get title;
   @override
   String get author;
   @override
-  bool get isPopular;
+  double get popular;
   @override
   bool get isNewRelease;
   @override
-  String get genre;
+  List<String> get genre;
   @override
   String get description;
   @override

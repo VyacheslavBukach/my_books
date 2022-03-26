@@ -5,11 +5,7 @@ abstract class HomeState {}
 
 class LoadingState extends HomeState {}
 
-class AuthenticatedState extends HomeState {
-  final List<Book>? books;
-
-  AuthenticatedState({this.books});
-}
+class AuthenticatedState extends HomeState {}
 
 class UnauthenticatedState extends HomeState {}
 

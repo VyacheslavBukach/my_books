@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_books/blocs/home_bloc/home_bloc.dart';
 import 'package:my_books/data/repositories/firebase_auth_repository_impl.dart';
 import 'package:my_books/di/locator.dart';
-import 'package:my_books/domain/usecases/firestore/get_books_usecase.dart';
+import 'package:my_books/domain/usecases/firestore/get_popular_books_usecase.dart';
 import 'package:my_books/presentation/screens/main_screen.dart';
 
 import '../../domain/entities/book.dart';
@@ -20,7 +20,6 @@ class HomeScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => HomeBloc(
         logoutUseCase: getIt<LogoutUseCase>(),
-        getBooksUseCase: getIt<GetBooksUseCase>(),
       ),
       child: const HomeView(),
     );
@@ -36,12 +35,6 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   final user = getIt<FirebaseAuthRepositoryImpl>().getCurrentUser();
-
-  @override
-  void initState() {
-    super.initState();
-    // _getBooks(context);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +54,7 @@ class _HomeViewState extends State<HomeView> {
               child: Column(
                 children: [
                   Expanded(
+                    flex: 2,
                     child: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: const BoxDecoration(
@@ -140,20 +134,22 @@ class _HomeViewState extends State<HomeView> {
                                   foregroundColor:
                                       MaterialStateProperty.all(Colors.white),
                                 ),
-                                child: Row(children: [
-                                  const Icon(Icons.store),
-                                  Text(AppLocalizations.of(context)?.store ??
-                                      ''),
-                                ]),
+                                child: Row(
+                                  children: [
+                                    const Icon(Icons.store),
+                                    Text(AppLocalizations.of(context)?.store ??
+                                        ''),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
                         ],
                       ),
                     ),
-                    flex: 2,
                   ),
                   Expanded(
+                    flex: 1,
                     child: Container(
                       padding: const EdgeInsets.all(16),
                       width: double.infinity,
@@ -167,18 +163,17 @@ class _HomeViewState extends State<HomeView> {
                               fontSize: 20,
                             ),
                           ),
-                          Expanded(
-                            child: ListView.builder(
-                              itemCount: 5,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) =>
-                                  const BookCard(width: 125),
-                            ),
-                          )
+                          // Expanded(
+                          //   child: ListView.builder(
+                          //     itemCount: 5,
+                          //     scrollDirection: Axis.horizontal,
+                          //     itemBuilder: (context, index) =>
+                          //         const BookCard(width: 125),
+                          //   ),
+                          // )
                         ],
                       ),
                     ),
-                    flex: 1,
                   ),
                 ],
               ),
@@ -194,10 +189,6 @@ class _HomeViewState extends State<HomeView> {
   void _signOut(context) {
     BlocProvider.of<HomeBloc>(context).add(SignOutEvent());
   }
-
-  void _getBooks(context) {
-    BlocProvider.of<HomeBloc>(context).add(LoadBooksEvent());
-  }
 }
 
 class BookList extends StatelessWidget {
@@ -205,28 +196,26 @@ class BookList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CollectionReference horrorCollection = FirebaseFirestore.instance
-        .collection('books')
-        .doc('genres')
-        .collection('horror')
-        .withConverter<Book>(
-          fromFirestore: (snapshot, _) => Book.fromJson(snapshot.data() ?? {}),
-          toFirestore: (book, _) => book.toJson(),
-        );
-
-    return FutureBuilder<QuerySnapshot>(
-      future: horrorCollection.get(),
+    return FutureBuilder<QuerySnapshot<Book>>(
+      future: getIt<GetPopularBooksUseCase>().getPopularBooks(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return const Text("Something went wrong");
         }
 
         if (snapshot.connectionState == ConnectionState.done) {
-          snapshot.data?.docs.forEach((doc) {
-            print(doc.data());
-          });
+          final data = snapshot.requireData;
 
-          return Text("Full");
+          return ListView.builder(
+            itemCount: data.size,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) => BookCard(
+              width: 150,
+              title: data.docs[index].data().title,
+              author: data.docs[index].data().author,
+              posterUrl: data.docs[index].data().posterUrl,
+            ),
+          );
         }
 
         return const Center(
@@ -234,10 +223,5 @@ class BookList extends StatelessWidget {
         );
       },
     );
-    // return ListView.builder(
-    //   itemCount: 5,
-    //   scrollDirection: Axis.horizontal,
-    //   itemBuilder: (context, index) => const BookCard(width: 150),
-    // );
   }
 }

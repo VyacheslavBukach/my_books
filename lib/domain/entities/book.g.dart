@@ -7,21 +7,21 @@ part of 'book.dart';
 // **************************************************************************
 
 _$_Book _$$_BookFromJson(Map<String, dynamic> json) => _$_Book(
-      uuid: json['uuid'] as String,
+      id: json['id'] as String,
       title: json['title'] as String,
       author: json['author'] as String,
-      isPopular: json['isPopular'] as bool,
+      popular: (json['popular'] as num).toDouble(),
       isNewRelease: json['isNewRelease'] as bool,
-      genre: json['genre'] as String,
+      genre: (json['genre'] as List<dynamic>).map((e) => e as String).toList(),
       description: json['description'] as String,
       posterUrl: json['posterUrl'] as String,
     );
 
 Map<String, dynamic> _$$_BookToJson(_$_Book instance) => <String, dynamic>{
-      'uuid': instance.uuid,
+      'id': instance.id,
       'title': instance.title,
       'author': instance.author,
-      'isPopular': instance.isPopular,
+      'popular': instance.popular,
       'isNewRelease': instance.isNewRelease,
       'genre': instance.genre,
       'description': instance.description,
