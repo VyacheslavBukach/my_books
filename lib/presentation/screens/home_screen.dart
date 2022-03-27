@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -96,6 +97,7 @@ class HomeView extends StatelessWidget {
                               fontSize: 20,
                             ),
                           ),
+                          const SizedBox(height: 8),
                           Expanded(
                             child: BookList(
                               bookWidth: 150,
@@ -111,7 +113,8 @@ class HomeView extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => BookDetailScreen(),
+                                      builder: (context) =>
+                                          const BookDetailScreen(),
                                     ),
                                   );
                                 },
@@ -153,7 +156,6 @@ class HomeView extends StatelessWidget {
                     child: Container(
                       color: Colors.white,
                       padding: const EdgeInsets.all(16),
-                      width: double.infinity,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

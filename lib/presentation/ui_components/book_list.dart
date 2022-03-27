@@ -26,13 +26,12 @@ class BookList extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           final data = snapshot.requireData;
 
-          return ListView.builder(
+          return ListView.separated(
+            separatorBuilder: (context, index) => const SizedBox(width: 8),
             itemCount: data.size,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) => BookCard(
               width: bookWidth,
-              title: data.docs[index].data().title,
-              author: data.docs[index].data().author,
               posterUrl: data.docs[index].data().posterUrl,
             ),
           );
