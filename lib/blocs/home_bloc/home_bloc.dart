@@ -27,11 +27,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       try {
         String id = event.bookID;
         emit(ShowingBookDetailState(id));
-        // TODO delete
-        emit(AuthenticatedState());
       } catch (e) {
         emit(ErrorState(e.toString()));
         emit(AuthenticatedState());
+      }
+    });
+
+    on<BackPressedEvent>((event, emit) async {
+      try {
+        emit(AuthenticatedState());
+      } catch (e) {
+        emit(ErrorState(e.toString()));
       }
     });
   }

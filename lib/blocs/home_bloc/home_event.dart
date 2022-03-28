@@ -10,3 +10,5 @@ class BookClickedEvent extends HomeEvent {
 
   BookClickedEvent({required this.bookID});
 }
+
+class BackPressedEvent extends HomeEvent {}

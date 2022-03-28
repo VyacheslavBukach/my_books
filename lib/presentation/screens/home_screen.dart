@@ -33,6 +33,7 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = getIt<FirebaseAuthRepositoryImpl>().currentUser;
+    final homeBloc = BlocProvider.of<HomeBloc>(context);
 
     return Scaffold(
       backgroundColor: kMainColor,
@@ -47,7 +48,13 @@ class HomeView extends StatelessWidget {
           if (state is ShowingBookDetailState) {
             Navigator.of(context).push(
               MaterialPageRoute(
-                  builder: (context) => BookDetailScreen(bookID: state.bookID)),
+                builder: (context) {
+                  return BlocProvider.value(
+                    value: homeBloc,
+                    child: BookDetailScreen(bookID: state.bookID),
+                  );
+                },
+              ),
             );
           }
         },

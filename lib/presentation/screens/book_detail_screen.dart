@@ -1,6 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:my_books/blocs/home_bloc/home_bloc.dart';
 
 import '../../di/locator.dart';
 
@@ -13,9 +15,15 @@ class BookDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: _buildColumn(),
+    return WillPopScope(
+      onWillPop: () async {
+        BlocProvider.of<HomeBloc>(context).add(BackPressedEvent());
+        return true;
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: _buildColumn(),
+      ),
     );
   }
 
