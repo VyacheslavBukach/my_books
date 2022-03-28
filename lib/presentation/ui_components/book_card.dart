@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class BookCard extends StatelessWidget {
   final double? width;
   final String posterUrl;
+  final Function() onClick;
 
   const BookCard({
     Key? key,
     this.width,
     required this.posterUrl,
+    required this.onClick,
   }) : super(key: key);
 
   @override
@@ -23,7 +25,7 @@ class BookCard extends StatelessWidget {
           image: NetworkImage(posterUrl),
           fit: BoxFit.fitHeight,
         ),
-        onTap: () {},
+        onTap: onClick,
       ),
     );
   }

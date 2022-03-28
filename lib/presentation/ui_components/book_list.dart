@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../blocs/home_bloc/home_bloc.dart';
 import '../../domain/entities/book.dart';
 import 'book_card.dart';
 
@@ -31,6 +33,10 @@ class BookList extends StatelessWidget {
             itemCount: data.size,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) => BookCard(
+              onClick: () {
+                String id = data.docs[index].data().id;
+                _bookClickedEvent(context, id);
+              },
               width: bookWidth,
               posterUrl: data.docs[index].data().posterUrl,
             ),
@@ -42,5 +48,9 @@ class BookList extends StatelessWidget {
         );
       },
     );
+  }
+
+  void _bookClickedEvent(context, String id) {
+    BlocProvider.of<HomeBloc>(context).add(BookClickedEvent(bookID: id));
   }
 }

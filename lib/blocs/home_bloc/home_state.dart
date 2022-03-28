@@ -14,3 +14,9 @@ class ErrorState extends HomeState {
 
   ErrorState(this.error);
 }
+
+class ShowingBookDetailState extends HomeState {
+  final String bookID;
+
+  ShowingBookDetailState(this.bookID);
+}

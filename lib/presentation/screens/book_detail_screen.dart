@@ -5,7 +5,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../di/locator.dart';
 
 class BookDetailScreen extends StatelessWidget {
-  const BookDetailScreen({Key? key}) : super(key: key);
+  final String bookID;
+  const BookDetailScreen({
+    Key? key,
+    required this.bookID,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

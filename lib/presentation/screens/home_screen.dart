@@ -44,6 +44,12 @@ class HomeView extends StatelessWidget {
               (route) => false,
             );
           }
+          if (state is ShowingBookDetailState) {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (context) => BookDetailScreen(bookID: state.bookID)),
+            );
+          }
         },
         builder: (context, state) {
           if (state is AuthenticatedState) {
@@ -69,7 +75,7 @@ class HomeView extends StatelessWidget {
                               ),
                               IconButton(
                                 onPressed: () {
-                                  _signOut(context);
+                                  _signOutEvent(context);
                                 },
                                 icon: const Icon(
                                   Icons.exit_to_app,
@@ -109,15 +115,7 @@ class HomeView extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               TextButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const BookDetailScreen(),
-                                    ),
-                                  );
-                                },
+                                onPressed: () {},
                                 style: ButtonStyle(
                                   foregroundColor:
                                       MaterialStateProperty.all(Colors.white),
@@ -188,7 +186,7 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  void _signOut(context) {
+  void _signOutEvent(context) {
     BlocProvider.of<HomeBloc>(context).add(SignOutEvent());
   }
 }
