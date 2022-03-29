@@ -24,9 +24,17 @@ class FirestoreBookRepositoryImpl implements BookRepository {
   }
 
   @override
-  Future<Book> getBook(int id) async {
-    // TODO: implement getBook
-    throw UnimplementedError();
+  Future<Book> getBook(String id) async {
+    return await _firestore
+        .collection('books')
+        .doc(id)
+        .withConverter<Book>(
+          fromFirestore: (snapshot, _) => Book.fromJson(snapshot.data() ?? {}),
+          toFirestore: (book, _) => book.toJson(),
+        )
+        .get()
+        // TODO
+        .then((value) => value.data()!);
   }
 
   @override

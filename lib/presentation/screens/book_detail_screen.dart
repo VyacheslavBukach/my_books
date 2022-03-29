@@ -1,13 +1,16 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:my_books/blocs/book_detail_bloc/book_detail_bloc.dart';
 import 'package:my_books/blocs/home_bloc/home_bloc.dart';
 
 import '../../di/locator.dart';
+import '../../domain/entities/book.dart';
+import '../../domain/usecases/firestore/get_book_by_id_usecase.dart';
 
 class BookDetailScreen extends StatelessWidget {
   final String bookID;
+
   const BookDetailScreen({
     Key? key,
     required this.bookID,
@@ -15,33 +18,71 @@ class BookDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        BlocProvider.of<HomeBloc>(context).add(BackPressedEvent());
-        return true;
-      },
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: _buildColumn(),
+    final homeBloc = BlocProvider.of<HomeBloc>(context);
+
+    return BlocProvider(
+      create: (context) => BookDetailBloc(
+        getBookByIDUseCase: getIt<GetBookByIDUseCase>(),
+      )..add(OpenBookDetailEvent(id: bookID)),
+      child: WillPopScope(
+        onWillPop: () async {
+          homeBloc.add(BackPressedEvent());
+          return true;
+        },
+        child: const Scaffold(
+          backgroundColor: Colors.white,
+          body: BookDetailView(),
+        ),
       ),
     );
   }
+}
 
-  Widget _buildColumn() => Column(
+class BookDetailView extends StatelessWidget {
+  const BookDetailView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final bookBloc = BlocProvider.of<BookDetailBloc>(context);
+
+    return BlocBuilder(
+      bloc: bookBloc,
+      builder: (context, state) {
+        if (state is LoadingBookState) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        if (state is SuccessBookState) {
+          return _buildColumn(context, state.book);
+        }
+
+        if (state is ErrorBookState) {
+          return Center(
+            child: Text(state.error),
+          );
+        }
+
+        return Container();
+      },
+    );
+  }
+
+  Widget _buildColumn(BuildContext context, Book book) => Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _buildTopContainer(),
-          _buildBottomContainer(),
+          _buildTopContainer(context, book),
+          _buildBottomContainer(context, book),
         ],
       );
 
-  Widget _buildTopContainer() => Expanded(
+  Widget _buildTopContainer(BuildContext context, Book book) => Expanded(
         flex: 1,
         child: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             image: DecorationImage(
-              image: NetworkImage(
-                  'https://static.remove.bg/remove-bg-web/3661dd45c31a4ff23941855a7e4cedbbf6973643/assets/start_remove-79a4598a05a77ca999df1dcb434160994b6fde2c3e9101984fb1be0f16d0a74e.png'),
+              image: NetworkImage(book.posterUrl),
               fit: BoxFit.cover,
             ),
           ),
@@ -55,7 +96,7 @@ class BookDetailScreen extends StatelessWidget {
         ),
       );
 
-  Widget _buildBottomContainer() => Expanded(
+  Widget _buildBottomContainer(BuildContext context, Book book) => Expanded(
         flex: 1,
         child: Container(
           padding: const EdgeInsets.all(16),
@@ -64,16 +105,16 @@ class BookDetailScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Title',
-                  style: TextStyle(
+                  book.title,
+                  style: const TextStyle(
                     fontSize: 30.0,
                     fontWeight: FontWeight.w600,
                     color: Colors.black54,
                   ),
                 ),
                 Text(
-                  'Author',
-                  style: TextStyle(
+                  book.author,
+                  style: const TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.w600,
                     color: Colors.black54,
@@ -81,13 +122,12 @@ class BookDetailScreen extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Icon(Icons.star),
-                    Text('4.5'),
+                    const Icon(Icons.star),
+                    Text(book.popular.toString()),
                   ],
                 ),
-                Text('About'),
-                Text(
-                    'Curae vitae purus efficitur potenti libero mi vestibulum montes gravida integer venenatis, mattis dictumst ad lorem lobortis congue etiam rutrum justo bibendum magnis, proin consectetur accumsan sagittis quam morbi ullamcorper rhoncus placerat turpis. Eleifend dolor quis dictumst vivamus lacinia vel condimentum efficitur aptent, fringilla semper adipiscing ante purus cras aliquet velit quam, dictum porttitor proin nisl tristique viverra felis nec. Viverra dictum tortor tristique ornare ridiculus mollis varius vulputate erat adipiscing nullam, vel ligula leo quam fames nam integer tempus egestas. Cras lacus per fusce eleifend egestas dolor etiam massa posuere ad, faucibus vitae leo tristique hac phasellus laoreet tempus vivamus sapien, velit nulla mollis enim finibus aliquet donec eu varius. Eleifend ipsum id nisl est netus primis penatibus rutrum, tortor purus ex finibus libero bibendum cursus, erat risus vestibulum tincidunt iaculis senectus fringilla. Congue eu cubilia aptent ipsum montes tortor aliquam volutpat accumsan, nam ridiculus nula aptent lacus nisl nulla per duis. Sollicitudin fringilla senectus potenti ut quis vel condimentum bibendum maximus, platea habitant sagittis elementum eu nec euismod rutrum porttitor tristique, mi tempus cursus mattis sapien dictum facilisis fusce. Vitae eget habitasse est aptent dictum lobortis senectus, iaculis placerat erat hendrerit duis elementum, quam pellentesque suspendisse ad morbi ex.'),
+                Text(AppLocalizations.of(context)?.about ?? ''),
+                Text(book.description),
               ],
             ),
           ),

@@ -4,6 +4,7 @@ import 'package:my_books/data/repositories/firestore_book_repository_impl.dart';
 import 'package:my_books/domain/usecases/auth/login_usecase.dart';
 import 'package:my_books/domain/usecases/auth/logout_usecase.dart';
 import 'package:my_books/domain/usecases/auth/register_usecase.dart';
+import 'package:my_books/domain/usecases/firestore/get_book_by_id_usecase.dart';
 import 'package:my_books/domain/usecases/firestore/get_popular_books_usecase.dart';
 
 import '../domain/usecases/firestore/get_new_books_usecase.dart';
@@ -25,4 +26,6 @@ void initGetIt() {
       bookRepository: getIt<FirestoreBookRepositoryImpl>()));
   getIt.registerSingleton(
       GetNewBooksUseCase(bookRepository: getIt<FirestoreBookRepositoryImpl>()));
+  getIt.registerSingleton(
+      GetBookByIDUseCase(bookRepository: getIt<FirestoreBookRepositoryImpl>()));
 }
