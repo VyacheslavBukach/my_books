@@ -7,7 +7,7 @@ class GetNewBooksUseCase {
 
   GetNewBooksUseCase({required this.bookRepository});
 
-  Future<QuerySnapshot<Book>> getNewBooks() async {
+  Future<List<Book>> getNewBooks() async {
     return await bookRepository.getNewBooks();
   }
 }

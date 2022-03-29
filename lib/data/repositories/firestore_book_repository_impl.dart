@@ -37,8 +37,10 @@ class FirestoreBookRepositoryImpl implements BookRepository {
   }
 
   @override
-  Future<QuerySnapshot<Book>> getPopularBooks() async {
-    return await _firestore
+  Future<List<Book>> getPopularBooks() async {
+    List<Book> books = [];
+
+    await _firestore
         .collection('books')
         .orderBy('popular', descending: true)
         .limit(10)
@@ -46,12 +48,21 @@ class FirestoreBookRepositoryImpl implements BookRepository {
           fromFirestore: (snapshot, _) => Book.fromJson(snapshot.data() ?? {}),
           toFirestore: (book, _) => book.toJson(),
         )
-        .get();
+        .get()
+        .then((snapshot) {
+      for (var element in snapshot.docs) {
+        books.add(element.data());
+      }
+    });
+
+    return books;
   }
 
   @override
-  Future<QuerySnapshot<Book>> getNewBooks() async {
-    return await _firestore
+  Future<List<Book>> getNewBooks() async {
+    List<Book> books = [];
+
+    await _firestore
         .collection('books')
         .orderBy('createdAt', descending: true)
         .limit(10)
@@ -59,6 +70,13 @@ class FirestoreBookRepositoryImpl implements BookRepository {
           fromFirestore: (snapshot, _) => Book.fromJson(snapshot.data() ?? {}),
           toFirestore: (book, _) => book.toJson(),
         )
-        .get();
+        .get()
+        .then((snapshot) {
+      for (var element in snapshot.docs) {
+        books.add(element.data());
+      }
+    });
+
+    return books;
   }
 }

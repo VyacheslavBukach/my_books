@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:my_books/domain/entities/book.dart';
 
 abstract class BookRepository {
@@ -10,7 +9,7 @@ abstract class BookRepository {
 
   Future<void> deleteBookFromFavourite(int id);
 
-  Future<QuerySnapshot<Book>> getPopularBooks();
+  Future<List<Book>> getPopularBooks();
 
-  Future<QuerySnapshot<Book>> getNewBooks();
+  Future<List<Book>> getNewBooks();
 }

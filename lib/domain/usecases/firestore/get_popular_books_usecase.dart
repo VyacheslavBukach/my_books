@@ -7,7 +7,7 @@ class GetPopularBooksUseCase {
 
   GetPopularBooksUseCase({required this.bookRepository});
 
-  Future<QuerySnapshot<Book>> getPopularBooks() async {
+  Future<List<Book>> getPopularBooks() async {
     return await bookRepository.getPopularBooks();
   }
 }

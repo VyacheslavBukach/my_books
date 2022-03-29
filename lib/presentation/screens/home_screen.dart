@@ -113,7 +113,7 @@ class HomeView extends StatelessWidget {
                           Expanded(
                             child: BookList(
                               bookWidth: 150,
-                              usecase: getIt<GetPopularBooksUseCase>()
+                              bookList: getIt<GetPopularBooksUseCase>()
                                   .getPopularBooks(),
                             ),
                           ),
@@ -173,7 +173,7 @@ class HomeView extends StatelessWidget {
                           Expanded(
                             child: BookList(
                               bookWidth: 125,
-                              usecase:
+                              bookList:
                                   getIt<GetNewBooksUseCase>().getNewBooks(),
                             ),
                           )
