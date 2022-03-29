@@ -69,7 +69,7 @@ class BookDetailView extends StatelessWidget {
     );
   }
 
-  Widget _buildColumn(BuildContext context, Book book) => Column(
+  Widget _buildColumn(BuildContext context, Book? book) => Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _buildTopContainer(context, book),
@@ -77,12 +77,12 @@ class BookDetailView extends StatelessWidget {
         ],
       );
 
-  Widget _buildTopContainer(BuildContext context, Book book) => Expanded(
+  Widget _buildTopContainer(BuildContext context, Book? book) => Expanded(
         flex: 1,
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: NetworkImage(book.posterUrl),
+              image: NetworkImage(book?.posterUrl ?? ''),
               fit: BoxFit.cover,
             ),
           ),
@@ -96,7 +96,7 @@ class BookDetailView extends StatelessWidget {
         ),
       );
 
-  Widget _buildBottomContainer(BuildContext context, Book book) => Expanded(
+  Widget _buildBottomContainer(BuildContext context, Book? book) => Expanded(
         flex: 1,
         child: Container(
           padding: const EdgeInsets.all(16),
@@ -105,7 +105,7 @@ class BookDetailView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  book.title,
+                  book?.title ?? '',
                   style: const TextStyle(
                     fontSize: 30.0,
                     fontWeight: FontWeight.w600,
@@ -113,7 +113,7 @@ class BookDetailView extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  book.author,
+                  book?.author ?? '',
                   style: const TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.w600,
@@ -123,11 +123,11 @@ class BookDetailView extends StatelessWidget {
                 Row(
                   children: [
                     const Icon(Icons.star),
-                    Text(book.popular.toString()),
+                    Text(book?.popular.toString() ?? ''),
                   ],
                 ),
                 Text(AppLocalizations.of(context)?.about ?? ''),
-                Text(book.description),
+                Text(book?.description ?? ''),
               ],
             ),
           ),

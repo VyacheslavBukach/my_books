@@ -6,7 +6,7 @@ abstract class BookDetailState {}
 class LoadingBookState extends BookDetailState {}
 
 class SuccessBookState extends BookDetailState {
-  final Book book;
+  final Book? book;
 
   SuccessBookState({required this.book});
 }

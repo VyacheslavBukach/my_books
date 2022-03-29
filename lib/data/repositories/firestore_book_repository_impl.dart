@@ -24,7 +24,7 @@ class FirestoreBookRepositoryImpl implements BookRepository {
   }
 
   @override
-  Future<Book> getBook(String id) async {
+  Future<Book?> getBook(String id) async {
     return await _firestore
         .collection('books')
         .doc(id)
@@ -33,8 +33,7 @@ class FirestoreBookRepositoryImpl implements BookRepository {
           toFirestore: (book, _) => book.toJson(),
         )
         .get()
-        // TODO
-        .then((value) => value.data()!);
+        .then((value) => value.data());
   }
 
   @override
