@@ -2,24 +2,30 @@ import 'package:flutter/material.dart';
 
 class BookCard extends StatelessWidget {
   final double? width;
-  final double? height;
+  final String posterUrl;
+  final Function() onClick;
 
   const BookCard({
     Key? key,
     this.width,
-    this.height,
+    required this.posterUrl,
+    required this.onClick,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: width,
-      height: height,
-      child: const Card(
-        child: Icon(
-          Icons.menu_book,
-          size: 100,
+    return Material(
+      elevation: 8,
+      borderRadius: BorderRadius.circular(8),
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      child: InkWell(
+        splashColor: Colors.white.withOpacity(0.5),
+        child: Ink.image(
+          width: width,
+          image: NetworkImage(posterUrl),
+          fit: BoxFit.fitHeight,
         ),
+        onTap: onClick,
       ),
     );
   }

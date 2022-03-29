@@ -9,15 +9,35 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final LogoutUseCase logoutUseCase;
 
-  HomeBloc({required this.logoutUseCase}) : super(AuthenticatedState()) {
+  HomeBloc({
+    required this.logoutUseCase,
+  }) : super(AuthenticatedState()) {
     on<SignOutEvent>((event, emit) async {
       emit(LoadingState());
       try {
         await logoutUseCase.logout();
         emit(UnauthenticatedState());
       } catch (e) {
-        emit(AuthErrorState(e.toString()));
+        emit(ErrorState(e.toString()));
         emit(AuthenticatedState());
+      }
+    });
+
+    on<BookClickedEvent>((event, emit) async {
+      try {
+        String id = event.bookID;
+        emit(ShowingBookDetailState(id));
+      } catch (e) {
+        emit(ErrorState(e.toString()));
+        emit(AuthenticatedState());
+      }
+    });
+
+    on<BackPressedEvent>((event, emit) async {
+      try {
+        emit(AuthenticatedState());
+      } catch (e) {
+        emit(ErrorState(e.toString()));
       }
     });
   }

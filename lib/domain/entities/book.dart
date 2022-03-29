@@ -1,26 +1,21 @@
-const _kUuid = 'uuid';
-const _kTitle = 'title';
-const _kAuthor = 'author';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class Book {
-  String uuid;
-  String title;
-  String author;
+part 'book.freezed.dart';
+part 'book.g.dart';
 
-  Book({
-    required this.uuid,
-    required this.title,
-    required this.author,
-  });
+@Freezed()
+class Book with _$Book {
+  const factory Book({
+    required String id,
+    required String title,
+    required String author,
+    required double popular,
+    required DateTime createdAt,
+    required List<String> genre,
+    required String description,
+    required String posterUrl,
+  }) = _Book;
 
-  Book.fromJson(Map<String, dynamic> json)
-      : uuid = json[_kUuid],
-        title = json[_kTitle],
-        author = json[_kAuthor];
-
-  Map<String, dynamic> toJson() => {
-        _kUuid: uuid,
-        _kTitle: title,
-        _kAuthor: author,
-      };
+  factory Book.fromJson(Map<String, dynamic> json) => _$BookFromJson(json);
 }

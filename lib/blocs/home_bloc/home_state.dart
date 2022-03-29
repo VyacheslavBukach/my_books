@@ -9,8 +9,14 @@ class AuthenticatedState extends HomeState {}
 
 class UnauthenticatedState extends HomeState {}
 
-class AuthErrorState extends HomeState {
+class ErrorState extends HomeState {
   final String error;
 
-  AuthErrorState(this.error);
+  ErrorState(this.error);
+}
+
+class ShowingBookDetailState extends HomeState {
+  final String bookID;
+
+  ShowingBookDetailState(this.bookID);
 }

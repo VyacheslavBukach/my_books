@@ -16,5 +16,6 @@
   "store": "Store",
   "new_releases": "New Releases",
   "sign_in_headline": "Let's sign you in.\nWelcome back, you've been missed!",
-  "sign_out_headline": "Sign out\nEnter your information below."
+  "sign_out_headline": "Sign out\nEnter your information below.",
+  "about": "About"
 }

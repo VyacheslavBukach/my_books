@@ -9,5 +9,5 @@ abstract class AuthRepository {
 
   Stream<User?> authStateChanges();
 
-  User? getCurrentUser();
+  User? get currentUser;
 }
