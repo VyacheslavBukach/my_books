@@ -7,6 +7,7 @@ import 'package:my_books/blocs/home_bloc/home_bloc.dart';
 import '../../di/locator.dart';
 import '../../domain/entities/book.dart';
 import '../../domain/usecases/firestore/add_book_to_favourite_usecase.dart';
+import '../../domain/usecases/firestore/delete_book_from_favourite_usecase.dart';
 import '../../domain/usecases/firestore/get_book_by_id_usecase.dart';
 
 class BookDetailScreen extends StatelessWidget {
@@ -25,6 +26,7 @@ class BookDetailScreen extends StatelessWidget {
       create: (context) => BookDetailBloc(
         getBookByIDUseCase: getIt<GetBookByIDUseCase>(),
         addBookToFavouriteUseCase: getIt<AddBookToFavouriteUseCase>(),
+        deleteBookFromFavouriteUseCase: getIt<DeleteBookFromFavouriteUseCase>(),
       )..add(InitialBookDetailEvent(id: bookID)),
       child: WillPopScope(
         onWillPop: () async {
@@ -93,7 +95,9 @@ class BookDetailView extends StatelessWidget {
             color: Colors.red,
             onPressed: () {
               BlocProvider.of<BookDetailBloc>(context)
-                  .add(LikedEvent(bookID: book?.id ?? ''));
+                  .add(UnlikedEvent(bookID: book?.id ?? ''));
+              // BlocProvider.of<BookDetailBloc>(context)
+              //     .add(LikedEvent(bookID: book?.id ?? ''));
             },
             icon: const Icon(Icons.favorite),
             iconSize: 60,

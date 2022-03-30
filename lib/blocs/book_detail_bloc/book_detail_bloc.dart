@@ -4,6 +4,7 @@ import 'package:my_books/domain/usecases/firestore/add_book_to_favourite_usecase
 import 'package:my_books/domain/usecases/firestore/get_book_by_id_usecase.dart';
 
 import '../../domain/entities/book.dart';
+import '../../domain/usecases/firestore/delete_book_from_favourite_usecase.dart';
 
 part 'book_detail_event.dart';
 part 'book_detail_state.dart';
@@ -11,10 +12,12 @@ part 'book_detail_state.dart';
 class BookDetailBloc extends Bloc<BookDetailEvent, BookDetailState> {
   final GetBookByIDUseCase getBookByIDUseCase;
   final AddBookToFavouriteUseCase addBookToFavouriteUseCase;
+  final DeleteBookFromFavouriteUseCase deleteBookFromFavouriteUseCase;
 
   BookDetailBloc({
     required this.getBookByIDUseCase,
     required this.addBookToFavouriteUseCase,
+    required this.deleteBookFromFavouriteUseCase,
   }) : super(LoadingBookState()) {
     on<InitialBookDetailEvent>((event, emit) async {
       try {
@@ -34,7 +37,10 @@ class BookDetailBloc extends Bloc<BookDetailEvent, BookDetailState> {
     });
 
     on<UnlikedEvent>((event, emit) async {
-      try {} catch (e) {
+      try {
+        await deleteBookFromFavouriteUseCase
+            .deleteBookFromFavourite(event.bookID);
+      } catch (e) {
         emit(ErrorBookState(e.toString()));
       }
     });

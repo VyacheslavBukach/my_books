@@ -10,7 +10,10 @@ abstract class BookRepository {
     required String bookID,
   });
 
-  Future<void> deleteBookFromFavourite(int id);
+  Future<void> deleteBookFromFavourite({
+    required String userID,
+    required String bookID,
+  });
 
   Future<List<Book>> getPopularBooks();
 

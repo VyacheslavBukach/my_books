@@ -22,16 +22,24 @@ class FirestoreBookRepositoryImpl implements BookRepository {
       if (documentSnapshot.exists) {
         _addBook(userID, bookID);
       } else {
-        _addUserInFirestore(userID);
+        _createEmptyFavouriteList(userID);
         _addBook(userID, bookID);
       }
     });
   }
 
   @override
-  Future<void> deleteBookFromFavourite(int id) async {
-    // TODO: implement deleteBookFromFavourite
-    throw UnimplementedError();
+  Future<void> deleteBookFromFavourite({
+    required String userID,
+    required String bookID,
+  }) async {
+    await _firestore
+        .collection(_kUsers)
+        .doc(userID)
+        .get()
+        .then((documentSnapshot) {
+      _deleteBook(userID, bookID);
+    });
   }
 
   @override
@@ -104,7 +112,14 @@ class FirestoreBookRepositoryImpl implements BookRepository {
     });
   }
 
-  Future<void> _addUserInFirestore(String userID) async {
+  Future<void> _deleteBook(String userID, String bookID) async {
+    CollectionReference users = FirebaseFirestore.instance.collection(_kUsers);
+    await users.doc(userID).update({
+      _kFavourites: FieldValue.arrayRemove([bookID])
+    });
+  }
+
+  Future<void> _createEmptyFavouriteList(String userID) async {
     CollectionReference users = FirebaseFirestore.instance.collection(_kUsers);
     await users.doc(userID).set({_kFavourites: []});
   }
