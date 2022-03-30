@@ -4,6 +4,7 @@ import 'package:my_books/data/repositories/firestore_book_repository_impl.dart';
 import 'package:my_books/domain/usecases/auth/login_usecase.dart';
 import 'package:my_books/domain/usecases/auth/logout_usecase.dart';
 import 'package:my_books/domain/usecases/auth/register_usecase.dart';
+import 'package:my_books/domain/usecases/firestore/add_book_to_favourite_usecase.dart';
 import 'package:my_books/domain/usecases/firestore/get_book_by_id_usecase.dart';
 import 'package:my_books/domain/usecases/firestore/get_popular_books_usecase.dart';
 
@@ -17,15 +18,28 @@ void initGetIt() {
   getIt.registerSingleton(FirestoreBookRepositoryImpl());
   // Use cases
   getIt.registerSingleton(
-      LoginUseCase(authRepo: getIt<FirebaseAuthRepositoryImpl>()));
+    LoginUseCase(authRepo: getIt<FirebaseAuthRepositoryImpl>()),
+  );
   getIt.registerSingleton(
-      RegisterUseCase(authRepo: getIt<FirebaseAuthRepositoryImpl>()));
+    RegisterUseCase(authRepo: getIt<FirebaseAuthRepositoryImpl>()),
+  );
   getIt.registerSingleton(
-      LogoutUseCase(authRepo: getIt<FirebaseAuthRepositoryImpl>()));
-  getIt.registerSingleton(GetPopularBooksUseCase(
-      bookRepository: getIt<FirestoreBookRepositoryImpl>()));
+    LogoutUseCase(authRepo: getIt<FirebaseAuthRepositoryImpl>()),
+  );
   getIt.registerSingleton(
-      GetNewBooksUseCase(bookRepository: getIt<FirestoreBookRepositoryImpl>()));
+    GetPopularBooksUseCase(
+        bookRepository: getIt<FirestoreBookRepositoryImpl>()),
+  );
   getIt.registerSingleton(
-      GetBookByIDUseCase(bookRepository: getIt<FirestoreBookRepositoryImpl>()));
+    GetNewBooksUseCase(bookRepository: getIt<FirestoreBookRepositoryImpl>()),
+  );
+  getIt.registerSingleton(
+    GetBookByIDUseCase(bookRepository: getIt<FirestoreBookRepositoryImpl>()),
+  );
+  getIt.registerSingleton(
+    AddBookToFavouriteUseCase(
+      bookRepository: getIt<FirestoreBookRepositoryImpl>(),
+      authRepository: getIt<FirebaseAuthRepositoryImpl>(),
+    ),
+  );
 }

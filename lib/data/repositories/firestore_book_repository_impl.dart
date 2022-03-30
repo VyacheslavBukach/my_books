@@ -2,13 +2,30 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:my_books/domain/entities/book.dart';
 import 'package:my_books/domain/repositories/book_repository.dart';
 
+const _kBooks = 'books';
+const _kUsers = 'users';
+const _kFavourites = 'favourites';
+
 class FirestoreBookRepositoryImpl implements BookRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
-  Future<void> addBookToFavourite(int id) async {
-    // TODO: implement addBookToFavourite
-    throw UnimplementedError();
+  Future<void> addBookToFavourite({
+    required String userID,
+    required String bookID,
+  }) async {
+    await _firestore
+        .collection(_kUsers)
+        .doc(userID)
+        .get()
+        .then((documentSnapshot) {
+      if (documentSnapshot.exists) {
+        _addBook(userID, bookID);
+      } else {
+        _addUserInFirestore(userID);
+        _addBook(userID, bookID);
+      }
+    });
   }
 
   @override
@@ -26,7 +43,7 @@ class FirestoreBookRepositoryImpl implements BookRepository {
   @override
   Future<Book?> getBook(String id) async {
     return await _firestore
-        .collection('books')
+        .collection(_kBooks)
         .doc(id)
         .withConverter<Book>(
           fromFirestore: (snapshot, _) => Book.fromJson(snapshot.data() ?? {}),
@@ -41,7 +58,7 @@ class FirestoreBookRepositoryImpl implements BookRepository {
     List<Book> books = [];
 
     await _firestore
-        .collection('books')
+        .collection(_kBooks)
         .orderBy('popular', descending: true)
         .limit(10)
         .withConverter<Book>(
@@ -63,7 +80,7 @@ class FirestoreBookRepositoryImpl implements BookRepository {
     List<Book> books = [];
 
     await _firestore
-        .collection('books')
+        .collection(_kBooks)
         .orderBy('createdAt', descending: true)
         .limit(10)
         .withConverter<Book>(
@@ -78,5 +95,17 @@ class FirestoreBookRepositoryImpl implements BookRepository {
     });
 
     return books;
+  }
+
+  Future<void> _addBook(String userID, String bookID) async {
+    CollectionReference users = FirebaseFirestore.instance.collection(_kUsers);
+    await users.doc(userID).update({
+      _kFavourites: FieldValue.arrayUnion([bookID])
+    });
+  }
+
+  Future<void> _addUserInFirestore(String userID) async {
+    CollectionReference users = FirebaseFirestore.instance.collection(_kUsers);
+    await users.doc(userID).set({_kFavourites: []});
   }
 }

@@ -6,6 +6,7 @@ import 'package:my_books/blocs/home_bloc/home_bloc.dart';
 
 import '../../di/locator.dart';
 import '../../domain/entities/book.dart';
+import '../../domain/usecases/firestore/add_book_to_favourite_usecase.dart';
 import '../../domain/usecases/firestore/get_book_by_id_usecase.dart';
 
 class BookDetailScreen extends StatelessWidget {
@@ -23,7 +24,8 @@ class BookDetailScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => BookDetailBloc(
         getBookByIDUseCase: getIt<GetBookByIDUseCase>(),
-      )..add(OpenBookDetailEvent(id: bookID)),
+        addBookToFavouriteUseCase: getIt<AddBookToFavouriteUseCase>(),
+      )..add(InitialBookDetailEvent(id: bookID)),
       child: WillPopScope(
         onWillPop: () async {
           homeBloc.add(BackPressedEvent());
@@ -43,10 +45,10 @@ class BookDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bookBloc = BlocProvider.of<BookDetailBloc>(context);
+    final bookDetailBloc = BlocProvider.of<BookDetailBloc>(context);
 
     return BlocBuilder(
-      bloc: bookBloc,
+      bloc: bookDetailBloc,
       builder: (context, state) {
         if (state is LoadingBookState) {
           return const Center(
@@ -89,7 +91,10 @@ class BookDetailView extends StatelessWidget {
           child: IconButton(
             alignment: Alignment.bottomRight,
             color: Colors.red,
-            onPressed: () {},
+            onPressed: () {
+              BlocProvider.of<BookDetailBloc>(context)
+                  .add(LikedEvent(bookID: book?.id ?? ''));
+            },
             icon: const Icon(Icons.favorite),
             iconSize: 60,
           ),

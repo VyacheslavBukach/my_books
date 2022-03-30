@@ -16,3 +16,7 @@ class ErrorBookState extends BookDetailState {
 
   ErrorBookState(this.error);
 }
+
+class LikeState extends BookDetailState {}
+
+class UnlikeState extends BookDetailState {}

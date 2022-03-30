@@ -5,7 +5,10 @@ abstract class BookRepository {
 
   Future<List<Book>> getAllBooks();
 
-  Future<void> addBookToFavourite(int id);
+  Future<void> addBookToFavourite({
+    required String userID,
+    required String bookID,
+  });
 
   Future<void> deleteBookFromFavourite(int id);
 
