@@ -84,7 +84,7 @@ class HomeView extends StatelessWidget {
                                   _signOutEvent(context);
                                 },
                                 icon: const Icon(
-                                  Icons.exit_to_app,
+                                  Icons.logout,
                                   color: Colors.white,
                                 ),
                               ),
