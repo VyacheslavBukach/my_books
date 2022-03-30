@@ -106,21 +106,21 @@ class FirestoreBookRepositoryImpl implements BookRepository {
   }
 
   Future<void> _addBook(String userID, String bookID) async {
-    CollectionReference users = FirebaseFirestore.instance.collection(_kUsers);
+    CollectionReference users = _firestore.collection(_kUsers);
     await users.doc(userID).update({
       _kFavourites: FieldValue.arrayUnion([bookID])
     });
   }
 
   Future<void> _deleteBook(String userID, String bookID) async {
-    CollectionReference users = FirebaseFirestore.instance.collection(_kUsers);
+    CollectionReference users = _firestore.collection(_kUsers);
     await users.doc(userID).update({
       _kFavourites: FieldValue.arrayRemove([bookID])
     });
   }
 
   Future<void> _createEmptyFavouriteList(String userID) async {
-    CollectionReference users = FirebaseFirestore.instance.collection(_kUsers);
+    CollectionReference users = _firestore.collection(_kUsers);
     await users.doc(userID).set({_kFavourites: []});
   }
 }
