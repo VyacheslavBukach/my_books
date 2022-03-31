@@ -10,6 +10,12 @@ class FirebaseAuthRepositoryImpl implements AuthRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   @override
+  FirebaseAuth get firebaseAuth => _firebaseAuth;
+
+  @override
+  User? get currentUser => _firebaseAuth.currentUser;
+
+  @override
   Future<void> signIn(String email, String password) async {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
@@ -50,7 +56,4 @@ class FirebaseAuthRepositoryImpl implements AuthRepository {
 
   @override
   Stream<User?> authStateChanges() => _firebaseAuth.authStateChanges();
-
-  @override
-  User? get currentUser => _firebaseAuth.currentUser;
 }

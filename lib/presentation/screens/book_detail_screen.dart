@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -9,6 +10,7 @@ import '../../domain/entities/book.dart';
 import '../../domain/usecases/firestore/add_book_to_favourite_usecase.dart';
 import '../../domain/usecases/firestore/delete_book_from_favourite_usecase.dart';
 import '../../domain/usecases/firestore/get_book_by_id_usecase.dart';
+import '../../domain/usecases/firestore/get_favourite_book_stream_usecase.dart';
 
 class BookDetailScreen extends StatelessWidget {
   final String bookID;
@@ -90,17 +92,38 @@ class BookDetailView extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          child: IconButton(
-            alignment: Alignment.bottomRight,
-            color: Colors.red,
-            onPressed: () {
-              BlocProvider.of<BookDetailBloc>(context)
-                  .add(UnlikedEvent(bookID: book?.id ?? ''));
-              // BlocProvider.of<BookDetailBloc>(context)
-              //     .add(LikedEvent(bookID: book?.id ?? ''));
+          child: StreamBuilder<DocumentSnapshot>(
+            stream:
+                getIt<GetFavouriteBookStreamUseCase>().getFavouriteBookStream(),
+            builder: (BuildContext context, snapshot) {
+              if (snapshot.hasError) {
+                return const Text('Something went wrong');
+              }
+
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Text("Loading");
+              }
+
+              var list = snapshot.data?['favourites'];
+              bool isLiked;
+              (list.contains(book?.id ?? ''))
+                  ? isLiked = true
+                  : isLiked = false;
+
+              return IconButton(
+                alignment: Alignment.bottomRight,
+                color: isLiked ? Colors.red : Colors.white,
+                onPressed: () {
+                  isLiked
+                      ? BlocProvider.of<BookDetailBloc>(context)
+                          .add(UnlikedEvent(bookID: book?.id ?? ''))
+                      : BlocProvider.of<BookDetailBloc>(context)
+                          .add(LikedEvent(bookID: book?.id ?? ''));
+                },
+                icon: const Icon(Icons.favorite),
+                iconSize: 60,
+              );
             },
-            icon: const Icon(Icons.favorite),
-            iconSize: 60,
           ),
         ),
       );

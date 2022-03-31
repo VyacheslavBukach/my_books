@@ -1,9 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:my_books/domain/entities/book.dart';
 
 abstract class BookRepository {
-  Future<Book?> getBook(String id);
+  FirebaseFirestore get firestore;
+
+  Future<Book?> getBookByID(String id);
 
   Future<List<Book>> getAllBooks();
+
+  Future<List<Book>> getFavouriteBooks();
 
   Future<void> addBookToFavourite({
     required String userID,

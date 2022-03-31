@@ -9,6 +9,7 @@ import 'package:my_books/domain/usecases/firestore/get_book_by_id_usecase.dart';
 import 'package:my_books/domain/usecases/firestore/get_popular_books_usecase.dart';
 
 import '../domain/usecases/firestore/delete_book_from_favourite_usecase.dart';
+import '../domain/usecases/firestore/get_favourite_book_stream_usecase.dart';
 import '../domain/usecases/firestore/get_new_books_usecase.dart';
 
 final getIt = GetIt.instance;
@@ -45,6 +46,12 @@ void initGetIt() {
   );
   getIt.registerSingleton(
     DeleteBookFromFavouriteUseCase(
+      bookRepository: getIt<FirestoreBookRepositoryImpl>(),
+      authRepository: getIt<FirebaseAuthRepositoryImpl>(),
+    ),
+  );
+  getIt.registerSingleton(
+    GetFavouriteBookStreamUseCase(
       bookRepository: getIt<FirestoreBookRepositoryImpl>(),
       authRepository: getIt<FirebaseAuthRepositoryImpl>(),
     ),

@@ -3,11 +3,14 @@ import 'package:my_books/domain/entities/book.dart';
 import 'package:my_books/domain/repositories/book_repository.dart';
 
 const _kBooks = 'books';
-const _kUsers = 'users';
+const kUsers = 'users';
 const _kFavourites = 'favourites';
 
 class FirestoreBookRepositoryImpl implements BookRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  @override
+  FirebaseFirestore get firestore => _firestore;
 
   @override
   Future<void> addBookToFavourite({
@@ -15,15 +18,15 @@ class FirestoreBookRepositoryImpl implements BookRepository {
     required String bookID,
   }) async {
     await _firestore
-        .collection(_kUsers)
+        .collection(kUsers)
         .doc(userID)
         .get()
         .then((documentSnapshot) {
       if (documentSnapshot.exists) {
-        _addBook(userID, bookID);
+        _addBookToFirestore(userID, bookID);
       } else {
         _createEmptyFavouriteList(userID);
-        _addBook(userID, bookID);
+        _addBookToFirestore(userID, bookID);
       }
     });
   }
@@ -34,11 +37,11 @@ class FirestoreBookRepositoryImpl implements BookRepository {
     required String bookID,
   }) async {
     await _firestore
-        .collection(_kUsers)
+        .collection(kUsers)
         .doc(userID)
         .get()
         .then((documentSnapshot) {
-      _deleteBook(userID, bookID);
+      _deleteBookFromFirestore(userID, bookID);
     });
   }
 
@@ -49,7 +52,13 @@ class FirestoreBookRepositoryImpl implements BookRepository {
   }
 
   @override
-  Future<Book?> getBook(String id) async {
+  Future<List<Book>> getFavouriteBooks() {
+    // TODO: implement getFavouriteBooks
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Book?> getBookByID(String id) async {
     return await _firestore
         .collection(_kBooks)
         .doc(id)
@@ -105,22 +114,22 @@ class FirestoreBookRepositoryImpl implements BookRepository {
     return books;
   }
 
-  Future<void> _addBook(String userID, String bookID) async {
-    CollectionReference users = _firestore.collection(_kUsers);
+  Future<void> _addBookToFirestore(String userID, String bookID) async {
+    CollectionReference users = _firestore.collection(kUsers);
     await users.doc(userID).update({
       _kFavourites: FieldValue.arrayUnion([bookID])
     });
   }
 
-  Future<void> _deleteBook(String userID, String bookID) async {
-    CollectionReference users = _firestore.collection(_kUsers);
+  Future<void> _deleteBookFromFirestore(String userID, String bookID) async {
+    CollectionReference users = _firestore.collection(kUsers);
     await users.doc(userID).update({
       _kFavourites: FieldValue.arrayRemove([bookID])
     });
   }
 
   Future<void> _createEmptyFavouriteList(String userID) async {
-    CollectionReference users = _firestore.collection(_kUsers);
+    CollectionReference users = _firestore.collection(kUsers);
     await users.doc(userID).set({_kFavourites: []});
   }
 }
