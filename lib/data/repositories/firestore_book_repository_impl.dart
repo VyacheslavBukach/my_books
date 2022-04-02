@@ -52,9 +52,22 @@ class FirestoreBookRepositoryImpl implements BookRepository {
   }
 
   @override
-  Future<List<Book>> getFavouriteBooks() {
-    // TODO: implement getFavouriteBooks
-    throw UnimplementedError();
+  Future<List<Book>> getFavouriteBooks(String userID) async {
+    List<Book> books = [];
+
+    await _firestore
+        .collection(kUsers)
+        .doc(userID)
+        .get()
+        .then((snapshot) async {
+      var bookID = snapshot.data()?['favourites'];
+      for (var element in bookID) {
+        var book = await getBookByID(element);
+        books.add(book!); // TODO
+      }
+    });
+
+    return books;
   }
 
   @override

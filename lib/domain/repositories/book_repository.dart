@@ -8,7 +8,7 @@ abstract class BookRepository {
 
   Future<List<Book>> getAllBooks();
 
-  Future<List<Book>> getFavouriteBooks();
+  Future<List<Book>> getFavouriteBooks(String userID);
 
   Future<void> addBookToFavourite({
     required String userID,

@@ -10,33 +10,49 @@ import 'package:my_books/domain/usecases/firestore/get_popular_books_usecase.dar
 
 import '../domain/usecases/firestore/delete_book_from_favourite_usecase.dart';
 import '../domain/usecases/firestore/get_favourite_book_stream_usecase.dart';
+import '../domain/usecases/firestore/get_favourite_books_usecase.dart';
 import '../domain/usecases/firestore/get_new_books_usecase.dart';
 
 final getIt = GetIt.instance;
 
 void initGetIt() {
   // Firebase
-  getIt.registerSingleton(FirebaseAuthRepositoryImpl());
-  getIt.registerSingleton(FirestoreBookRepositoryImpl());
+  getIt.registerSingleton(
+    FirebaseAuthRepositoryImpl(),
+  );
+  getIt.registerSingleton(
+    FirestoreBookRepositoryImpl(),
+  );
   // Use cases
   getIt.registerSingleton(
-    LoginUseCase(authRepo: getIt<FirebaseAuthRepositoryImpl>()),
+    LoginUseCase(
+      authRepo: getIt<FirebaseAuthRepositoryImpl>(),
+    ),
   );
   getIt.registerSingleton(
-    RegisterUseCase(authRepo: getIt<FirebaseAuthRepositoryImpl>()),
+    RegisterUseCase(
+      authRepo: getIt<FirebaseAuthRepositoryImpl>(),
+    ),
   );
   getIt.registerSingleton(
-    LogoutUseCase(authRepo: getIt<FirebaseAuthRepositoryImpl>()),
+    LogoutUseCase(
+      authRepo: getIt<FirebaseAuthRepositoryImpl>(),
+    ),
   );
   getIt.registerSingleton(
     GetPopularBooksUseCase(
-        bookRepository: getIt<FirestoreBookRepositoryImpl>()),
+      bookRepository: getIt<FirestoreBookRepositoryImpl>(),
+    ),
   );
   getIt.registerSingleton(
-    GetNewBooksUseCase(bookRepository: getIt<FirestoreBookRepositoryImpl>()),
+    GetNewBooksUseCase(
+      bookRepository: getIt<FirestoreBookRepositoryImpl>(),
+    ),
   );
   getIt.registerSingleton(
-    GetBookByIDUseCase(bookRepository: getIt<FirestoreBookRepositoryImpl>()),
+    GetBookByIDUseCase(
+      bookRepository: getIt<FirestoreBookRepositoryImpl>(),
+    ),
   );
   getIt.registerSingleton(
     AddBookToFavouriteUseCase(
@@ -52,6 +68,12 @@ void initGetIt() {
   );
   getIt.registerSingleton(
     GetFavouriteBookStreamUseCase(
+      bookRepository: getIt<FirestoreBookRepositoryImpl>(),
+      authRepository: getIt<FirebaseAuthRepositoryImpl>(),
+    ),
+  );
+  getIt.registerSingleton(
+    GetFavouriteBooksUseCase(
       bookRepository: getIt<FirestoreBookRepositoryImpl>(),
       authRepository: getIt<FirebaseAuthRepositoryImpl>(),
     ),

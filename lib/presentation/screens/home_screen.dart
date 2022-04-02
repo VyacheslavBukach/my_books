@@ -6,6 +6,7 @@ import 'package:my_books/data/repositories/firebase_auth_repository_impl.dart';
 import 'package:my_books/di/locator.dart';
 import 'package:my_books/domain/usecases/firestore/get_popular_books_usecase.dart';
 import 'package:my_books/presentation/screens/book_detail_screen.dart';
+import 'package:my_books/presentation/screens/books_screen.dart';
 import 'package:my_books/presentation/screens/main_screen.dart';
 
 import '../../domain/usecases/auth/logout_usecase.dart';
@@ -121,7 +122,18 @@ class HomeView extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return BlocProvider.value(
+                                          value: homeBloc,
+                                          child: const BooksScreen(),
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
                                 style: ButtonStyle(
                                   foregroundColor:
                                       MaterialStateProperty.all(Colors.white),
