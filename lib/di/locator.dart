@@ -72,10 +72,10 @@ void initGetIt() {
       authRepository: getIt<FirebaseAuthRepositoryImpl>(),
     ),
   );
-  getIt.registerSingleton(
-    GetFavouriteBooksUseCase(
-      bookRepository: getIt<FirestoreBookRepositoryImpl>(),
-      authRepository: getIt<FirebaseAuthRepositoryImpl>(),
-    ),
-  );
+  // getIt.registerSingleton(
+  //   GetFavouriteBooksUseCase(
+  //     bookRepository: getIt<FirestoreBookRepositoryImpl>(),
+  //     authRepository: getIt<FirebaseAuthRepositoryImpl>(),
+  //   ),
+  // );
 }

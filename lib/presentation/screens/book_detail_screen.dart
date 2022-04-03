@@ -93,8 +93,8 @@ class BookDetailView extends StatelessWidget {
             ),
           ),
           child: StreamBuilder<DocumentSnapshot>(
-            stream:
-                getIt<GetFavouriteBookStreamUseCase>().getFavouriteBookStream(),
+            stream: getIt<GetFavouriteBookStreamUseCase>()
+                .getFavouriteBookStream(book?.id ?? ''),
             builder: (BuildContext context, snapshot) {
               if (snapshot.hasError) {
                 return const Text('Something went wrong');
@@ -104,11 +104,7 @@ class BookDetailView extends StatelessWidget {
                 return const Text("Loading");
               }
 
-              var list = snapshot.data?['favourites'];
-              bool isLiked;
-              (list.contains(book?.id ?? ''))
-                  ? isLiked = true
-                  : isLiked = false;
+              bool isLiked = snapshot.requireData.exists ? true : false;
 
               return IconButton(
                 alignment: Alignment.bottomRight,

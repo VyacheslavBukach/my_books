@@ -8,7 +8,16 @@ abstract class BookRepository {
 
   Future<List<Book>> getAllBooks();
 
-  Future<List<Book>> getFavouriteBooks(String userID);
+  Stream<DocumentSnapshot> getFavouriteBookStream({
+    required String userID,
+    required String bookID,
+  });
+
+  // Stream<DocumentSnapshot> getFavouriteBooks(String userID);
+
+  Future<List<Book>> getPopularBooks();
+
+  Future<List<Book>> getNewBooks();
 
   Future<void> addBookToFavourite({
     required String userID,
@@ -19,8 +28,4 @@ abstract class BookRepository {
     required String userID,
     required String bookID,
   });
-
-  Future<List<Book>> getPopularBooks();
-
-  Future<List<Book>> getNewBooks();
 }

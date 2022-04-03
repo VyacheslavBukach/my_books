@@ -14,8 +14,9 @@ class GetFavouriteBookStreamUseCase {
   });
 
   // TODO
-  Stream<DocumentSnapshot> getFavouriteBookStream() {
+  Stream<DocumentSnapshot> getFavouriteBookStream(String bookID) {
     String userID = authRepository.currentUser?.uid ?? '';
-    return bookRepository.firestore.collection(kUsers).doc(userID).snapshots();
+    return bookRepository.getFavouriteBookStream(
+        userID: userID, bookID: bookID);
   }
 }

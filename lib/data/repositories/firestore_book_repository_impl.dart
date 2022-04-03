@@ -20,15 +20,9 @@ class FirestoreBookRepositoryImpl implements BookRepository {
     await _firestore
         .collection(kUsers)
         .doc(userID)
-        .get()
-        .then((documentSnapshot) {
-      if (documentSnapshot.exists) {
-        _addBookToFirestore(userID, bookID);
-      } else {
-        _createEmptyFavouriteList(userID);
-        _addBookToFirestore(userID, bookID);
-      }
-    });
+        .collection(_kFavourites)
+        .doc(bookID)
+        .set({});
   }
 
   @override
@@ -39,10 +33,9 @@ class FirestoreBookRepositoryImpl implements BookRepository {
     await _firestore
         .collection(kUsers)
         .doc(userID)
-        .get()
-        .then((documentSnapshot) {
-      _deleteBookFromFirestore(userID, bookID);
-    });
+        .collection(_kFavourites)
+        .doc(bookID)
+        .delete();
   }
 
   @override
@@ -52,23 +45,34 @@ class FirestoreBookRepositoryImpl implements BookRepository {
   }
 
   @override
-  Future<List<Book>> getFavouriteBooks(String userID) async {
-    List<Book> books = [];
-
-    await _firestore
+  Stream<DocumentSnapshot> getFavouriteBookStream({
+    required String userID,
+    required String bookID,
+  }) {
+    return _firestore
         .collection(kUsers)
         .doc(userID)
-        .get()
-        .then((snapshot) async {
-      var bookID = snapshot.data()?['favourites'];
-      for (var element in bookID) {
-        var book = await getBookByID(element);
-        books.add(book!); // TODO
-      }
-    });
-
-    return books;
+        .collection(_kFavourites)
+        .doc(bookID)
+        .snapshots();
   }
+
+  // @override
+  // Stream<DocumentSnapshot> getFavouriteBooks(String userID) {
+  //   List<Book> books = [];
+  //
+  //   var s = getFavouriteBooksStream(userID);
+  //
+  //   _firestore.collection(kUsers).doc(userID).get().then((snapshot) async {
+  //     var bookID = snapshot.data()?['favourites'];
+  //     for (var element in bookID) {
+  //       var book = await getBookByID(element);
+  //       books.add(book!); // TODO
+  //     }
+  //   });
+  //
+  //   return books;
+  // }
 
   @override
   Future<Book?> getBookByID(String id) async {
@@ -125,24 +129,5 @@ class FirestoreBookRepositoryImpl implements BookRepository {
     });
 
     return books;
-  }
-
-  Future<void> _addBookToFirestore(String userID, String bookID) async {
-    CollectionReference users = _firestore.collection(kUsers);
-    await users.doc(userID).update({
-      _kFavourites: FieldValue.arrayUnion([bookID])
-    });
-  }
-
-  Future<void> _deleteBookFromFirestore(String userID, String bookID) async {
-    CollectionReference users = _firestore.collection(kUsers);
-    await users.doc(userID).update({
-      _kFavourites: FieldValue.arrayRemove([bookID])
-    });
-  }
-
-  Future<void> _createEmptyFavouriteList(String userID) async {
-    CollectionReference users = _firestore.collection(kUsers);
-    await users.doc(userID).set({_kFavourites: []});
   }
 }
