@@ -11,8 +11,8 @@ import '../../domain/usecases/firestore/get_books_by_id_usecase.dart';
 import '../../domain/usecases/firestore/get_favourite_book_stream_usecase.dart';
 import '../../domain/usecases/firestore/get_favourite_books_stream_usecase.dart';
 
-class BooksScreen extends StatelessWidget {
-  const BooksScreen({Key? key}) : super(key: key);
+class FavouriteBooksScreen extends StatelessWidget {
+  const FavouriteBooksScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
