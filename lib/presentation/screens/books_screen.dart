@@ -6,8 +6,10 @@ import 'package:my_books/blocs/home_bloc/home_bloc.dart';
 import 'package:my_books/di/locator.dart';
 import 'package:my_books/presentation/ui_components/book_list_item.dart';
 
-import '../../domain/usecases/firestore/get_book_by_id_usecase.dart';
+import '../../domain/entities/book.dart';
+import '../../domain/usecases/firestore/get_books_by_id_usecase.dart';
 import '../../domain/usecases/firestore/get_favourite_book_stream_usecase.dart';
+import '../../domain/usecases/firestore/get_favourite_books_stream_usecase.dart';
 
 class BooksScreen extends StatelessWidget {
   const BooksScreen({Key? key}) : super(key: key);
@@ -18,7 +20,7 @@ class BooksScreen extends StatelessWidget {
       create: (context) => BooksBloc(
         getFavouriteBookStreamUseCase: getIt<GetFavouriteBookStreamUseCase>(),
       ),
-      child: BooksView(),
+      child: const BooksView(),
     );
   }
 }
@@ -37,20 +39,51 @@ class BooksView extends StatelessWidget {
             return SafeArea(
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: StreamBuilder<DocumentSnapshot>(
-                  stream: getIt<GetFavouriteBookStreamUseCase>()
-                      .getFavouriteBookStream('state'), // TODO
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: getIt<GetFavouriteBooksStreamUseCase>()
+                      .getFavouriteBooks(),
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
-                      return Text("Something went wrong");
+                      return const Text("Something went wrong");
                     }
 
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Text("Loading");
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
                     }
 
-                    var IDList = snapshot.requireData;
-                    return _buildList(IDList);
+                    var idList =
+                        snapshot.requireData.docs.map((e) => e.id).toList();
+
+                    return FutureBuilder<List<Book>>(
+                        future:
+                            getIt<GetBooksByIDUseCase>().getBooksByID(idList),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            var books = snapshot.requireData;
+
+                            return ListView.separated(
+                              itemCount: books.length,
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(height: 10),
+                              itemBuilder: (context, index) => BookListItem(
+                                book: books[index],
+                                onTap: () {
+                                  BlocProvider.of<HomeBloc>(context).add(
+                                    BookClickedEvent(bookID: books[index].id),
+                                  );
+                                },
+                              ),
+                            );
+                          } else if (snapshot.hasError) {
+                            return const Text("Something went wrong");
+                          } else {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                        });
                   },
                 ),
               ),
@@ -59,28 +92,6 @@ class BooksView extends StatelessWidget {
 
           return const Center(
             child: CircularProgressIndicator(),
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _buildList(IDList) {
-    var books = [];
-    var usecase = getIt<GetBookByIDUseCase>();
-    for (var element in IDList) {
-      var book = usecase.getBookByID(element);
-      books.add(book); // TODO
-    }
-
-    return ListView.separated(
-      itemCount: books.length,
-      separatorBuilder: (context, index) => const SizedBox(height: 10),
-      itemBuilder: (context, index) => BookListItem(
-        book: books[index],
-        onTap: () {
-          BlocProvider.of<HomeBloc>(context).add(
-            BookClickedEvent(bookID: books[index].id),
           );
         },
       ),

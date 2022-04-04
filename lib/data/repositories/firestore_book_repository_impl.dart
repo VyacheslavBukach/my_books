@@ -3,7 +3,7 @@ import 'package:my_books/domain/entities/book.dart';
 import 'package:my_books/domain/repositories/book_repository.dart';
 
 const _kBooks = 'books';
-const kUsers = 'users';
+const _kUsers = 'users';
 const _kFavourites = 'favourites';
 
 class FirestoreBookRepositoryImpl implements BookRepository {
@@ -18,7 +18,7 @@ class FirestoreBookRepositoryImpl implements BookRepository {
     required String bookID,
   }) async {
     await _firestore
-        .collection(kUsers)
+        .collection(_kUsers)
         .doc(userID)
         .collection(_kFavourites)
         .doc(bookID)
@@ -31,7 +31,7 @@ class FirestoreBookRepositoryImpl implements BookRepository {
     required String bookID,
   }) async {
     await _firestore
-        .collection(kUsers)
+        .collection(_kUsers)
         .doc(userID)
         .collection(_kFavourites)
         .doc(bookID)
@@ -50,29 +50,21 @@ class FirestoreBookRepositoryImpl implements BookRepository {
     required String bookID,
   }) {
     return _firestore
-        .collection(kUsers)
+        .collection(_kUsers)
         .doc(userID)
         .collection(_kFavourites)
         .doc(bookID)
         .snapshots();
   }
 
-  // @override
-  // Stream<DocumentSnapshot> getFavouriteBooks(String userID) {
-  //   List<Book> books = [];
-  //
-  //   var s = getFavouriteBooksStream(userID);
-  //
-  //   _firestore.collection(kUsers).doc(userID).get().then((snapshot) async {
-  //     var bookID = snapshot.data()?['favourites'];
-  //     for (var element in bookID) {
-  //       var book = await getBookByID(element);
-  //       books.add(book!); // TODO
-  //     }
-  //   });
-  //
-  //   return books;
-  // }
+  @override
+  Stream<QuerySnapshot> getFavouriteBooksStream({required String userID}) {
+    return _firestore
+        .collection(_kUsers)
+        .doc(userID)
+        .collection(_kFavourites)
+        .snapshots();
+  }
 
   @override
   Future<Book?> getBookByID(String id) async {

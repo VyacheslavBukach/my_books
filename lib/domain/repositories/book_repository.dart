@@ -13,7 +13,7 @@ abstract class BookRepository {
     required String bookID,
   });
 
-  // Stream<DocumentSnapshot> getFavouriteBooks(String userID);
+  Stream<QuerySnapshot> getFavouriteBooksStream({required String userID});
 
   Future<List<Book>> getPopularBooks();
 

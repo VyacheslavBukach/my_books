@@ -13,7 +13,6 @@ class GetFavouriteBookStreamUseCase {
     required this.authRepository,
   });
 
-  // TODO
   Stream<DocumentSnapshot> getFavouriteBookStream(String bookID) {
     String userID = authRepository.currentUser?.uid ?? '';
     return bookRepository.getFavouriteBookStream(
