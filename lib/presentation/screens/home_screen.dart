@@ -8,6 +8,7 @@ import 'package:my_books/domain/usecases/firestore/get_popular_books_usecase.dar
 import 'package:my_books/presentation/screens/book_detail_screen.dart';
 import 'package:my_books/presentation/screens/favorite_books_screen.dart';
 import 'package:my_books/presentation/screens/main_screen.dart';
+import 'package:my_books/presentation/screens/store_screen.dart';
 
 import '../../domain/usecases/auth/logout_usecase.dart';
 import '../../domain/usecases/firestore/get_new_books_usecase.dart';
@@ -148,7 +149,18 @@ class HomeView extends StatelessWidget {
                                 ),
                               ),
                               TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return BlocProvider.value(
+                                          value: homeBloc,
+                                          child: const StoreScreen(),
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
                                 style: ButtonStyle(
                                   foregroundColor:
                                       MaterialStateProperty.all(Colors.white),

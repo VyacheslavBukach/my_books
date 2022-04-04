@@ -39,9 +39,17 @@ class FirestoreBookRepositoryImpl implements BookRepository {
   }
 
   @override
-  Future<List<Book>> getAllBooks() async {
-    // TODO: implement getAllBooks
-    throw UnimplementedError();
+  Stream<List<Book>> getAllBooks() {
+    var stream = _firestore
+        .collection(_kBooks)
+        .withConverter<Book>(
+          fromFirestore: (snapshot, _) => Book.fromJson(snapshot.data() ?? {}),
+          toFirestore: (book, _) => book.toJson(),
+        )
+        .snapshots();
+
+    return stream
+        .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
   }
 
   @override
