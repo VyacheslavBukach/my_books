@@ -53,7 +53,7 @@ class FirestoreBookRepositoryImpl implements BookRepository {
   }
 
   @override
-  Stream<DocumentSnapshot> getFavouriteBookStream({
+  Stream<DocumentSnapshot> checkBookLike({
     required String userID,
     required String bookID,
   }) {
@@ -66,7 +66,7 @@ class FirestoreBookRepositoryImpl implements BookRepository {
   }
 
   @override
-  Stream<QuerySnapshot> getFavouriteBooksStream({required String userID}) {
+  Stream<QuerySnapshot> getFavouriteBookIDs({required String userID}) {
     return _firestore
         .collection(_kUsers)
         .doc(userID)

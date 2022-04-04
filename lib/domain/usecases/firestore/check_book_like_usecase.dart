@@ -1,21 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../../data/repositories/firestore_book_repository_impl.dart';
 import '../../repositories/auth_repository.dart';
 import '../../repositories/book_repository.dart';
 
-class GetFavouriteBookStreamUseCase {
+class CheckBookLikeUseCase {
   final BookRepository bookRepository;
   final AuthRepository authRepository;
 
-  GetFavouriteBookStreamUseCase({
+  CheckBookLikeUseCase({
     required this.bookRepository,
     required this.authRepository,
   });
 
-  Stream<DocumentSnapshot> getFavouriteBookStream(String bookID) {
+  Stream<DocumentSnapshot> checkBookLike(String bookID) {
     String userID = authRepository.currentUser?.uid ?? '';
-    return bookRepository.getFavouriteBookStream(
-        userID: userID, bookID: bookID);
+    return bookRepository.checkBookLike(userID: userID, bookID: bookID);
   }
 }

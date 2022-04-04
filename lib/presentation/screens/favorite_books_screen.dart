@@ -8,8 +8,8 @@ import 'package:my_books/presentation/ui_components/book_list_item.dart';
 
 import '../../domain/entities/book.dart';
 import '../../domain/usecases/firestore/get_books_by_id_usecase.dart';
-import '../../domain/usecases/firestore/get_favourite_book_stream_usecase.dart';
-import '../../domain/usecases/firestore/get_favourite_books_stream_usecase.dart';
+import '../../domain/usecases/firestore/check_book_like_usecase.dart';
+import '../../domain/usecases/firestore/get_favourite_book_ids_usecase.dart';
 
 class FavouriteBooksScreen extends StatelessWidget {
   const FavouriteBooksScreen({Key? key}) : super(key: key);
@@ -18,7 +18,7 @@ class FavouriteBooksScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => BooksBloc(
-        getFavouriteBookStreamUseCase: getIt<GetFavouriteBookStreamUseCase>(),
+        checkBookLikeUseCase: getIt<CheckBookLikeUseCase>(),
       ),
       child: const BooksView(),
     );
@@ -40,8 +40,8 @@ class BooksView extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: StreamBuilder<QuerySnapshot>(
-                  stream: getIt<GetFavouriteBooksStreamUseCase>()
-                      .getFavouriteBooks(),
+                  stream:
+                      getIt<GetFavouriteBookIDsUseCase>().getFavouriteBookIDs(),
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       return const Text("Something went wrong");

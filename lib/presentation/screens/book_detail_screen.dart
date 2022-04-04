@@ -8,9 +8,9 @@ import 'package:my_books/blocs/home_bloc/home_bloc.dart';
 import '../../di/locator.dart';
 import '../../domain/entities/book.dart';
 import '../../domain/usecases/firestore/add_book_to_favourite_usecase.dart';
+import '../../domain/usecases/firestore/check_book_like_usecase.dart';
 import '../../domain/usecases/firestore/delete_book_from_favourite_usecase.dart';
 import '../../domain/usecases/firestore/get_book_by_id_usecase.dart';
-import '../../domain/usecases/firestore/get_favourite_book_stream_usecase.dart';
 
 class BookDetailScreen extends StatelessWidget {
   final String bookID;
@@ -93,8 +93,7 @@ class BookDetailView extends StatelessWidget {
             ),
           ),
           child: StreamBuilder<DocumentSnapshot>(
-            stream: getIt<GetFavouriteBookStreamUseCase>()
-                .getFavouriteBookStream(book?.id ?? ''),
+            stream: getIt<CheckBookLikeUseCase>().checkBookLike(book?.id ?? ''),
             builder: (BuildContext context, snapshot) {
               if (snapshot.hasError) {
                 return const Text('Something went wrong');

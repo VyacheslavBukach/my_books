@@ -6,12 +6,12 @@ abstract class BookRepository {
 
   Future<Book?> getBookByID(String id);
 
-  Stream<DocumentSnapshot> getFavouriteBookStream({
+  Stream<DocumentSnapshot> checkBookLike({
     required String userID,
     required String bookID,
   });
 
-  Stream<QuerySnapshot> getFavouriteBooksStream({required String userID});
+  Stream<QuerySnapshot> getFavouriteBookIDs({required String userID});
 
   Stream<List<Book>> getAllBooks();
 
