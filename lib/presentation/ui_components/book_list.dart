@@ -20,31 +20,37 @@ class BookList extends StatelessWidget {
     return FutureBuilder<List<Book>>(
       future: bookList,
       builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return const Text("Something went wrong");
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          // case ConnectionState.done:
+          default:
+            if (snapshot.hasError) {
+              return const Text("Something went wrong");
+            } else if (snapshot.hasData) {
+              final data = snapshot.requireData;
+
+              return ListView.separated(
+                separatorBuilder: (context, index) => const SizedBox(width: 8),
+                itemCount: data.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) => BookCard(
+                  onClick: () {
+                    String id = data[index].id;
+                    _bookClickedEvent(context, id);
+                  },
+                  width: bookWidth,
+                  posterUrl: data[index].posterUrl,
+                ),
+              );
+            } else {
+              return const Center(
+                child: Text('No data'),
+              );
+            }
         }
-
-        if (snapshot.connectionState == ConnectionState.done) {
-          final data = snapshot.requireData;
-
-          return ListView.separated(
-            separatorBuilder: (context, index) => const SizedBox(width: 8),
-            itemCount: data.length,
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) => BookCard(
-              onClick: () {
-                String id = data[index].id;
-                _bookClickedEvent(context, id);
-              },
-              width: bookWidth,
-              posterUrl: data[index].posterUrl,
-            ),
-          );
-        }
-
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
       },
     );
   }
