@@ -85,41 +85,42 @@ class BookDetailView extends StatelessWidget {
 
   Widget _buildTopContainer(BuildContext context, Book? book) => Expanded(
         flex: 1,
-        child: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: NetworkImage(book?.posterUrl ?? ''),
-              fit: BoxFit.cover,
+        child: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(book?.posterUrl ?? ''),
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
-          ),
-          child: StreamBuilder<DocumentSnapshot>(
-            stream: getIt<CheckBookLikeUseCase>().checkBookLike(book?.id ?? ''),
-            builder: (BuildContext context, snapshot) {
-              if (snapshot.hasError) {
-                return const Text('Something went wrong');
-              }
+            Positioned(
+              right: 0,
+              bottom: 0,
+              child: StreamBuilder<DocumentSnapshot>(
+                stream:
+                    getIt<CheckBookLikeUseCase>().checkBookLike(book?.id ?? ''),
+                builder: (BuildContext context, snapshot) {
+                  bool isLiked = snapshot.requireData.exists ? true : false;
 
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Text("Loading");
-              }
-
-              bool isLiked = snapshot.requireData.exists ? true : false;
-
-              return IconButton(
-                alignment: Alignment.bottomRight,
-                color: isLiked ? Colors.red : Colors.white,
-                onPressed: () {
-                  isLiked
-                      ? BlocProvider.of<BookDetailBloc>(context)
-                          .add(UnlikedEvent(bookID: book?.id ?? ''))
-                      : BlocProvider.of<BookDetailBloc>(context)
-                          .add(LikedEvent(bookID: book?.id ?? ''));
+                  return IconButton(
+                    alignment: Alignment.bottomRight,
+                    color: isLiked ? Colors.red : Colors.white,
+                    onPressed: () {
+                      isLiked
+                          ? BlocProvider.of<BookDetailBloc>(context)
+                              .add(UnlikedEvent(bookID: book?.id ?? ''))
+                          : BlocProvider.of<BookDetailBloc>(context)
+                              .add(LikedEvent(bookID: book?.id ?? ''));
+                    },
+                    icon: const Icon(Icons.favorite),
+                    iconSize: 60,
+                  );
                 },
-                icon: const Icon(Icons.favorite),
-                iconSize: 60,
-              );
-            },
-          ),
+              ),
+            ),
+          ],
         ),
       );
 
