@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '../../repositories/auth_repository.dart';
 import '../../repositories/book_repository.dart';
 
@@ -12,7 +10,7 @@ class CheckBookLikeUseCase {
     required this.authRepository,
   });
 
-  Stream<DocumentSnapshot> checkBookLike(String bookID) {
+  Stream<bool> checkBookLike(String bookID) {
     String userID = authRepository.currentUser?.uid ?? '';
     return bookRepository.checkBookLike(userID: userID, bookID: bookID);
   }

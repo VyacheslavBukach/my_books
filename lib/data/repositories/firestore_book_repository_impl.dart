@@ -53,16 +53,18 @@ class FirestoreBookRepositoryImpl implements BookRepository {
   }
 
   @override
-  Stream<DocumentSnapshot> checkBookLike({
+  Stream<bool> checkBookLike({
     required String userID,
     required String bookID,
   }) {
-    return _firestore
+    var stream = _firestore
         .collection(_kUsers)
         .doc(userID)
         .collection(_kFavourites)
         .doc(bookID)
         .snapshots();
+
+    return stream.map((snapshot) => snapshot.exists);
   }
 
   @override

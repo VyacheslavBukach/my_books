@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -98,11 +97,11 @@ class BookDetailView extends StatelessWidget {
             Positioned(
               right: 0,
               bottom: 0,
-              child: StreamBuilder<DocumentSnapshot>(
+              child: StreamBuilder<bool>(
                 stream:
                     getIt<CheckBookLikeUseCase>().checkBookLike(book?.id ?? ''),
                 builder: (BuildContext context, snapshot) {
-                  bool isLiked = snapshot.requireData.exists ? true : false;
+                  bool isLiked = snapshot.requireData;
 
                   return IconButton(
                     alignment: Alignment.bottomRight,

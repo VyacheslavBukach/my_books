@@ -6,7 +6,7 @@ abstract class BookRepository {
 
   Future<Book?> getBookByID(String id);
 
-  Stream<DocumentSnapshot> checkBookLike({
+  Stream<bool> checkBookLike({
     required String userID,
     required String bookID,
   });
