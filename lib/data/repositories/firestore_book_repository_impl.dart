@@ -68,12 +68,26 @@ class FirestoreBookRepositoryImpl implements BookRepository {
   }
 
   @override
-  Stream<QuerySnapshot> getFavouriteBookIDs({required String userID}) {
-    return _firestore
+  Stream<List<Book>> getFavouriteBooks({required String userID}) async* {
+    List<Book> books = [];
+
+    Stream<List<String>> streamIdList = _firestore
         .collection(_kUsers)
         .doc(userID)
         .collection(_kFavourites)
-        .snapshots();
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((doc) => doc.id).toList());
+
+    await for (final idList in streamIdList) {
+      books = [];
+      for (var id in idList) {
+        var book = await getBookByID(id);
+        if (book != null) {
+          books.add(book);
+        }
+      }
+      yield books;
+    }
   }
 
   @override

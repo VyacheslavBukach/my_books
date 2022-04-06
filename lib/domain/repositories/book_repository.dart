@@ -11,7 +11,7 @@ abstract class BookRepository {
     required String bookID,
   });
 
-  Stream<QuerySnapshot> getFavouriteBookIDs({required String userID});
+  Stream<List<Book>> getFavouriteBooks({required String userID});
 
   Stream<List<Book>> getAllBooks();
 

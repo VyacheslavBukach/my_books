@@ -1,18 +1,18 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:my_books/domain/entities/book.dart';
 import 'package:my_books/domain/repositories/auth_repository.dart';
 import 'package:my_books/domain/repositories/book_repository.dart';
 
-class GetFavouriteBookIDsUseCase {
+class GetFavouriteBooksUseCase {
   final BookRepository bookRepository;
   final AuthRepository authRepository;
 
-  GetFavouriteBookIDsUseCase({
+  GetFavouriteBooksUseCase({
     required this.bookRepository,
     required this.authRepository,
   });
 
-  Stream<QuerySnapshot> getFavouriteBookIDs() {
+  Stream<List<Book>> getFavouriteBookIDs() {
     String userID = authRepository.currentUser?.uid ?? '';
-    return bookRepository.getFavouriteBookIDs(userID: userID);
+    return bookRepository.getFavouriteBooks(userID: userID);
   }
 }

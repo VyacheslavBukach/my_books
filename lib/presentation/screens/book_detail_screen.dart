@@ -101,6 +101,14 @@ class BookDetailView extends StatelessWidget {
                 stream:
                     getIt<CheckBookLikeUseCase>().checkBookLike(book?.id ?? ''),
                 builder: (BuildContext context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Text("Something went wrong ${snapshot.error}");
+                  }
+
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Container();
+                  }
+
                   bool isLiked = snapshot.requireData;
 
                   return IconButton(
