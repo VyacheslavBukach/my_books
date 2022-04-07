@@ -28,9 +28,15 @@ class StoreView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blue.shade100,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
+        bottom: false,
+        child: Container(
+          padding: const EdgeInsets.only(
+            left: 10,
+            right: 10,
+            top: 10,
+          ),
           child: StreamBuilder<List<Book>>(
             stream: getIt<GetAllBooksUseCase>().getAllBooks(),
             builder: (context, snapshot) {
