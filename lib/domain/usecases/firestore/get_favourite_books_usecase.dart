@@ -11,7 +11,7 @@ class GetFavouriteBooksUseCase {
     required this.authRepository,
   });
 
-  Stream<List<Book>> getFavouriteBookIDs() {
+  Stream<List<Book>> getFavouriteBooks() {
     String userID = authRepository.currentUser?.uid ?? '';
     return bookRepository.getFavouriteBooks(userID: userID);
   }

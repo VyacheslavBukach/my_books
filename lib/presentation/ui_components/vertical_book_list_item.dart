@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../../domain/entities/book.dart';
 
-class BookListItem extends StatelessWidget {
+class VerticalBookListItem extends StatelessWidget {
   final Book book;
   final Function() onTap;
 
-  const BookListItem({
+  const VerticalBookListItem({
     Key? key,
     required this.book,
     required this.onTap,
@@ -50,6 +50,13 @@ class BookListItem extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: 15,
                         ),
+                      ),
+                      Wrap(
+                        spacing: 4,
+                        children: [
+                          for (final genre in book.genre)
+                            Chip(label: Text(genre)),
+                        ],
                       ),
                     ],
                   ),

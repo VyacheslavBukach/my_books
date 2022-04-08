@@ -12,7 +12,7 @@ import 'package:my_books/presentation/screens/store_screen.dart';
 
 import '../../domain/usecases/auth/logout_usecase.dart';
 import '../../domain/usecases/firestore/get_new_books_usecase.dart';
-import '../ui_components/book_list.dart';
+import '../ui_components/horizontal_book_list.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -113,7 +113,7 @@ class HomeView extends StatelessWidget {
                           ),
                           const SizedBox(height: 8),
                           Expanded(
-                            child: BookList(
+                            child: HorizontalBookList(
                               bookWidth: 150,
                               bookList: getIt<GetPopularBooksUseCase>()
                                   .getPopularBooks(),
@@ -195,7 +195,7 @@ class HomeView extends StatelessWidget {
                             ),
                           ),
                           Expanded(
-                            child: BookList(
+                            child: HorizontalBookList(
                               bookWidth: 125,
                               bookList:
                                   getIt<GetNewBooksUseCase>().getNewBooks(),

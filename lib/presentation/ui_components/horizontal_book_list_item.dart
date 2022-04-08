@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class BookCard extends StatelessWidget {
+class HorizontalBookListItem extends StatelessWidget {
   final double? width;
   final String posterUrl;
   final Function() onClick;
 
-  const BookCard({
+  const HorizontalBookListItem({
     Key? key,
     this.width,
     required this.posterUrl,

@@ -3,13 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../blocs/home_bloc/home_bloc.dart';
 import '../../domain/entities/book.dart';
-import 'book_card.dart';
+import 'horizontal_book_list_item.dart';
 
-class BookList extends StatelessWidget {
+class HorizontalBookList extends StatelessWidget {
   final double bookWidth;
   final Future<List<Book>> bookList;
 
-  const BookList({
+  const HorizontalBookList({
     Key? key,
     required this.bookWidth,
     required this.bookList,
@@ -36,7 +36,7 @@ class BookList extends StatelessWidget {
                 separatorBuilder: (context, index) => const SizedBox(width: 8),
                 itemCount: data.length,
                 scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) => BookCard(
+                itemBuilder: (context, index) => HorizontalBookListItem(
                   onClick: () {
                     String id = data[index].id;
                     _bookClickedEvent(context, id);
