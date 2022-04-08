@@ -1,5 +1,4 @@
 import '../../entities/book.dart';
-import '../../entities/genre.dart';
 import '../../repositories/book_repository.dart';
 
 class GetFilteredBooks {

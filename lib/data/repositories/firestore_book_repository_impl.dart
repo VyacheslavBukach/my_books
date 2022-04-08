@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:my_books/domain/entities/book.dart';
-import 'package:my_books/domain/entities/genre.dart';
 import 'package:my_books/domain/repositories/book_repository.dart';
 
 const _kBooks = 'books';

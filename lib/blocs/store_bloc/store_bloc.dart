@@ -1,8 +1,5 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:my_books/domain/entities/genre.dart';
 import 'package:my_books/domain/usecases/firestore/get_all_books_usecase.dart';
 import 'package:my_books/domain/usecases/firestore/get_filtered_books_usecase.dart';
 
