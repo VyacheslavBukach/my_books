@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:my_books/domain/entities/book.dart';
 
+import '../entities/genre.dart';
+
 abstract class BookRepository {
   FirebaseFirestore get firestore;
 
@@ -18,6 +20,8 @@ abstract class BookRepository {
   Future<List<Book>> getPopularBooks();
 
   Future<List<Book>> getNewBooks();
+
+  Stream<List<Book>> getFilteredBooks(List<String> genres);
 
   Future<void> addBookToFavourite({
     required String userID,

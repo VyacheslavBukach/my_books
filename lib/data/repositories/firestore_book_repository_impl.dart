@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:my_books/domain/entities/book.dart';
+import 'package:my_books/domain/entities/genre.dart';
 import 'package:my_books/domain/repositories/book_repository.dart';
 
 const _kBooks = 'books';
@@ -145,5 +146,20 @@ class FirestoreBookRepositoryImpl implements BookRepository {
     });
 
     return books;
+  }
+
+  @override
+  Stream<List<Book>> getFilteredBooks(List<String> genres) {
+    var stream = _firestore
+        .collection(_kBooks)
+        .where('genre', arrayContainsAny: genres)
+        .withConverter<Book>(
+          fromFirestore: (snapshot, _) => Book.fromJson(snapshot.data() ?? {}),
+          toFirestore: (book, _) => book.toJson(),
+        )
+        .snapshots();
+
+    return stream
+        .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
   }
 }

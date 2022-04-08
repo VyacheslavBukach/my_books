@@ -12,6 +12,7 @@ import '../domain/usecases/firestore/check_book_like_usecase.dart';
 import '../domain/usecases/firestore/delete_book_from_favourite_usecase.dart';
 import '../domain/usecases/firestore/get_all_books_usecase.dart';
 import '../domain/usecases/firestore/get_favourite_books_usecase.dart';
+import '../domain/usecases/firestore/get_filtered_books_usecase.dart';
 import '../domain/usecases/firestore/get_new_books_usecase.dart';
 
 final getIt = GetIt.instance;
@@ -81,6 +82,11 @@ void initGetIt() {
   );
   getIt.registerSingleton(
     GetAllBooksUseCase(
+      bookRepository: getIt<FirestoreBookRepositoryImpl>(),
+    ),
+  );
+  getIt.registerSingleton(
+    GetFilteredBooks(
       bookRepository: getIt<FirestoreBookRepositoryImpl>(),
     ),
   );
