@@ -112,6 +112,7 @@ class BookDetailView extends StatelessWidget {
                   bool isLiked = snapshot.requireData;
 
                   return IconButton(
+                    splashRadius: 1,
                     alignment: Alignment.bottomRight,
                     color: isLiked ? Colors.red : Colors.white,
                     onPressed: () {

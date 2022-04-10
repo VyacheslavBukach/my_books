@@ -185,7 +185,7 @@ class HomeView extends StatelessWidget {
                       color: Colors.white,
                       padding: const EdgeInsets.only(
                         top: 10,
-                        bottom: 8,
+                        bottom: 16,
                         left: 16,
                         right: 16,
                       ),

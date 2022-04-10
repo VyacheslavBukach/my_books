@@ -15,7 +15,6 @@ class HorizontalBookListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      elevation: 8,
       borderRadius: BorderRadius.circular(8),
       clipBehavior: Clip.antiAliasWithSaveLayer,
       child: InkWell(
@@ -23,7 +22,7 @@ class HorizontalBookListItem extends StatelessWidget {
         child: Ink.image(
           width: width,
           image: NetworkImage(posterUrl),
-          fit: BoxFit.fitHeight,
+          fit: BoxFit.cover,
         ),
         onTap: onClick,
       ),
