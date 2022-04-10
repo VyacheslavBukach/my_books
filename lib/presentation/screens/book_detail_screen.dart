@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_books/blocs/book_detail_bloc/book_detail_bloc.dart';
 import 'package:my_books/blocs/home_bloc/home_bloc.dart';
+import 'package:my_books/presentation/screens/main_screen.dart';
 
 import '../../di/locator.dart';
 import '../../domain/entities/book.dart';
@@ -147,6 +148,7 @@ class BookDetailView extends StatelessWidget {
                     color: Colors.black54,
                   ),
                 ),
+                const SizedBox(height: 8),
                 Text(
                   book?.author ?? '',
                   style: const TextStyle(
@@ -155,13 +157,22 @@ class BookDetailView extends StatelessWidget {
                     color: Colors.black54,
                   ),
                 ),
+                const SizedBox(height: 8),
                 Row(
                   children: [
-                    const Icon(Icons.star),
+                    const Icon(
+                      Icons.star,
+                      color: kMainColor,
+                    ),
                     Text(book?.popular.toString() ?? ''),
                   ],
                 ),
-                Text(AppLocalizations.of(context)?.about ?? ''),
+                const SizedBox(height: 8),
+                Text(
+                  AppLocalizations.of(context)?.about ?? '',
+                  style: TextStyle(fontSize: 20),
+                ),
+                const SizedBox(height: 8),
                 Text(book?.description ?? ''),
               ],
             ),

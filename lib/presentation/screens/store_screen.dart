@@ -4,6 +4,7 @@ import 'package:my_books/blocs/store_bloc/store_bloc.dart';
 import 'package:my_books/di/locator.dart';
 import 'package:my_books/domain/entities/genre.dart';
 import 'package:my_books/domain/usecases/firestore/get_all_books_usecase.dart';
+import 'package:my_books/presentation/screens/main_screen.dart';
 import 'package:my_books/presentation/ui_components/vertical_book_list.dart';
 
 import '../../domain/usecases/firestore/get_filtered_books_usecase.dart';
@@ -30,9 +31,6 @@ class StoreView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue.shade100,
-      appBar: AppBar(
-        title: const Text('Store'),
-      ),
       body: SafeArea(
         bottom: false,
         child: Container(
@@ -44,6 +42,7 @@ class StoreView extends StatelessWidget {
           child: Column(
             children: [
               const FilterContainer(),
+              const SizedBox(height: 8),
               Expanded(
                 child: BlocBuilder(
                   bloc: BlocProvider.of<StoreBloc>(context),
@@ -94,6 +93,9 @@ class _FilterContainerState extends State<FilterContainer> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 2),
               child: FilterChip(
+                selectedColor: kMainColor,
+                pressElevation: 0,
+                // labelStyle: const TextStyle(color: Colors.white),
                 label: Text(genre.name),
                 selected: _filters.contains(genre.name),
                 onSelected: (bool selected) {

@@ -143,7 +143,7 @@ class HomeView extends StatelessWidget {
                                   children: [
                                     const Icon(Icons.favorite),
                                     Text(AppLocalizations.of(context)
-                                            ?.my_favourite ??
+                                            ?.favourites ??
                                         ''),
                                   ],
                                 ),
@@ -183,7 +183,12 @@ class HomeView extends StatelessWidget {
                     flex: 1,
                     child: Container(
                       color: Colors.white,
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.only(
+                        top: 10,
+                        bottom: 8,
+                        left: 16,
+                        right: 16,
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -194,6 +199,7 @@ class HomeView extends StatelessWidget {
                               fontSize: 20,
                             ),
                           ),
+                          const SizedBox(height: 8),
                           Expanded(
                             child: HorizontalBookList(
                               bookWidth: 125,

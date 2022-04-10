@@ -22,7 +22,7 @@ class VerticalBookListItem extends StatelessWidget {
         splashColor: Colors.blue.shade100.withOpacity(0.5),
         onTap: onTap,
         child: SizedBox(
-          height: 150,
+          height: 151,
           child: Row(
             children: [
               Ink.image(
@@ -47,6 +47,8 @@ class VerticalBookListItem extends StatelessWidget {
                       ),
                       Text(
                         book.author,
+                        maxLines: 1,
+                        overflow: TextOverflow.fade,
                         style: const TextStyle(
                           fontSize: 15,
                         ),
