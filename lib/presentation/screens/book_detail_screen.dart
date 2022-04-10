@@ -61,7 +61,7 @@ class BookDetailView extends StatelessWidget {
         }
 
         if (state is SuccessBookState) {
-          return _buildColumn(context, state.book);
+          if (state.book != null) return _buildColumn(context, state.book!);
         }
 
         if (state is ErrorBookState) {
@@ -75,7 +75,7 @@ class BookDetailView extends StatelessWidget {
     );
   }
 
-  Widget _buildColumn(BuildContext context, Book? book) => Column(
+  Widget _buildColumn(BuildContext context, Book book) => Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _buildTopContainer(context, book),
@@ -83,14 +83,14 @@ class BookDetailView extends StatelessWidget {
         ],
       );
 
-  Widget _buildTopContainer(BuildContext context, Book? book) => Expanded(
+  Widget _buildTopContainer(BuildContext context, Book book) => Expanded(
         flex: 1,
         child: Stack(
           children: [
             Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(book?.posterUrl ?? ''),
+                  image: NetworkImage(book.posterUrl),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -99,8 +99,7 @@ class BookDetailView extends StatelessWidget {
               right: 0,
               bottom: 0,
               child: StreamBuilder<bool>(
-                stream:
-                    getIt<CheckBookLikeUseCase>().checkBookLike(book?.id ?? ''),
+                stream: getIt<CheckBookLikeUseCase>().checkBookLike(book.id),
                 builder: (BuildContext context, snapshot) {
                   if (snapshot.hasError) {
                     return Text("Something went wrong ${snapshot.error}");
@@ -118,9 +117,9 @@ class BookDetailView extends StatelessWidget {
                     onPressed: () {
                       isLiked
                           ? BlocProvider.of<BookDetailBloc>(context)
-                              .add(UnlikedEvent(bookID: book?.id ?? ''))
+                              .add(UnlikedEvent(bookID: book.id))
                           : BlocProvider.of<BookDetailBloc>(context)
-                              .add(LikedEvent(bookID: book?.id ?? ''));
+                              .add(LikedEvent(bookID: book.id));
                     },
                     icon: const Icon(Icons.favorite),
                     iconSize: 60,
@@ -132,7 +131,7 @@ class BookDetailView extends StatelessWidget {
         ),
       );
 
-  Widget _buildBottomContainer(BuildContext context, Book? book) => Expanded(
+  Widget _buildBottomContainer(BuildContext context, Book book) => Expanded(
         flex: 1,
         child: Container(
           padding: const EdgeInsets.all(16),
@@ -141,7 +140,7 @@ class BookDetailView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  book?.title ?? '',
+                  book.title,
                   style: const TextStyle(
                     fontSize: 30.0,
                     fontWeight: FontWeight.w600,
@@ -150,7 +149,7 @@ class BookDetailView extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  book?.author ?? '',
+                  book.author,
                   style: const TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.w600,
@@ -164,16 +163,21 @@ class BookDetailView extends StatelessWidget {
                       Icons.star,
                       color: kMainColor,
                     ),
-                    Text(book?.popular.toString() ?? ''),
+                    Text(book.popular.toString()),
                   ],
                 ),
-                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 4,
+                  children: [
+                    for (final genre in book.genre) Chip(label: Text(genre)),
+                  ],
+                ),
                 Text(
                   AppLocalizations.of(context)?.about ?? '',
-                  style: TextStyle(fontSize: 20),
+                  style: const TextStyle(fontSize: 20),
                 ),
                 const SizedBox(height: 8),
-                Text(book?.description ?? ''),
+                Text(book.description),
               ],
             ),
           ),
