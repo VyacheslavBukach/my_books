@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_books/blocs/register_bloc/register_bloc.dart';
+import 'package:my_books/domain/entities/auth_type.dart';
 import 'package:my_books/presentation/screens/home_screen.dart';
 
 import '../../di/locator.dart';
 import '../../domain/usecases/auth/register_usecase.dart';
-import '../ui_components/auth_text_field.dart';
-import '../ui_components/rounded_button.dart';
+import '../ui_components/auth_form.dart';
 import 'main_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -54,7 +54,7 @@ class SignUpScreen extends StatelessWidget {
                         alignment: Alignment.center,
                         padding: const EdgeInsets.all(16.0),
                         child: Text(
-                          AppLocalizations.of(context)?.sign_out_headline ?? '',
+                          AppLocalizations.of(context)?.sign_up_headline ?? '',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 30,
@@ -74,30 +74,10 @@ class SignUpScreen extends StatelessWidget {
                             topRight: Radius.circular(50),
                           ),
                         ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            AuthTextField(
-                              labelText:
-                                  AppLocalizations.of(context)?.email ?? '',
-                              icon: const Icon(Icons.email),
-                            ),
-                            AuthTextField(
-                              obscureText: true,
-                              labelText:
-                                  AppLocalizations.of(context)?.password ?? '',
-                              icon: const Icon(Icons.lock),
-                            ),
-                            RoundedButton(
-                              transparent: true,
-                              label:
-                                  AppLocalizations.of(context)?.register ?? '',
-                              onPressed: () {
-                                _authenticateWithEmailAndPassword(context);
-                              },
-                            ),
-                          ],
+                        child: AuthForm(
+                          authType: AuthType.register,
+                          buttonLabel:
+                              AppLocalizations.of(context)?.register ?? '',
                         ),
                       ),
                     ),
@@ -110,12 +90,6 @@ class SignUpScreen extends StatelessWidget {
           },
         ),
       ),
-    );
-  }
-
-  void _authenticateWithEmailAndPassword(context) {
-    BlocProvider.of<RegisterBloc>(context).add(
-      SignUpEvent("hi1@mail.ru", "123456"),
     );
   }
 }

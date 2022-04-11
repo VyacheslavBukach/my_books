@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_books/blocs/login_bloc/login_bloc.dart';
+import 'package:my_books/domain/entities/auth_type.dart';
 import 'package:my_books/presentation/screens/home_screen.dart';
 import 'package:my_books/presentation/screens/main_screen.dart';
-import 'package:my_books/presentation/ui_components/rounded_button.dart';
 
 import '../../di/locator.dart';
 import '../../domain/usecases/auth/login_usecase.dart';
-import '../ui_components/auth_text_field.dart';
+import '../ui_components/auth_form.dart';
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -74,25 +74,11 @@ class SignInScreen extends StatelessWidget {
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            AuthTextField(
-                              labelText:
-                                  AppLocalizations.of(context)?.email ?? '',
-                              icon: const Icon(Icons.email),
-                            ),
-                            AuthTextField(
-                              obscureText: true,
-                              labelText:
-                                  AppLocalizations.of(context)?.password ?? '',
-                              icon: const Icon(Icons.lock),
-                            ),
-                            RoundedButton(
-                              transparent: true,
-                              label: AppLocalizations.of(context)?.login ?? '',
-                              onPressed: () {
-                                _authenticateWithEmailAndPassword(context);
-                              },
+                            AuthForm(
+                              authType: AuthType.login,
+                              buttonLabel:
+                                  AppLocalizations.of(context)?.login ?? '',
                             ),
                             TextButton(
                               style: ButtonStyle(
@@ -117,12 +103,6 @@ class SignInScreen extends StatelessWidget {
           },
         ),
       ),
-    );
-  }
-
-  void _authenticateWithEmailAndPassword(context) {
-    BlocProvider.of<LoginBloc>(context).add(
-      SignInEvent("hi@mail.ru", "123456"),
     );
   }
 }
