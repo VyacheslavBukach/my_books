@@ -5,9 +5,12 @@ class AuthTextField extends StatelessWidget {
   final bool? obscureText;
   final Icon? icon;
 
-  const AuthTextField(
-      {Key? key, this.obscureText, required this.labelText, this.icon})
-      : super(key: key);
+  const AuthTextField({
+    Key? key,
+    this.obscureText,
+    required this.labelText,
+    this.icon,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
