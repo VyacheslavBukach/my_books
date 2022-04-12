@@ -3,12 +3,12 @@ part of 'favourite_books_bloc.dart';
 @immutable
 abstract class FavouriteBooksState {}
 
-// class LoadingBooksState extends BooksState {}
+class InitialState extends FavouriteBooksState {}
 
 class ShowingBooksState extends FavouriteBooksState {
-  // final List<Book> books;
-  //
-  // SuccessBooksState({required this.books});
+  final Stream<List<Book>> bookStream;
+
+  ShowingBooksState({required this.bookStream});
 }
 
 // class ErrorBooksState extends BooksState {

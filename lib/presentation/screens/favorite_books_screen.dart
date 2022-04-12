@@ -15,7 +15,8 @@ class FavouriteBooksScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => FavouriteBooksBloc(
         checkBookLikeUseCase: getIt<CheckBookLikeUseCase>(),
-      ),
+        getFavouriteBooksUseCase: getIt<GetFavouriteBooksUseCase>(),
+      )..add(InitialEvent()),
       child: const BooksView(),
     );
   }
@@ -40,16 +41,12 @@ class BooksView extends StatelessWidget {
                   right: 10,
                   top: 10,
                 ),
-                child: VerticalBookList(
-                  books: getIt<GetFavouriteBooksUseCase>().getFavouriteBooks(),
-                ),
+                child: VerticalBookList(books: state.bookStream),
               ),
             );
           }
 
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return Container();
         },
       ),
     );
