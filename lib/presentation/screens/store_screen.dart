@@ -33,17 +33,17 @@ class StoreView extends StatelessWidget {
       backgroundColor: Colors.blue.shade100,
       body: SafeArea(
         bottom: false,
-        child: Container(
-          padding: const EdgeInsets.only(
-            left: 10,
-            right: 10,
-            top: 10,
-          ),
-          child: Column(
-            children: [
-              const FilterContainer(),
-              const SizedBox(height: 8),
-              Expanded(
+        child: Column(
+          children: [
+            const SizedBox(height: 8),
+            const FilterContainer(),
+            const SizedBox(height: 8),
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.only(
+                  left: 10,
+                  right: 10,
+                ),
                 child: BlocBuilder(
                   bloc: BlocProvider.of<StoreBloc>(context),
                   builder: (context, state) {
@@ -64,8 +64,8 @@ class StoreView extends StatelessWidget {
                   },
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
