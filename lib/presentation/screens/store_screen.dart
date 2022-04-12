@@ -95,7 +95,7 @@ class _FilterContainerState extends State<FilterContainer> {
               child: FilterChip(
                 selectedColor: kMainColor,
                 pressElevation: 0,
-                // labelStyle: const TextStyle(color: Colors.white),
+                shape: const StadiumBorder(side: BorderSide()),
                 label: Text(genre.name),
                 selected: _filters.contains(genre.name),
                 onSelected: (bool selected) {
