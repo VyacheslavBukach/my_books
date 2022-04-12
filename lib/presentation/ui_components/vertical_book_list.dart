@@ -18,30 +18,34 @@ class VerticalBookList extends StatelessWidget {
     return StreamBuilder<List<Book>>(
       stream: books,
       builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Text("Something went wrong ${snapshot.error}");
-        }
-
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
             child: CircularProgressIndicator(),
           );
+        } else if (snapshot.hasError) {
+          return Text("Something went wrong ${snapshot.error}");
+        } else {
+          var books = snapshot.requireData;
+
+          if (books.isNotEmpty) {
+            return ListView.separated(
+              itemCount: books.length,
+              separatorBuilder: (context, index) => const SizedBox(height: 10),
+              itemBuilder: (context, index) => VerticalBookListItem(
+                book: books[index],
+                onTap: () {
+                  BlocProvider.of<HomeBloc>(context).add(
+                    BookClickedEvent(bookID: books[index].id),
+                  );
+                },
+              ),
+            );
+          } else {
+            return const Center(
+              child: Text('No favourites'),
+            );
+          }
         }
-
-        var books = snapshot.requireData;
-
-        return ListView.separated(
-          itemCount: books.length,
-          separatorBuilder: (context, index) => const SizedBox(height: 10),
-          itemBuilder: (context, index) => VerticalBookListItem(
-            book: books[index],
-            onTap: () {
-              BlocProvider.of<HomeBloc>(context).add(
-                BookClickedEvent(bookID: books[index].id),
-              );
-            },
-          ),
-        );
       },
     );
   }
