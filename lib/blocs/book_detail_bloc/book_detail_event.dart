@@ -3,10 +3,10 @@ part of 'book_detail_bloc.dart';
 @immutable
 abstract class BookDetailEvent {}
 
-class InitialBookDetailEvent extends BookDetailEvent {
+class InitialEvent extends BookDetailEvent {
   final String id;
 
-  InitialBookDetailEvent({required this.id});
+  InitialEvent({required this.id});
 }
 
 class LikedEvent extends BookDetailEvent {

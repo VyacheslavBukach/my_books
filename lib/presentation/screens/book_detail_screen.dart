@@ -29,7 +29,8 @@ class BookDetailScreen extends StatelessWidget {
         getBookByIDUseCase: getIt<GetBookByIDUseCase>(),
         addBookToFavouriteUseCase: getIt<AddBookToFavouriteUseCase>(),
         deleteBookFromFavouriteUseCase: getIt<DeleteBookFromFavouriteUseCase>(),
-      )..add(InitialBookDetailEvent(id: bookID)),
+        checkBookLikeUseCase: getIt<CheckBookLikeUseCase>(),
+      )..add(InitialEvent(id: bookID)),
       child: WillPopScope(
         onWillPop: () async {
           homeBloc.add(BackPressedEvent());
@@ -60,8 +61,14 @@ class BookDetailView extends StatelessWidget {
           );
         }
 
-        if (state is SuccessBookState) {
-          if (state.book != null) return _buildColumn(context, state.book!);
+        if (state is ShowingBookState) {
+          if (state.book != null) {
+            return _buildColumn(
+              context,
+              state.book!,
+              state.likeStream,
+            );
+          }
         }
 
         if (state is ErrorBookState) {
@@ -75,15 +82,25 @@ class BookDetailView extends StatelessWidget {
     );
   }
 
-  Widget _buildColumn(BuildContext context, Book book) => Column(
+  Widget _buildColumn(
+    BuildContext context,
+    Book book,
+    Stream<bool> likeStream,
+  ) =>
+      Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _buildTopContainer(context, book),
+          _buildTopContainer(context, book, likeStream),
           _buildBottomContainer(context, book),
         ],
       );
 
-  Widget _buildTopContainer(BuildContext context, Book book) => Expanded(
+  Widget _buildTopContainer(
+    BuildContext context,
+    Book book,
+    Stream<bool> likeStream,
+  ) =>
+      Expanded(
         flex: 1,
         child: Stack(
           children: [
@@ -99,32 +116,30 @@ class BookDetailView extends StatelessWidget {
               right: 0,
               bottom: 0,
               child: StreamBuilder<bool>(
-                stream: getIt<CheckBookLikeUseCase>().checkBookLike(book.id),
+                stream: likeStream,
                 builder: (BuildContext context, snapshot) {
-                  if (snapshot.hasError) {
-                    return Text("Something went wrong ${snapshot.error}");
-                  }
-
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Container();
+                  } else if (snapshot.hasError) {
+                    return Container();
+                  } else {
+                    bool isLiked = snapshot.requireData;
+
+                    return IconButton(
+                      splashRadius: 1,
+                      alignment: Alignment.bottomRight,
+                      color: isLiked ? Colors.red : Colors.white,
+                      onPressed: () {
+                        isLiked
+                            ? BlocProvider.of<BookDetailBloc>(context)
+                                .add(UnlikedEvent(bookID: book.id))
+                            : BlocProvider.of<BookDetailBloc>(context)
+                                .add(LikedEvent(bookID: book.id));
+                      },
+                      icon: const Icon(Icons.favorite),
+                      iconSize: 60,
+                    );
                   }
-
-                  bool isLiked = snapshot.requireData;
-
-                  return IconButton(
-                    splashRadius: 1,
-                    alignment: Alignment.bottomRight,
-                    color: isLiked ? Colors.red : Colors.white,
-                    onPressed: () {
-                      isLiked
-                          ? BlocProvider.of<BookDetailBloc>(context)
-                              .add(UnlikedEvent(bookID: book.id))
-                          : BlocProvider.of<BookDetailBloc>(context)
-                              .add(LikedEvent(bookID: book.id));
-                    },
-                    icon: const Icon(Icons.favorite),
-                    iconSize: 60,
-                  );
                 },
               ),
             ),
