@@ -1,11 +1,11 @@
-part of 'books_bloc.dart';
+part of 'favourite_books_bloc.dart';
 
 @immutable
-abstract class BooksState {}
+abstract class FavouriteBooksState {}
 
 // class LoadingBooksState extends BooksState {}
 
-class ShowingBooksState extends BooksState {
+class ShowingBooksState extends FavouriteBooksState {
   // final List<Book> books;
   //
   // SuccessBooksState({required this.books});
