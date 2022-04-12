@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_books/blocs/register_bloc/register_bloc.dart';
-import 'package:my_books/domain/entities/auth_type.dart';
 import 'package:my_books/presentation/screens/home_screen.dart';
 
 import '../../di/locator.dart';
 import '../../domain/usecases/auth/register_usecase.dart';
-import '../ui_components/auth_form.dart';
+import '../ui_components/auth_text_field.dart';
+import '../ui_components/rounded_button.dart';
 import 'main_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -18,9 +18,30 @@ class SignUpScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) =>
           RegisterBloc(registerUseCase: getIt<RegisterUseCase>()),
-      child: Scaffold(
-        backgroundColor: kMainColor,
-        body: BlocConsumer<RegisterBloc, RegisterState>(
+      child: const SignUpView(),
+    );
+  }
+}
+
+class SignUpView extends StatefulWidget {
+  const SignUpView({Key? key}) : super(key: key);
+
+  @override
+  State<SignUpView> createState() => _SignUpViewState();
+}
+
+class _SignUpViewState extends State<SignUpView> {
+  final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: kMainColor,
+      body: Form(
+        key: _formKey,
+        child: BlocConsumer<RegisterBloc, RegisterState>(
           listener: (context, state) {
             if (state is AuthenticatedState) {
               Navigator.pushReplacement(
@@ -74,10 +95,33 @@ class SignUpScreen extends StatelessWidget {
                             topRight: Radius.circular(50),
                           ),
                         ),
-                        child: AuthForm(
-                          authType: AuthType.register,
-                          buttonLabel:
-                              AppLocalizations.of(context)?.register ?? '',
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            AuthTextField(
+                              controller: _emailController,
+                              labelText:
+                                  AppLocalizations.of(context)?.email ?? '',
+                              icon: const Icon(Icons.email),
+                              obscureText: false,
+                            ),
+                            AuthTextField(
+                              controller: _passwordController,
+                              obscureText: true,
+                              labelText:
+                                  AppLocalizations.of(context)?.password ?? '',
+                              icon: const Icon(Icons.lock),
+                            ),
+                            RoundedButton(
+                              transparent: true,
+                              label:
+                                  AppLocalizations.of(context)?.register ?? '',
+                              onPressed: () {
+                                _authenticateWithEmailAndPassword(context);
+                              },
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -91,5 +135,21 @@ class SignUpScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  void _authenticateWithEmailAndPassword(context) {
+    final isValidForm = _formKey.currentState!.validate();
+    if (isValidForm) {
+      BlocProvider.of<RegisterBloc>(context).add(
+        SignUpEvent(_emailController.text, _passwordController.text),
+      );
+    }
   }
 }

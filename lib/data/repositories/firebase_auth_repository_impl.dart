@@ -1,9 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:my_books/domain/repositories/auth_repository.dart';
 
+const _kInvalidEmail = 'invalid-email';
+const _kUserDisabled = 'user-disabled';
 const _kUserNotFound = 'user-not-found';
 const _kWrongPassword = 'wrong-password';
+
 const _kWeakPassword = 'weak-password';
+const _kOperationNotAllowed = 'operation-not-allowed';
 const _kEmailAlreadyInUse = 'email-already-in-use';
 
 class FirebaseAuthRepositoryImpl implements AuthRepository {
@@ -25,6 +29,12 @@ class FirebaseAuthRepositoryImpl implements AuthRepository {
         throw Exception('No user found for that email.');
       } else if (e.code == _kWrongPassword) {
         throw Exception('Wrong password provided for that user.');
+      } else if (e.code == _kInvalidEmail) {
+        throw Exception('Email address is not valid.');
+      } else if (e.code == _kUserDisabled) {
+        throw Exception('User disabled.');
+      } else {
+        throw Exception(e.message);
       }
     }
   }
@@ -39,9 +49,13 @@ class FirebaseAuthRepositoryImpl implements AuthRepository {
         throw Exception('The password provided is too weak.');
       } else if (e.code == _kEmailAlreadyInUse) {
         throw Exception('The account already exists for that email.');
+      } else if (e.code == _kInvalidEmail) {
+        throw Exception('Email address is not valid.');
+      } else if (e.code == _kOperationNotAllowed) {
+        throw Exception('Email/password accounts are not enabled.');
+      } else {
+        throw Exception(e.message);
       }
-    } catch (e) {
-      throw Exception(e.toString());
     }
   }
 

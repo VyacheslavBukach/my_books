@@ -5,12 +5,14 @@ class AuthTextField extends StatelessWidget {
   final String labelText;
   final bool obscureText;
   final Icon? icon;
+  final TextEditingController controller;
 
   const AuthTextField({
     Key? key,
     required this.obscureText,
     required this.labelText,
     this.icon,
+    required this.controller,
   }) : super(key: key);
 
   @override
@@ -18,6 +20,7 @@ class AuthTextField extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.only(bottom: 16.0),
       child: TextFormField(
+        controller: controller,
         style: const TextStyle(fontSize: 18),
         obscureText: obscureText,
         decoration: InputDecoration(

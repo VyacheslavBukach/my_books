@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_books/blocs/login_bloc/login_bloc.dart';
-import 'package:my_books/domain/entities/auth_type.dart';
 import 'package:my_books/presentation/screens/home_screen.dart';
 import 'package:my_books/presentation/screens/main_screen.dart';
 
 import '../../di/locator.dart';
 import '../../domain/usecases/auth/login_usecase.dart';
-import '../ui_components/auth_form.dart';
+import '../ui_components/auth_text_field.dart';
+import '../ui_components/rounded_button.dart';
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -17,9 +17,30 @@ class SignInScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => LoginBloc(loginUseCase: getIt<LoginUseCase>()),
-      child: Scaffold(
-        backgroundColor: kMainColor,
-        body: BlocConsumer<LoginBloc, LoginState>(
+      child: const SignInView(),
+    );
+  }
+}
+
+class SignInView extends StatefulWidget {
+  const SignInView({Key? key}) : super(key: key);
+
+  @override
+  State<SignInView> createState() => _SignInViewState();
+}
+
+class _SignInViewState extends State<SignInView> {
+  final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: kMainColor,
+      body: Form(
+        key: _formKey,
+        child: BlocConsumer<LoginBloc, LoginState>(
           listener: (context, state) {
             if (state is AuthenticatedState) {
               Navigator.pushReplacement(
@@ -74,11 +95,28 @@ class SignInScreen extends StatelessWidget {
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            AuthForm(
-                              authType: AuthType.login,
-                              buttonLabel:
-                                  AppLocalizations.of(context)?.login ?? '',
+                            AuthTextField(
+                              controller: _emailController,
+                              labelText:
+                                  AppLocalizations.of(context)?.email ?? '',
+                              icon: const Icon(Icons.email),
+                              obscureText: false,
+                            ),
+                            AuthTextField(
+                              controller: _passwordController,
+                              obscureText: true,
+                              labelText:
+                                  AppLocalizations.of(context)?.password ?? '',
+                              icon: const Icon(Icons.lock),
+                            ),
+                            RoundedButton(
+                              transparent: true,
+                              label: AppLocalizations.of(context)?.login ?? '',
+                              onPressed: () {
+                                _authenticateWithEmailAndPassword(context);
+                              },
                             ),
                             TextButton(
                               style: ButtonStyle(
@@ -104,5 +142,21 @@ class SignInScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  void _authenticateWithEmailAndPassword(context) {
+    final isValidForm = _formKey.currentState!.validate();
+    if (isValidForm) {
+      BlocProvider.of<LoginBloc>(context).add(
+        SignInEvent(_emailController.text, _passwordController.text),
+      );
+    }
   }
 }
