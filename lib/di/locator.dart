@@ -86,7 +86,7 @@ void initGetIt() {
     ),
   );
   getIt.registerSingleton(
-    GetFilteredBooks(
+    GetFilteredBooksUseCase(
       bookRepository: getIt<FirestoreBookRepositoryImpl>(),
     ),
   );

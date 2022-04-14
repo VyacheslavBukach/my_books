@@ -3,10 +3,16 @@ part of 'store_bloc.dart';
 @immutable
 abstract class StoreState {}
 
-class DefaultStoreState extends StoreState {}
+class InitialState extends StoreState {}
+
+class DefaultStoreState extends StoreState {
+  final Stream<List<Book>> bookStream;
+
+  DefaultStoreState({required this.bookStream});
+}
 
 class FilteredStoreState extends StoreState {
-  final List<String> genres;
+  final Stream<List<Book>> bookStream;
 
-  FilteredStoreState({required this.genres});
+  FilteredStoreState({required this.bookStream});
 }

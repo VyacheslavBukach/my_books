@@ -17,7 +17,7 @@ class StoreScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => StoreBloc(
         getAllBooksUseCase: getIt<GetAllBooksUseCase>(),
-        getFilteredBooks: getIt<GetFilteredBooks>(),
+        getFilteredBooksUseCase: getIt<GetFilteredBooksUseCase>(),
       )..add(FilterByDefaultEvent()),
       child: const StoreView(),
     );
@@ -48,16 +48,11 @@ class StoreView extends StatelessWidget {
                   bloc: BlocProvider.of<StoreBloc>(context),
                   builder: (context, state) {
                     if (state is DefaultStoreState) {
-                      return VerticalBookList(
-                        books: getIt<GetAllBooksUseCase>().getAllBooks(),
-                      );
+                      return VerticalBookList(bookStream: state.bookStream);
                     }
 
                     if (state is FilteredStoreState) {
-                      return VerticalBookList(
-                        books: getIt<GetFilteredBooks>()
-                            .getFilteredBooks(state.genres),
-                      );
+                      return VerticalBookList(bookStream: state.bookStream);
                     }
 
                     return Container();

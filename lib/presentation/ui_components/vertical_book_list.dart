@@ -6,17 +6,17 @@ import '../../domain/entities/book.dart';
 import 'vertical_book_list_item.dart';
 
 class VerticalBookList extends StatelessWidget {
-  final Stream<List<Book>> books;
+  final Stream<List<Book>> bookStream;
 
   const VerticalBookList({
     Key? key,
-    required this.books,
+    required this.bookStream,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Book>>(
-      stream: books,
+      stream: bookStream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(

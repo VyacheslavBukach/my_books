@@ -41,7 +41,7 @@ class BooksView extends StatelessWidget {
                   right: 10,
                   top: 10,
                 ),
-                child: VerticalBookList(books: state.bookStream),
+                child: VerticalBookList(bookStream: state.bookStream),
               ),
             );
           }
