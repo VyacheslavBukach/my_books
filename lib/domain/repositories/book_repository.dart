@@ -2,15 +2,32 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:my_books/domain/entities/book.dart';
 
 abstract class BookRepository {
-  Future<Book?> getBook(String id);
+  FirebaseFirestore get firestore;
 
-  Future<List<Book>> getAllBooks();
+  Future<Book?> getBookByID(String id);
 
-  Future<void> addBookToFavourite(int id);
+  Stream<bool> checkBookLike({
+    required String userID,
+    required String bookID,
+  });
 
-  Future<void> deleteBookFromFavourite(int id);
+  Stream<List<Book>> getFavouriteBooks({required String userID});
 
-  Future<QuerySnapshot<Book>> getPopularBooks();
+  Stream<List<Book>> getAllBooks();
 
-  Future<QuerySnapshot<Book>> getNewBooks();
+  Future<List<Book>> getPopularBooks();
+
+  Future<List<Book>> getNewBooks();
+
+  Stream<List<Book>> getFilteredBooks(List<String> genres);
+
+  Future<void> addBookToFavourite({
+    required String userID,
+    required String bookID,
+  });
+
+  Future<void> deleteBookFromFavourite({
+    required String userID,
+    required String bookID,
+  });
 }

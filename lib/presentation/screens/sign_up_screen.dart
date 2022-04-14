@@ -18,9 +18,30 @@ class SignUpScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) =>
           RegisterBloc(registerUseCase: getIt<RegisterUseCase>()),
-      child: Scaffold(
-        backgroundColor: kMainColor,
-        body: BlocConsumer<RegisterBloc, RegisterState>(
+      child: const SignUpView(),
+    );
+  }
+}
+
+class SignUpView extends StatefulWidget {
+  const SignUpView({Key? key}) : super(key: key);
+
+  @override
+  State<SignUpView> createState() => _SignUpViewState();
+}
+
+class _SignUpViewState extends State<SignUpView> {
+  final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: kMainColor,
+      body: Form(
+        key: _formKey,
+        child: BlocConsumer<RegisterBloc, RegisterState>(
           listener: (context, state) {
             if (state is AuthenticatedState) {
               Navigator.pushReplacement(
@@ -54,7 +75,7 @@ class SignUpScreen extends StatelessWidget {
                         alignment: Alignment.center,
                         padding: const EdgeInsets.all(16.0),
                         child: Text(
-                          AppLocalizations.of(context)?.sign_out_headline ?? '',
+                          AppLocalizations.of(context)?.sign_up_headline ?? '',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 30,
@@ -79,11 +100,14 @@ class SignUpScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             AuthTextField(
+                              controller: _emailController,
                               labelText:
                                   AppLocalizations.of(context)?.email ?? '',
                               icon: const Icon(Icons.email),
+                              obscureText: false,
                             ),
                             AuthTextField(
+                              controller: _passwordController,
                               obscureText: true,
                               labelText:
                                   AppLocalizations.of(context)?.password ?? '',
@@ -113,9 +137,19 @@ class SignUpScreen extends StatelessWidget {
     );
   }
 
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   void _authenticateWithEmailAndPassword(context) {
-    BlocProvider.of<RegisterBloc>(context).add(
-      SignUpEvent("hi1@mail.ru", "123456"),
-    );
+    final isValidForm = _formKey.currentState!.validate();
+    if (isValidForm) {
+      BlocProvider.of<RegisterBloc>(context).add(
+        SignUpEvent(_emailController.text, _passwordController.text),
+      );
+    }
   }
 }

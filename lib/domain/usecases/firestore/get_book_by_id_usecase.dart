@@ -7,6 +7,6 @@ class GetBookByIDUseCase {
   GetBookByIDUseCase({required this.bookRepository});
 
   Future<Book?> getBookByID(String id) async {
-    return await bookRepository.getBook(id);
+    return await bookRepository.getBookByID(id);
   }
 }

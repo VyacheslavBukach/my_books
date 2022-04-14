@@ -6,11 +6,13 @@ import 'package:my_books/data/repositories/firebase_auth_repository_impl.dart';
 import 'package:my_books/di/locator.dart';
 import 'package:my_books/domain/usecases/firestore/get_popular_books_usecase.dart';
 import 'package:my_books/presentation/screens/book_detail_screen.dart';
+import 'package:my_books/presentation/screens/favorite_books_screen.dart';
 import 'package:my_books/presentation/screens/main_screen.dart';
+import 'package:my_books/presentation/screens/store_screen.dart';
 
 import '../../domain/usecases/auth/logout_usecase.dart';
 import '../../domain/usecases/firestore/get_new_books_usecase.dart';
-import '../ui_components/book_list.dart';
+import '../ui_components/horizontal_book_list.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -84,7 +86,7 @@ class HomeView extends StatelessWidget {
                                   _signOutEvent(context);
                                 },
                                 icon: const Icon(
-                                  Icons.exit_to_app,
+                                  Icons.logout,
                                   color: Colors.white,
                                 ),
                               ),
@@ -111,9 +113,9 @@ class HomeView extends StatelessWidget {
                           ),
                           const SizedBox(height: 8),
                           Expanded(
-                            child: BookList(
+                            child: HorizontalBookList(
                               bookWidth: 150,
-                              usecase: getIt<GetPopularBooksUseCase>()
+                              bookList: getIt<GetPopularBooksUseCase>()
                                   .getPopularBooks(),
                             ),
                           ),
@@ -121,7 +123,18 @@ class HomeView extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return BlocProvider.value(
+                                          value: homeBloc,
+                                          child: const FavouriteBooksScreen(),
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
                                 style: ButtonStyle(
                                   foregroundColor:
                                       MaterialStateProperty.all(Colors.white),
@@ -130,13 +143,24 @@ class HomeView extends StatelessWidget {
                                   children: [
                                     const Icon(Icons.favorite),
                                     Text(AppLocalizations.of(context)
-                                            ?.my_favourite ??
+                                            ?.favourites ??
                                         ''),
                                   ],
                                 ),
                               ),
                               TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return BlocProvider.value(
+                                          value: homeBloc,
+                                          child: const StoreScreen(),
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
                                 style: ButtonStyle(
                                   foregroundColor:
                                       MaterialStateProperty.all(Colors.white),
@@ -159,7 +183,12 @@ class HomeView extends StatelessWidget {
                     flex: 1,
                     child: Container(
                       color: Colors.white,
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.only(
+                        top: 10,
+                        bottom: 16,
+                        left: 16,
+                        right: 16,
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -170,10 +199,11 @@ class HomeView extends StatelessWidget {
                               fontSize: 20,
                             ),
                           ),
+                          const SizedBox(height: 8),
                           Expanded(
-                            child: BookList(
+                            child: HorizontalBookList(
                               bookWidth: 125,
-                              usecase:
+                              bookList:
                                   getIt<GetNewBooksUseCase>().getNewBooks(),
                             ),
                           )

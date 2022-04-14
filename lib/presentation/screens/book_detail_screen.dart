@@ -3,9 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_books/blocs/book_detail_bloc/book_detail_bloc.dart';
 import 'package:my_books/blocs/home_bloc/home_bloc.dart';
+import 'package:my_books/presentation/screens/main_screen.dart';
 
 import '../../di/locator.dart';
 import '../../domain/entities/book.dart';
+import '../../domain/usecases/firestore/add_book_to_favourite_usecase.dart';
+import '../../domain/usecases/firestore/check_book_like_usecase.dart';
+import '../../domain/usecases/firestore/delete_book_from_favourite_usecase.dart';
 import '../../domain/usecases/firestore/get_book_by_id_usecase.dart';
 
 class BookDetailScreen extends StatelessWidget {
@@ -23,7 +27,10 @@ class BookDetailScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => BookDetailBloc(
         getBookByIDUseCase: getIt<GetBookByIDUseCase>(),
-      )..add(OpenBookDetailEvent(id: bookID)),
+        addBookToFavouriteUseCase: getIt<AddBookToFavouriteUseCase>(),
+        deleteBookFromFavouriteUseCase: getIt<DeleteBookFromFavouriteUseCase>(),
+        checkBookLikeUseCase: getIt<CheckBookLikeUseCase>(),
+      )..add(InitialEvent(id: bookID)),
       child: WillPopScope(
         onWillPop: () async {
           homeBloc.add(BackPressedEvent());
@@ -43,10 +50,10 @@ class BookDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bookBloc = BlocProvider.of<BookDetailBloc>(context);
+    final bookDetailBloc = BlocProvider.of<BookDetailBloc>(context);
 
     return BlocBuilder(
-      bloc: bookBloc,
+      bloc: bookDetailBloc,
       builder: (context, state) {
         if (state is LoadingBookState) {
           return const Center(
@@ -54,8 +61,14 @@ class BookDetailView extends StatelessWidget {
           );
         }
 
-        if (state is SuccessBookState) {
-          return _buildColumn(context, state.book);
+        if (state is ShowingBookState) {
+          if (state.book != null) {
+            return _buildColumn(
+              context,
+              state.book!,
+              state.likeStream,
+            );
+          }
         }
 
         if (state is ErrorBookState) {
@@ -69,34 +82,72 @@ class BookDetailView extends StatelessWidget {
     );
   }
 
-  Widget _buildColumn(BuildContext context, Book? book) => Column(
+  Widget _buildColumn(
+    BuildContext context,
+    Book book,
+    Stream<bool> likeStream,
+  ) =>
+      Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _buildTopContainer(context, book),
+          _buildTopContainer(context, book, likeStream),
           _buildBottomContainer(context, book),
         ],
       );
 
-  Widget _buildTopContainer(BuildContext context, Book? book) => Expanded(
+  Widget _buildTopContainer(
+    BuildContext context,
+    Book book,
+    Stream<bool> likeStream,
+  ) =>
+      Expanded(
         flex: 1,
-        child: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: NetworkImage(book?.posterUrl ?? ''),
-              fit: BoxFit.cover,
+        child: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(book.posterUrl),
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
-          ),
-          child: IconButton(
-            alignment: Alignment.bottomRight,
-            color: Colors.red,
-            onPressed: () {},
-            icon: const Icon(Icons.favorite),
-            iconSize: 60,
-          ),
+            Positioned(
+              right: 0,
+              bottom: 0,
+              child: StreamBuilder<bool>(
+                stream: likeStream,
+                builder: (BuildContext context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Container();
+                  } else if (snapshot.hasError) {
+                    return Container();
+                  } else {
+                    bool isLiked = snapshot.requireData;
+
+                    return IconButton(
+                      splashRadius: 1,
+                      alignment: Alignment.bottomRight,
+                      color: isLiked ? Colors.red : Colors.white,
+                      onPressed: () {
+                        isLiked
+                            ? BlocProvider.of<BookDetailBloc>(context)
+                                .add(UnlikedEvent(bookID: book.id))
+                            : BlocProvider.of<BookDetailBloc>(context)
+                                .add(LikedEvent(bookID: book.id));
+                      },
+                      icon: const Icon(Icons.favorite),
+                      iconSize: 60,
+                    );
+                  }
+                },
+              ),
+            ),
+          ],
         ),
       );
 
-  Widget _buildBottomContainer(BuildContext context, Book? book) => Expanded(
+  Widget _buildBottomContainer(BuildContext context, Book book) => Expanded(
         flex: 1,
         child: Container(
           padding: const EdgeInsets.all(16),
@@ -105,29 +156,44 @@ class BookDetailView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  book?.title ?? '',
+                  book.title,
                   style: const TextStyle(
                     fontSize: 30.0,
                     fontWeight: FontWeight.w600,
                     color: Colors.black54,
                   ),
                 ),
+                const SizedBox(height: 8),
                 Text(
-                  book?.author ?? '',
+                  book.author,
                   style: const TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.w600,
                     color: Colors.black54,
                   ),
                 ),
+                const SizedBox(height: 8),
                 Row(
                   children: [
-                    const Icon(Icons.star),
-                    Text(book?.popular.toString() ?? ''),
+                    const Icon(
+                      Icons.star,
+                      color: kMainColor,
+                    ),
+                    Text(book.popular.toString()),
                   ],
                 ),
-                Text(AppLocalizations.of(context)?.about ?? ''),
-                Text(book?.description ?? ''),
+                Wrap(
+                  spacing: 4,
+                  children: [
+                    for (final genre in book.genre) Chip(label: Text(genre)),
+                  ],
+                ),
+                Text(
+                  AppLocalizations.of(context)?.about ?? '',
+                  style: const TextStyle(fontSize: 20),
+                ),
+                const SizedBox(height: 8),
+                Text(book.description),
               ],
             ),
           ),
