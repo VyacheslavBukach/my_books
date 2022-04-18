@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_books/blocs/search_bloc/search_bloc.dart';
 import 'package:my_books/blocs/store_bloc/store_bloc.dart';
 import 'package:my_books/di/locator.dart';
@@ -46,7 +47,7 @@ class StoreView extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.blue.shade100,
       appBar: AppBar(
-        title: Text('Store'),
+        title: Text(AppLocalizations.of(context)?.store ?? ''),
         actions: [
           IconButton(
             onPressed: () {
@@ -233,7 +234,7 @@ class MySearchDelegate extends SearchDelegate {
             },
           );
         }
-        return Text("Something went wrong");
+        return const Text("Something went wrong");
       },
     );
   }

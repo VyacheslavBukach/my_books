@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_books/di/locator.dart';
+import 'package:my_books/presentation/screens/main_screen.dart';
 import 'package:my_books/presentation/ui_components/vertical_book_list.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../blocs/favourite_books_bloc/favourite_books_bloc.dart';
 import '../../domain/usecases/firestore/check_book_like_usecase.dart';
@@ -29,6 +31,9 @@ class BooksView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue.shade100,
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)?.favourites ?? ''),
+      ),
       body: BlocConsumer<FavouriteBooksBloc, FavouriteBooksState>(
         listener: (context, state) {},
         builder: (context, state) {
