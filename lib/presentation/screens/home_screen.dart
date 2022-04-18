@@ -61,20 +61,34 @@ class HomeView extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                'Hello, ${user?.email}',
-                                style: const TextStyle(
-                                  fontSize: 25,
-                                  color: Colors.white,
+                              Expanded(
+                                flex: 9,
+                                child: RichText(
+                                  text: TextSpan(
+                                    text:
+                                        AppLocalizations.of(context)?.welcome ??
+                                            '',
+                                    style: const TextStyle(
+                                      fontSize: 25,
+                                      color: Colors.white,
+                                    ),
+                                    children: [
+                                      const TextSpan(text: ', '),
+                                      TextSpan(text: user?.email),
+                                    ],
+                                  ),
                                 ),
                               ),
-                              IconButton(
-                                onPressed: () {
-                                  _signOutEvent(context);
-                                },
-                                icon: const Icon(
-                                  Icons.logout,
-                                  color: Colors.white,
+                              Expanded(
+                                flex: 1,
+                                child: IconButton(
+                                  onPressed: () {
+                                    _signOutEvent(context);
+                                  },
+                                  icon: const Icon(
+                                    Icons.logout,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ],

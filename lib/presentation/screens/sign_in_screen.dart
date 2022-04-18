@@ -113,7 +113,8 @@ class _SignInViewState extends State<SignInView> {
                             ),
                             RoundedButton(
                               transparent: true,
-                              label: AppLocalizations.of(context)?.login ?? '',
+                              label:
+                                  AppLocalizations.of(context)?.sign_in ?? '',
                               onPressed: () {
                                 _authenticateWithEmailAndPassword(context);
                               },

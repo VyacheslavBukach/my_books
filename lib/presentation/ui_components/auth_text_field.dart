@@ -1,5 +1,6 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AuthTextField extends StatelessWidget {
   final String labelText;
@@ -33,13 +34,13 @@ class AuthTextField extends StatelessWidget {
         validator: (value) {
           if (obscureText) {
             if (value != null && value.length < 6) {
-              return 'Enter min 6 characters';
+              return AppLocalizations.of(context)?.invalid_password ?? '';
             } else {
               return null;
             }
           } else {
             if (value != null && !EmailValidator.validate(value)) {
-              return 'Enter a valid email';
+              return AppLocalizations.of(context)?.invalid_email ?? '';
             } else {
               return null;
             }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_books/presentation/screens/book_detail_screen.dart';
 
 import '../../domain/entities/book.dart';
@@ -27,7 +28,8 @@ class HorizontalBookList extends StatelessWidget {
           // case ConnectionState.done:
           default:
             if (snapshot.hasError) {
-              return const Text("Something went wrong");
+              return Text(
+                  AppLocalizations.of(context)?.something_went_wrong ?? '');
             } else if (snapshot.hasData) {
               final data = snapshot.requireData;
 

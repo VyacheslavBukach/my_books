@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../domain/entities/book.dart';
 import '../screens/book_detail_screen.dart';
@@ -22,7 +23,7 @@ class VerticalBookList extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasError) {
-          return Text("Something went wrong ${snapshot.error}");
+          return Text(AppLocalizations.of(context)?.something_went_wrong ?? '');
         } else {
           var books = snapshot.requireData;
 
@@ -43,8 +44,8 @@ class VerticalBookList extends StatelessWidget {
               ),
             );
           } else {
-            return const Center(
-              child: Text('No favourites'),
+            return Center(
+              child: Text(AppLocalizations.of(context)?.no_favourites ?? ''),
             );
           }
         }

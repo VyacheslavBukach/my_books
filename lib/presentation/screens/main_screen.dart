@@ -13,55 +13,59 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kMainColor,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(
-            Icons.book_outlined,
-            size: 100,
-            color: Colors.white,
-          ),
-          Text(
-            AppLocalizations.of(context)?.welcome_to_mybooks ?? '',
-            textAlign: TextAlign.center,
-            style: const TextStyle(
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.book_outlined,
+              size: 100,
               color: Colors.white,
-              fontSize: 50,
-              fontWeight: FontWeight.bold,
             ),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            AppLocalizations.of(context)?.app_desc ?? '',
-            style: const TextStyle(color: Colors.white),
-          ),
-          const SizedBox(height: 100),
-          RoundedButton(
-            transparent: false,
-            label: AppLocalizations.of(context)?.create_account ?? '',
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const SignUpScreen(),
-                ),
-              );
-            },
-          ),
-          const SizedBox(height: 16),
-          RoundedButton(
-            transparent: true,
-            label: AppLocalizations.of(context)?.sign_in ?? '',
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const SignInScreen(),
-                ),
-              );
-            },
-          ),
-        ],
+            Text(
+              AppLocalizations.of(context)?.welcome_to_mybooks ?? '',
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 50,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              AppLocalizations.of(context)?.app_desc ?? '',
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.white),
+            ),
+            const SizedBox(height: 100),
+            RoundedButton(
+              transparent: false,
+              label: AppLocalizations.of(context)?.create_account ?? '',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SignUpScreen(),
+                  ),
+                );
+              },
+            ),
+            const SizedBox(height: 16),
+            RoundedButton(
+              transparent: true,
+              label: AppLocalizations.of(context)?.sign_in ?? '',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SignInScreen(),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

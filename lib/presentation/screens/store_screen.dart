@@ -196,7 +196,8 @@ class MySearchDelegate extends SearchDelegate {
                   child: CircularProgressIndicator(),
                 );
               } else if (snapshot.hasError) {
-                return Text("Something went wrong ${snapshot.error}");
+                return Text(
+                    AppLocalizations.of(context)?.something_went_wrong ?? '');
               } else {
                 var books = snapshot.requireData;
 
@@ -226,15 +227,16 @@ class MySearchDelegate extends SearchDelegate {
                     ),
                   );
                 } else {
-                  return const Center(
-                    child: Text('No found'),
+                  return Center(
+                    child: Text(AppLocalizations.of(context)?.no_found ?? ''),
                   );
                 }
               }
             },
           );
         }
-        return const Text("Something went wrong");
+
+        return Text(AppLocalizations.of(context)?.something_went_wrong ?? '');
       },
     );
   }
