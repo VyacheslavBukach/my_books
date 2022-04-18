@@ -5,7 +5,6 @@ import 'package:my_books/blocs/home_bloc/home_bloc.dart';
 import 'package:my_books/data/repositories/firebase_auth_repository_impl.dart';
 import 'package:my_books/di/locator.dart';
 import 'package:my_books/domain/usecases/firestore/get_popular_books_usecase.dart';
-import 'package:my_books/presentation/screens/book_detail_screen.dart';
 import 'package:my_books/presentation/screens/favorite_books_screen.dart';
 import 'package:my_books/presentation/screens/main_screen.dart';
 import 'package:my_books/presentation/screens/store_screen.dart';
@@ -44,18 +43,6 @@ class HomeView extends StatelessWidget {
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => const MainScreen()),
               (route) => false,
-            );
-          }
-          if (state is ShowingBookDetailState) {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) {
-                  return BlocProvider.value(
-                    value: homeBloc,
-                    child: BookDetailScreen(bookID: state.bookID),
-                  );
-                },
-              ),
             );
           }
         },

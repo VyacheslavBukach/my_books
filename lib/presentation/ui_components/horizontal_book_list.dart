@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_books/presentation/screens/book_detail_screen.dart';
 
-import '../../blocs/home_bloc/home_bloc.dart';
 import '../../domain/entities/book.dart';
 import 'horizontal_book_list_item.dart';
 
@@ -56,6 +55,10 @@ class HorizontalBookList extends StatelessWidget {
   }
 
   void _bookClickedEvent(context, String id) {
-    BlocProvider.of<HomeBloc>(context).add(BookClickedEvent(bookID: id));
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => BookDetailScreen(bookID: id),
+      ),
+    );
   }
 }

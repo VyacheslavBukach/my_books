@@ -161,4 +161,19 @@ class FirestoreBookRepositoryImpl implements BookRepository {
     return stream
         .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
   }
+
+  @override
+  Stream<List<Book>> getBooksByQuery(String query) {
+    var stream = _firestore
+        .collection(_kBooks)
+        .where('bookSearch', arrayContains: query)
+        .withConverter<Book>(
+          fromFirestore: (snapshot, _) => Book.fromJson(snapshot.data() ?? {}),
+          toFirestore: (book, _) => book.toJson(),
+        )
+        .snapshots();
+
+    return stream
+        .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
+  }
 }

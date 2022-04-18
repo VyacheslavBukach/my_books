@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:my_books/domain/entities/book.dart';
 import 'package:my_books/domain/usecases/firestore/get_all_books_usecase.dart';
+import 'package:my_books/domain/usecases/firestore/get_books_from_search_usecase.dart';
 import 'package:my_books/domain/usecases/firestore/get_filtered_books_usecase.dart';
 
 part 'store_event.dart';

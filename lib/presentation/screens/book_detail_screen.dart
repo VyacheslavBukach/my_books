@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_books/blocs/book_detail_bloc/book_detail_bloc.dart';
-import 'package:my_books/blocs/home_bloc/home_bloc.dart';
 import 'package:my_books/presentation/screens/main_screen.dart';
 
 import '../../di/locator.dart';
@@ -22,8 +21,6 @@ class BookDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final homeBloc = BlocProvider.of<HomeBloc>(context);
-
     return BlocProvider(
       create: (context) => BookDetailBloc(
         getBookByIDUseCase: getIt<GetBookByIDUseCase>(),
@@ -31,15 +28,9 @@ class BookDetailScreen extends StatelessWidget {
         deleteBookFromFavouriteUseCase: getIt<DeleteBookFromFavouriteUseCase>(),
         checkBookLikeUseCase: getIt<CheckBookLikeUseCase>(),
       )..add(InitialEvent(id: bookID)),
-      child: WillPopScope(
-        onWillPop: () async {
-          homeBloc.add(BackPressedEvent());
-          return true;
-        },
-        child: const Scaffold(
-          backgroundColor: Colors.white,
-          body: BookDetailView(),
-        ),
+      child: const Scaffold(
+        backgroundColor: Colors.white,
+        body: BookDetailView(),
       ),
     );
   }

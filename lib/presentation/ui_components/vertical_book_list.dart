@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../blocs/home_bloc/home_bloc.dart';
 import '../../domain/entities/book.dart';
+import '../screens/book_detail_screen.dart';
 import 'vertical_book_list_item.dart';
 
 class VerticalBookList extends StatelessWidget {
@@ -34,8 +33,11 @@ class VerticalBookList extends StatelessWidget {
               itemBuilder: (context, index) => VerticalBookListItem(
                 book: books[index],
                 onTap: () {
-                  BlocProvider.of<HomeBloc>(context).add(
-                    BookClickedEvent(bookID: books[index].id),
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          BookDetailScreen(bookID: books[index].id),
+                    ),
                   );
                 },
               ),
