@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_books/blocs/home_bloc/home_bloc.dart';
-import 'package:my_books/data/repositories/firebase_auth_repository_impl.dart';
 import 'package:my_books/di/locator.dart';
 import 'package:my_books/domain/usecases/firestore/get_popular_books_usecase.dart';
 import 'package:my_books/presentation/screens/favorite_books_screen.dart';
 import 'package:my_books/presentation/screens/main_screen.dart';
 import 'package:my_books/presentation/screens/store_screen.dart';
 
+import '../../domain/usecases/auth/get_current_user_email_usecase.dart';
 import '../../domain/usecases/auth/logout_usecase.dart';
 import '../../domain/usecases/firestore/get_new_books_usecase.dart';
 import '../ui_components/horizontal_book_list.dart';
@@ -20,8 +20,11 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => HomeBloc(
+        getCurrentUserEmailUseCase: getIt<GetCurrentUserEmailUseCase>(),
         logoutUseCase: getIt<LogoutUseCase>(),
-      ),
+        getPopularBooksUseCase: getIt<GetPopularBooksUseCase>(),
+        getNewBooksUseCase: getIt<GetNewBooksUseCase>(),
+      )..add(InitialEvent()),
       child: const HomeView(),
     );
   }
@@ -32,9 +35,6 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = getIt<FirebaseAuthRepositoryImpl>().currentUser;
-    final homeBloc = BlocProvider.of<HomeBloc>(context);
-
     return Scaffold(
       backgroundColor: kMainColor,
       body: BlocConsumer<HomeBloc, HomeState>(
@@ -45,8 +45,20 @@ class HomeView extends StatelessWidget {
               (route) => false,
             );
           }
+
+          if (state is ErrorState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.error),
+              ),
+            );
+          }
         },
         builder: (context, state) {
+          if (state is InitialState) {
+            return const CircularProgressIndicator();
+          }
+
           if (state is AuthenticatedState) {
             return SafeArea(
               child: Column(
@@ -74,7 +86,7 @@ class HomeView extends StatelessWidget {
                                     ),
                                     children: [
                                       const TextSpan(text: ', '),
-                                      TextSpan(text: user?.email),
+                                      TextSpan(text: state.email),
                                     ],
                                   ),
                                 ),
@@ -116,8 +128,7 @@ class HomeView extends StatelessWidget {
                           Expanded(
                             child: HorizontalBookList(
                               bookWidth: 150,
-                              bookList: getIt<GetPopularBooksUseCase>()
-                                  .getPopularBooks(),
+                              bookStream: state.popularStream,
                             ),
                           ),
                           Row(
@@ -127,12 +138,8 @@ class HomeView extends StatelessWidget {
                                 onPressed: () {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
-                                      builder: (context) {
-                                        return BlocProvider.value(
-                                          value: homeBloc,
-                                          child: const FavouriteBooksScreen(),
-                                        );
-                                      },
+                                      builder: (context) =>
+                                          const FavouriteBooksScreen(),
                                     ),
                                   );
                                 },
@@ -153,12 +160,7 @@ class HomeView extends StatelessWidget {
                                 onPressed: () {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
-                                      builder: (context) {
-                                        return BlocProvider.value(
-                                          value: homeBloc,
-                                          child: const StoreScreen(),
-                                        );
-                                      },
+                                      builder: (context) => const StoreScreen(),
                                     ),
                                   );
                                 },
@@ -204,8 +206,7 @@ class HomeView extends StatelessWidget {
                           Expanded(
                             child: HorizontalBookList(
                               bookWidth: 125,
-                              bookList:
-                                  getIt<GetNewBooksUseCase>().getNewBooks(),
+                              bookStream: state.releasesStream,
                             ),
                           )
                         ],

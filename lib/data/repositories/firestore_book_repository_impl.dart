@@ -7,7 +7,7 @@ const _kUsers = 'users';
 const _kFavourites = 'favourites';
 const _kPopular = 'popular';
 const _kCreatedAt = 'createdAt';
-const _kGenre = 'createdAt';
+const _kGenre = 'genre';
 const _kBookSearch = 'bookSearch';
 
 class FirestoreBookRepositoryImpl implements BookRepository {
