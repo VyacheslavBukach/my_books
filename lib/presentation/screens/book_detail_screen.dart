@@ -119,7 +119,6 @@ class BookDetailView extends StatelessWidget {
                     return IconButton(
                       splashRadius: 1,
                       alignment: Alignment.bottomRight,
-                      color: isLiked ? Colors.red : Colors.white,
                       onPressed: () {
                         isLiked
                             ? BlocProvider.of<BookDetailBloc>(context)
@@ -127,7 +126,10 @@ class BookDetailView extends StatelessWidget {
                             : BlocProvider.of<BookDetailBloc>(context)
                                 .add(LikedEvent(bookID: book.id));
                       },
-                      icon: const Icon(Icons.favorite),
+                      icon: Icon(
+                        isLiked ? Icons.favorite : Icons.favorite_border,
+                        color: isLiked ? Colors.red : Colors.grey.shade400,
+                      ),
                       iconSize: 60,
                     );
                   }
