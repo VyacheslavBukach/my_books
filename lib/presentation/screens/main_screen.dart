@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:my_books/presentation/screens/sign_in_screen.dart';
 import 'package:my_books/presentation/screens/sign_up_screen.dart';
 import 'package:my_books/presentation/ui_components/rounded_button.dart';
-
-const kMainColor = Color(0xFF10acef);
 
 class MainScreen extends StatelessWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -12,23 +11,23 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kMainColor,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
+            Icon(
               Icons.book_outlined,
+              color: Theme.of(context).colorScheme.onPrimary,
               size: 100,
-              color: Colors.white,
             ),
             Text(
               AppLocalizations.of(context)?.welcome_to_mybooks ?? '',
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 50,
+              style: GoogleFonts.robotoSlab(
+                textStyle: Theme.of(context).textTheme.displayMedium,
+                color: Theme.of(context).colorScheme.onPrimary,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -36,7 +35,10 @@ class MainScreen extends StatelessWidget {
             Text(
               AppLocalizations.of(context)?.app_desc ?? '',
               textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.white),
+              style: GoogleFonts.poppins(
+                textStyle: Theme.of(context).textTheme.bodyLarge,
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
             ),
             const SizedBox(height: 100),
             RoundedButton(

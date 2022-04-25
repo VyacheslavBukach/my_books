@@ -22,7 +22,6 @@ class AuthTextField extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 16.0),
       child: TextFormField(
         controller: controller,
-        style: const TextStyle(fontSize: 18),
         obscureText: obscureText,
         decoration: InputDecoration(
           prefixIcon: icon,

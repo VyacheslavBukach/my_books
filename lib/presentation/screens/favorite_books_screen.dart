@@ -18,18 +18,18 @@ class FavouriteBooksScreen extends StatelessWidget {
         checkBookLikeUseCase: getIt<CheckBookLikeUseCase>(),
         getFavouriteBooksUseCase: getIt<GetFavouriteBooksUseCase>(),
       )..add(InitialEvent()),
-      child: const BooksView(),
+      child: const FavouriteBooksView(),
     );
   }
 }
 
-class BooksView extends StatelessWidget {
-  const BooksView({Key? key}) : super(key: key);
+class FavouriteBooksView extends StatelessWidget {
+  const FavouriteBooksView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue.shade100,
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)?.favourites ?? ''),
       ),

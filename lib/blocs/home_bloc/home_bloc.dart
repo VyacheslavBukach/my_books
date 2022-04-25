@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:my_books/blocs/book_detail_bloc/book_detail_bloc.dart';
 import 'package:my_books/domain/usecases/auth/get_current_user_email_usecase.dart';
 import 'package:my_books/domain/usecases/firestore/get_new_books_usecase.dart';
 import 'package:my_books/domain/usecases/firestore/get_popular_books_usecase.dart';

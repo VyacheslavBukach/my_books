@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:my_books/blocs/login_bloc/login_bloc.dart';
 import 'package:my_books/presentation/screens/home_screen.dart';
-import 'package:my_books/presentation/screens/main_screen.dart';
 
 import '../../di/locator.dart';
 import '../../domain/usecases/auth/login_usecase.dart';
@@ -37,7 +37,7 @@ class _SignInViewState extends State<SignInView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kMainColor,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       body: Form(
         key: _formKey,
         child: BlocConsumer<LoginBloc, LoginState>(
@@ -58,8 +58,10 @@ class _SignInViewState extends State<SignInView> {
           },
           builder: (context, state) {
             if (state is LoadingState) {
-              return const Center(
-                child: CircularProgressIndicator(),
+              return Center(
+                child: CircularProgressIndicator(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
               );
             }
 
@@ -68,27 +70,26 @@ class _SignInViewState extends State<SignInView> {
                 child: Column(
                   children: [
                     Expanded(
-                      flex: 2,
                       child: Container(
                         alignment: Alignment.center,
                         padding: const EdgeInsets.all(16.0),
                         child: Text(
                           AppLocalizations.of(context)?.sign_in_headline ?? '',
-                          style: const TextStyle(
+                          style: GoogleFonts.robotoSlab(
+                            color: Theme.of(context).colorScheme.onPrimary,
                             fontWeight: FontWeight.bold,
-                            fontSize: 30,
-                            color: Colors.white,
+                            textStyle:
+                                Theme.of(context).textTheme.headlineMedium,
                           ),
                         ),
                       ),
                     ),
                     Expanded(
-                      flex: 5,
                       child: Container(
                         padding: const EdgeInsets.all(16.0),
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surface,
+                          borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(50),
                             topRight: Radius.circular(50),
                           ),
@@ -119,16 +120,17 @@ class _SignInViewState extends State<SignInView> {
                                 _authenticateWithEmailAndPassword(context);
                               },
                             ),
-                            TextButton(
-                              style: ButtonStyle(
-                                overlayColor: MaterialStateProperty.all(
-                                    Colors.transparent),
-                              ),
-                              child: Text(AppLocalizations.of(context)
-                                      ?.forgot_password ??
-                                  ''),
-                              onPressed: () {},
-                            ),
+                            // TODO
+                            // TextButton(
+                            //   style: ButtonStyle(
+                            //     overlayColor: MaterialStateProperty.all(
+                            //         Colors.transparent),
+                            //   ),
+                            //   child: Text(AppLocalizations.of(context)
+                            //           ?.forgot_password ??
+                            //       ''),
+                            //   onPressed: () {},
+                            // ),
                           ],
                         ),
                       ),

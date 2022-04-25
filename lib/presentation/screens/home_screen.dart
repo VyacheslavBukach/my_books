@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:my_books/blocs/home_bloc/home_bloc.dart';
 import 'package:my_books/di/locator.dart';
 import 'package:my_books/domain/usecases/firestore/get_popular_books_usecase.dart';
@@ -36,7 +37,7 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kMainColor,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       body: BlocConsumer<HomeBloc, HomeState>(
         listener: (context, state) {
           if (state is UnauthenticatedState) {
@@ -66,7 +67,25 @@ class HomeView extends StatelessWidget {
                   Expanded(
                     flex: 2,
                     child: Container(
-                      padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.only(
+                        left: 8,
+                        right: 8,
+                        top: 8,
+                      ),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Theme.of(context).colorScheme.primary,
+                            Theme.of(context).colorScheme.surface,
+                          ],
+                          stops: const [
+                            0.1,
+                            1.0,
+                          ],
+                        ),
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -80,9 +99,13 @@ class HomeView extends StatelessWidget {
                                     text:
                                         AppLocalizations.of(context)?.welcome ??
                                             '',
-                                    style: const TextStyle(
-                                      fontSize: 25,
-                                      color: Colors.white,
+                                    style: GoogleFonts.robotoSlab(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary,
+                                      textStyle: Theme.of(context)
+                                          .textTheme
+                                          .headlineSmall,
                                     ),
                                     children: [
                                       const TextSpan(text: ', '),
@@ -97,9 +120,10 @@ class HomeView extends StatelessWidget {
                                   onPressed: () {
                                     _signOutEvent(context);
                                   },
-                                  icon: const Icon(
+                                  icon: Icon(
                                     Icons.logout,
-                                    color: Colors.white,
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary,
                                   ),
                                 ),
                               ),
@@ -110,18 +134,20 @@ class HomeView extends StatelessWidget {
                             AppLocalizations.of(context)
                                     ?.what_do_you_want_to_read ??
                                 '',
-                            style: const TextStyle(
-                              fontSize: 30,
-                              color: Colors.white,
+                            style: GoogleFonts.robotoSlab(
+                              color: Theme.of(context).colorScheme.onPrimary,
+                              textStyle:
+                                  Theme.of(context).textTheme.headlineMedium,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                           const SizedBox(height: 20),
                           Text(
                             AppLocalizations.of(context)?.popular ?? '',
-                            style: const TextStyle(
-                              color: Colors.white,
+                            style: GoogleFonts.robotoSlab(
+                              color: Theme.of(context).colorScheme.onPrimary,
                               fontWeight: FontWeight.bold,
-                              fontSize: 20,
+                              textStyle: Theme.of(context).textTheme.titleLarge,
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -134,7 +160,7 @@ class HomeView extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              TextButton(
+                              TextButton.icon(
                                 onPressed: () {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
@@ -143,20 +169,16 @@ class HomeView extends StatelessWidget {
                                     ),
                                   );
                                 },
-                                style: ButtonStyle(
-                                  foregroundColor:
-                                      MaterialStateProperty.all(Colors.white),
-                                ),
-                                child: Row(
-                                  children: [
-                                    const Icon(Icons.favorite),
-                                    Text(AppLocalizations.of(context)
-                                            ?.favourites ??
-                                        ''),
-                                  ],
+                                icon: const Icon(Icons.favorite),
+                                label: Text(
+                                  AppLocalizations.of(context)?.favourites ??
+                                      '',
+                                  style: GoogleFonts.robotoSlab(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
-                              TextButton(
+                              TextButton.icon(
                                 onPressed: () {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
@@ -164,16 +186,12 @@ class HomeView extends StatelessWidget {
                                     ),
                                   );
                                 },
-                                style: ButtonStyle(
-                                  foregroundColor:
-                                      MaterialStateProperty.all(Colors.white),
-                                ),
-                                child: Row(
-                                  children: [
-                                    const Icon(Icons.store),
-                                    Text(AppLocalizations.of(context)?.store ??
-                                        ''),
-                                  ],
+                                icon: const Icon(Icons.store),
+                                label: Text(
+                                  AppLocalizations.of(context)?.store ?? '',
+                                  style: GoogleFonts.robotoSlab(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ],
@@ -185,9 +203,8 @@ class HomeView extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: Container(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.surface,
                       padding: const EdgeInsets.only(
-                        top: 10,
                         bottom: 16,
                         left: 16,
                         right: 16,
@@ -197,9 +214,10 @@ class HomeView extends StatelessWidget {
                         children: [
                           Text(
                             AppLocalizations.of(context)?.new_releases ?? '',
-                            style: const TextStyle(
+                            style: GoogleFonts.robotoSlab(
+                              color: Theme.of(context).colorScheme.onSurface,
                               fontWeight: FontWeight.bold,
-                              fontSize: 20,
+                              textStyle: Theme.of(context).textTheme.titleLarge,
                             ),
                           ),
                           const SizedBox(height: 8),

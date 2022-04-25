@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../domain/entities/book.dart';
 
@@ -15,14 +16,16 @@ class VerticalBookListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      elevation: 3,
-      borderRadius: BorderRadius.circular(8),
+      color: Theme.of(context).colorScheme.surface,
+      elevation: 1,
+      shadowColor: Theme.of(context).colorScheme.shadow,
+      borderRadius: BorderRadius.circular(12),
       clipBehavior: Clip.antiAliasWithSaveLayer,
       child: InkWell(
-        splashColor: Colors.blue.shade100.withOpacity(0.5),
+        splashColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.12),
         onTap: onTap,
         child: SizedBox(
-          height: 151,
+          height: 165,
           child: Row(
             children: [
               Ink.image(
@@ -32,7 +35,11 @@ class VerticalBookListItem extends StatelessWidget {
               ),
               Expanded(
                 child: Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.only(
+                    left: 8,
+                    right: 8,
+                    top: 8,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -40,19 +47,31 @@ class VerticalBookListItem extends StatelessWidget {
                         book.title,
                         maxLines: 3,
                         overflow: TextOverflow.fade,
-                        style: const TextStyle(
-                          fontSize: 20,
+                        style: GoogleFonts.robotoSlab(
+                          color: Theme.of(context).colorScheme.onSurface,
                           fontWeight: FontWeight.bold,
+                          textStyle: Theme.of(context).textTheme.titleMedium,
                         ),
                       ),
                       Text(
                         book.author,
                         maxLines: 1,
                         overflow: TextOverflow.fade,
-                        style: const TextStyle(
-                          fontSize: 15,
+                        style: GoogleFonts.robotoSlab(
+                          color: Theme.of(context).colorScheme.onSurface,
+                          textStyle: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ),
+                      const SizedBox(
+                        height: 4,
+                      ),
+                      Row(children: [
+                        Icon(
+                          Icons.star,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        Text(book.popular.toString()),
+                      ]),
                       Wrap(
                         spacing: 4,
                         children: [

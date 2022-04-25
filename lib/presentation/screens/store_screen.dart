@@ -6,7 +6,6 @@ import 'package:my_books/blocs/store_bloc/store_bloc.dart';
 import 'package:my_books/di/locator.dart';
 import 'package:my_books/domain/entities/genre.dart';
 import 'package:my_books/domain/usecases/firestore/get_all_books_usecase.dart';
-import 'package:my_books/presentation/screens/main_screen.dart';
 import 'package:my_books/presentation/ui_components/vertical_book_list.dart';
 
 import '../../domain/entities/book.dart';
@@ -45,7 +44,7 @@ class StoreView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue.shade100,
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)?.store ?? ''),
         actions: [
@@ -118,10 +117,22 @@ class _FilterContainerState extends State<FilterContainer> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 2),
               child: FilterChip(
-                selectedColor: kMainColor,
+                checkmarkColor:
+                    Theme.of(context).colorScheme.onSecondaryContainer,
+                selectedColor: Theme.of(context).colorScheme.secondaryContainer,
                 pressElevation: 0,
-                shape: const StadiumBorder(side: BorderSide()),
+                backgroundColor: Theme.of(context).colorScheme.outline,
+                shape: StadiumBorder(
+                  side: BorderSide(
+                    color: Theme.of(context).colorScheme.outline,
+                  ),
+                ),
                 label: Text(genre.name),
+                labelStyle: TextStyle(
+                  color: _filters.contains(genre.name)
+                      ? Theme.of(context).colorScheme.onSecondaryContainer
+                      : Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
                 selected: _filters.contains(genre.name),
                 onSelected: (bool selected) {
                   setState(() {

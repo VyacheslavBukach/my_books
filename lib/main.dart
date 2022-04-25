@@ -6,6 +6,7 @@ import 'package:my_books/data/repositories/firebase_auth_repository_impl.dart';
 import 'package:my_books/di/locator.dart';
 import 'package:my_books/presentation/screens/home_screen.dart';
 import 'package:my_books/presentation/screens/main_screen.dart';
+import 'package:my_books/themes.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
           AppLocalizations.of(context)?.app_name ?? '',
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
+      theme: Themes.lightTheme,
       home: StreamBuilder<User?>(
         stream: repo.authStateChanges(),
         builder: (context, snapshot) {

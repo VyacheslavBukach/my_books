@@ -44,6 +44,7 @@ dependencies:
   flutter_bloc: ^8.0.1
   freezed_annotation: ^1.1.0
   email_validator: ^2.0.1
+  google_fonts: ^2.3.2
 
 dev_dependencies:
   flutter_test:
