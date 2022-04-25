@@ -59,19 +59,23 @@ class _SignUpViewState extends State<SignUpView> {
 
             if (state is AuthErrorState) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(state.error)),
+                SnackBar(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  content: Text(
+                    state.error,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                  ),
+                  behavior: SnackBarBehavior.floating,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                ),
               );
             }
           },
           builder: (context, state) {
-            if (state is LoadingState) {
-              return Center(
-                child: CircularProgressIndicator(
-                  color: Theme.of(context).colorScheme.onPrimary,
-                ),
-              );
-            }
-
             if (state is UnauthenticatedState) {
               return SafeArea(
                 child: Column(
@@ -80,20 +84,36 @@ class _SignUpViewState extends State<SignUpView> {
                       child: Container(
                         alignment: Alignment.center,
                         padding: const EdgeInsets.all(16.0),
-                        child: Text(
-                          AppLocalizations.of(context)?.sign_up_headline ?? '',
-                          style: GoogleFonts.robotoSlab(
-                            color: Theme.of(context).colorScheme.onPrimary,
-                            fontWeight: FontWeight.bold,
-                            textStyle:
-                                Theme.of(context).textTheme.headlineMedium,
-                          ),
-                        ),
+                        child: state.loading
+                            ? Center(
+                                child: CircularProgressIndicator(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                ),
+                              )
+                            : Text(
+                                AppLocalizations.of(context)
+                                        ?.sign_up_headline ??
+                                    '',
+                                style: GoogleFonts.robotoSlab(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                  fontWeight: FontWeight.bold,
+                                  textStyle: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium,
+                                ),
+                              ),
                       ),
                     ),
                     SingleChildScrollView(
                       child: Container(
-                        padding: const EdgeInsets.all(20.0),
+                        padding: const EdgeInsets.only(
+                          left: 20,
+                          right: 20,
+                          top: 30,
+                          bottom: 20,
+                        ),
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.surface,
                           borderRadius: const BorderRadius.only(
