@@ -15,10 +15,11 @@ class HorizontalBookListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      borderRadius: BorderRadius.circular(8),
+      color: Theme.of(context).colorScheme.surface,
+      borderRadius: BorderRadius.circular(12),
       clipBehavior: Clip.antiAliasWithSaveLayer,
       child: InkWell(
-        splashColor: Colors.white.withOpacity(0.5),
+        splashColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.12),
         child: Ink.image(
           width: width,
           image: NetworkImage(posterUrl),

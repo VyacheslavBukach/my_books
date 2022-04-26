@@ -21,6 +21,8 @@ abstract class BookRepository {
 
   Stream<List<Book>> getFilteredBooks(List<String> genres);
 
+  Stream<List<Book>> getBooksByQuery(String query);
+
   Future<void> addBookToFavourite({
     required String userID,
     required String bookID,

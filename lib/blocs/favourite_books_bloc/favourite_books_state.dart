@@ -10,9 +10,3 @@ class ShowingBooksState extends FavouriteBooksState {
 
   ShowingBooksState({required this.bookStream});
 }
-
-// class ErrorBooksState extends BooksState {
-//   final String error;
-//
-//   ErrorBooksState(this.error);
-// }

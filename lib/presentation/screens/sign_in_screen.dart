@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:my_books/blocs/login_bloc/login_bloc.dart';
 import 'package:my_books/presentation/screens/home_screen.dart';
-import 'package:my_books/presentation/screens/main_screen.dart';
 
 import '../../di/locator.dart';
 import '../../domain/usecases/auth/login_usecase.dart';
@@ -37,7 +37,12 @@ class _SignInViewState extends State<SignInView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kMainColor,
+      backgroundColor: Theme.of(context).colorScheme.primary,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
       body: Form(
         key: _formKey,
         child: BlocConsumer<LoginBloc, LoginState>(
@@ -52,43 +57,64 @@ class _SignInViewState extends State<SignInView> {
             }
             if (state is AuthErrorState) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(state.error)),
+                SnackBar(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  content: Text(
+                    state.error,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                  ),
+                  behavior: SnackBarBehavior.floating,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                ),
               );
             }
           },
           builder: (context, state) {
-            if (state is LoadingState) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-
             if (state is UnauthenticatedState) {
               return SafeArea(
                 child: Column(
                   children: [
                     Expanded(
-                      flex: 2,
                       child: Container(
                         alignment: Alignment.center,
                         padding: const EdgeInsets.all(16.0),
-                        child: Text(
-                          AppLocalizations.of(context)?.sign_in_headline ?? '',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 30,
-                            color: Colors.white,
-                          ),
-                        ),
+                        child: state.loading
+                            ? Center(
+                                child: CircularProgressIndicator(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                ),
+                              )
+                            : Text(
+                                AppLocalizations.of(context)
+                                        ?.sign_in_headline ??
+                                    '',
+                                style: GoogleFonts.robotoSlab(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                  fontWeight: FontWeight.bold,
+                                  textStyle: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium,
+                                ),
+                              ),
                       ),
                     ),
-                    Expanded(
-                      flex: 5,
+                    SingleChildScrollView(
                       child: Container(
-                        padding: const EdgeInsets.all(16.0),
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
+                        padding: const EdgeInsets.only(
+                          left: 20,
+                          right: 20,
+                          top: 30,
+                          bottom: 20,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surface,
+                          borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(50),
                             topRight: Radius.circular(50),
                           ),
@@ -113,21 +139,23 @@ class _SignInViewState extends State<SignInView> {
                             ),
                             RoundedButton(
                               transparent: true,
-                              label: AppLocalizations.of(context)?.login ?? '',
+                              label:
+                                  AppLocalizations.of(context)?.sign_in ?? '',
                               onPressed: () {
                                 _authenticateWithEmailAndPassword(context);
                               },
                             ),
-                            TextButton(
-                              style: ButtonStyle(
-                                overlayColor: MaterialStateProperty.all(
-                                    Colors.transparent),
-                              ),
-                              child: Text(AppLocalizations.of(context)
-                                      ?.forgot_password ??
-                                  ''),
-                              onPressed: () {},
-                            ),
+                            // TODO
+                            // TextButton(
+                            //   style: ButtonStyle(
+                            //     overlayColor: MaterialStateProperty.all(
+                            //         Colors.transparent),
+                            //   ),
+                            //   child: Text(AppLocalizations.of(context)
+                            //           ?.forgot_password ??
+                            //       ''),
+                            //   onPressed: () {},
+                            // ),
                           ],
                         ),
                       ),

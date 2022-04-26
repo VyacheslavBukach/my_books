@@ -8,15 +8,16 @@ part 'login_state.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final LoginUseCase loginUseCase;
 
-  LoginBloc({required this.loginUseCase}) : super(UnauthenticatedState()) {
+  LoginBloc({required this.loginUseCase})
+      : super(UnauthenticatedState(loading: false)) {
     on<SignInEvent>((event, emit) async {
-      emit(LoadingState());
+      emit(UnauthenticatedState(loading: true));
       try {
         await loginUseCase.login(event.email, event.password);
         emit(AuthenticatedState());
       } catch (e) {
         emit(AuthErrorState(e.toString()));
-        emit(UnauthenticatedState());
+        emit(UnauthenticatedState(loading: false));
       }
     });
   }

@@ -5,6 +5,10 @@ import 'package:my_books/domain/repositories/book_repository.dart';
 const _kBooks = 'books';
 const _kUsers = 'users';
 const _kFavourites = 'favourites';
+const _kPopular = 'popular';
+const _kCreatedAt = 'createdAt';
+const _kGenre = 'genre';
+const _kBookSearch = 'bookSearch';
 
 class FirestoreBookRepositoryImpl implements BookRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -109,7 +113,7 @@ class FirestoreBookRepositoryImpl implements BookRepository {
 
     await _firestore
         .collection(_kBooks)
-        .orderBy('popular', descending: true)
+        .orderBy(_kPopular, descending: true)
         .limit(10)
         .withConverter<Book>(
           fromFirestore: (snapshot, _) => Book.fromJson(snapshot.data() ?? {}),
@@ -131,7 +135,7 @@ class FirestoreBookRepositoryImpl implements BookRepository {
 
     await _firestore
         .collection(_kBooks)
-        .orderBy('createdAt', descending: true)
+        .orderBy(_kCreatedAt, descending: true)
         .limit(10)
         .withConverter<Book>(
           fromFirestore: (snapshot, _) => Book.fromJson(snapshot.data() ?? {}),
@@ -151,7 +155,22 @@ class FirestoreBookRepositoryImpl implements BookRepository {
   Stream<List<Book>> getFilteredBooks(List<String> genres) {
     var stream = _firestore
         .collection(_kBooks)
-        .where('genre', arrayContainsAny: genres)
+        .where(_kGenre, arrayContainsAny: genres)
+        .withConverter<Book>(
+          fromFirestore: (snapshot, _) => Book.fromJson(snapshot.data() ?? {}),
+          toFirestore: (book, _) => book.toJson(),
+        )
+        .snapshots();
+
+    return stream
+        .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
+  }
+
+  @override
+  Stream<List<Book>> getBooksByQuery(String query) {
+    var stream = _firestore
+        .collection(_kBooks)
+        .where(_kBookSearch, arrayContains: query)
         .withConverter<Book>(
           fromFirestore: (snapshot, _) => Book.fromJson(snapshot.data() ?? {}),
           toFirestore: (book, _) => book.toJson(),

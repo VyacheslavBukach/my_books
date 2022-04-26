@@ -9,15 +9,15 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final RegisterUseCase registerUseCase;
 
   RegisterBloc({required this.registerUseCase})
-      : super(UnauthenticatedState()) {
+      : super(UnauthenticatedState(loading: false)) {
     on<SignUpEvent>((event, emit) async {
-      emit(LoadingState());
+      emit(UnauthenticatedState(loading: true));
       try {
         await registerUseCase.register(event.email, event.password);
         emit(AuthenticatedState());
       } catch (e) {
         emit(AuthErrorState(e.toString()));
-        emit(UnauthenticatedState());
+        emit(UnauthenticatedState(loading: false));
       }
     });
   }

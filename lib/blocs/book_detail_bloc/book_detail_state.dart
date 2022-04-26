@@ -5,8 +5,6 @@ abstract class BookDetailState {}
 
 class InitialState extends BookDetailState {}
 
-class LoadingBookState extends BookDetailState {}
-
 class ShowingBookState extends BookDetailState {
   final Book? book;
   final Stream<bool> likeStream;

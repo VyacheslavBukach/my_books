@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:my_books/blocs/book_detail_bloc/book_detail_bloc.dart';
-import 'package:my_books/blocs/home_bloc/home_bloc.dart';
-import 'package:my_books/presentation/screens/main_screen.dart';
 
 import '../../di/locator.dart';
 import '../../domain/entities/book.dart';
@@ -22,8 +21,6 @@ class BookDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final homeBloc = BlocProvider.of<HomeBloc>(context);
-
     return BlocProvider(
       create: (context) => BookDetailBloc(
         getBookByIDUseCase: getIt<GetBookByIDUseCase>(),
@@ -31,15 +28,14 @@ class BookDetailScreen extends StatelessWidget {
         deleteBookFromFavouriteUseCase: getIt<DeleteBookFromFavouriteUseCase>(),
         checkBookLikeUseCase: getIt<CheckBookLikeUseCase>(),
       )..add(InitialEvent(id: bookID)),
-      child: WillPopScope(
-        onWillPop: () async {
-          homeBloc.add(BackPressedEvent());
-          return true;
-        },
-        child: const Scaffold(
-          backgroundColor: Colors.white,
-          body: BookDetailView(),
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 1,
         ),
+        body: const BookDetailView(),
       ),
     );
   }
@@ -55,9 +51,11 @@ class BookDetailView extends StatelessWidget {
     return BlocBuilder(
       bloc: bookDetailBloc,
       builder: (context, state) {
-        if (state is LoadingBookState) {
-          return const Center(
-            child: CircularProgressIndicator(),
+        if (state is InitialState) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: Theme.of(context).colorScheme.primary,
+            ),
           );
         }
 
@@ -128,7 +126,6 @@ class BookDetailView extends StatelessWidget {
                     return IconButton(
                       splashRadius: 1,
                       alignment: Alignment.bottomRight,
-                      color: isLiked ? Colors.red : Colors.white,
                       onPressed: () {
                         isLiked
                             ? BlocProvider.of<BookDetailBloc>(context)
@@ -136,7 +133,10 @@ class BookDetailView extends StatelessWidget {
                             : BlocProvider.of<BookDetailBloc>(context)
                                 .add(LikedEvent(bookID: book.id));
                       },
-                      icon: const Icon(Icons.favorite),
+                      icon: Icon(
+                        isLiked ? Icons.favorite : Icons.favorite_border,
+                        color: isLiked ? Colors.red : Colors.grey.shade400,
+                      ),
                       iconSize: 60,
                     );
                   }
@@ -150,34 +150,38 @@ class BookDetailView extends StatelessWidget {
   Widget _buildBottomContainer(BuildContext context, Book book) => Expanded(
         flex: 1,
         child: Container(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.only(
+            left: 16,
+            right: 16,
+            top: 16,
+          ),
           child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   book.title,
-                  style: const TextStyle(
-                    fontSize: 30.0,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black54,
+                  style: GoogleFonts.robotoSlab(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    textStyle: Theme.of(context).textTheme.headlineSmall,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   book.author,
-                  style: const TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black54,
+                  style: GoogleFonts.robotoSlab(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    textStyle: Theme.of(context).textTheme.titleLarge,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.star,
-                      color: kMainColor,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                     Text(book.popular.toString()),
                   ],
@@ -188,12 +192,23 @@ class BookDetailView extends StatelessWidget {
                     for (final genre in book.genre) Chip(label: Text(genre)),
                   ],
                 ),
+                const SizedBox(height: 8),
                 Text(
                   AppLocalizations.of(context)?.about ?? '',
-                  style: const TextStyle(fontSize: 20),
+                  style: GoogleFonts.robotoSlab(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    textStyle: Theme.of(context).textTheme.titleLarge,
+                  ),
                 ),
                 const SizedBox(height: 8),
-                Text(book.description),
+                Text(
+                  book.description,
+                  textAlign: TextAlign.justify,
+                  style: GoogleFonts.robotoSlab(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    textStyle: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                ),
               ],
             ),
           ),
