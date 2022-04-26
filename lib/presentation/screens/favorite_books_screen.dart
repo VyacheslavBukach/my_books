@@ -45,7 +45,7 @@ class FavouriteBooksView extends StatelessWidget {
                   right: 10,
                   top: 10,
                 ),
-                child: VerticalBookList(bookStream: state.bookStream),
+                child: VerticalBookList(bookList: state.bookStream),
               ),
             );
           }

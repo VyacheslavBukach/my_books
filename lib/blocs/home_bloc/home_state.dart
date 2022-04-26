@@ -6,14 +6,14 @@ abstract class HomeState {}
 class InitialState extends HomeState {}
 
 class AuthenticatedState extends HomeState {
-  final Future<List<Book>> popularStream;
-  final Future<List<Book>> releasesStream;
+  final Future<List<Book>> popularBooks;
+  final Future<List<Book>> releaseBooks;
   final String email;
 
   AuthenticatedState({
     required this.email,
-    required this.popularStream,
-    required this.releasesStream,
+    required this.popularBooks,
+    required this.releaseBooks,
   });
 }
 

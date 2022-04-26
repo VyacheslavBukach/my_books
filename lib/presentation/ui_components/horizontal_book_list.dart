@@ -7,18 +7,18 @@ import 'horizontal_book_list_item.dart';
 
 class HorizontalBookList extends StatelessWidget {
   final double bookWidth;
-  final Future<List<Book>> bookStream;
+  final Future<List<Book>> bookList;
 
   const HorizontalBookList({
     Key? key,
     required this.bookWidth,
-    required this.bookStream,
+    required this.bookList,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Book>>(
-      future: bookStream,
+      future: bookList,
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:

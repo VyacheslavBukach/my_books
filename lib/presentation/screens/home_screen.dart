@@ -154,7 +154,7 @@ class HomeView extends StatelessWidget {
                           Expanded(
                             child: HorizontalBookList(
                               bookWidth: 150,
-                              bookStream: state.popularStream,
+                              bookList: state.popularBooks,
                             ),
                           ),
                           Row(
@@ -224,7 +224,7 @@ class HomeView extends StatelessWidget {
                           Expanded(
                             child: HorizontalBookList(
                               bookWidth: 125,
-                              bookStream: state.releasesStream,
+                              bookList: state.releaseBooks,
                             ),
                           )
                         ],

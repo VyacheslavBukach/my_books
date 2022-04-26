@@ -30,8 +30,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(
           AuthenticatedState(
             email: email,
-            popularStream: popular,
-            releasesStream: releases,
+            popularBooks: popular,
+            releaseBooks: releases,
           ),
         );
       } catch (e) {
