@@ -33,7 +33,7 @@ class BookDetailScreen extends StatelessWidget {
         extendBodyBehindAppBar: true,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
-          elevation: 1,
+          elevation: 0,
         ),
         body: const BookDetailView(),
       ),
@@ -88,66 +88,29 @@ class BookDetailView extends StatelessWidget {
       Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _buildTopContainer(context, book, likeStream),
-          _buildBottomContainer(context, book),
+          _buildTopContainer(book),
+          _buildBottomContainer(context, book, likeStream),
         ],
       );
 
-  Widget _buildTopContainer(
+  Widget _buildTopContainer(Book book) => Expanded(
+        flex: 1,
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: NetworkImage(book.posterUrl),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+      );
+
+  Widget _buildBottomContainer(
     BuildContext context,
     Book book,
     Stream<bool> likeStream,
   ) =>
       Expanded(
-        flex: 1,
-        child: Stack(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(book.posterUrl),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            Positioned(
-              right: 0,
-              bottom: 0,
-              child: StreamBuilder<bool>(
-                stream: likeStream,
-                builder: (BuildContext context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Container();
-                  } else if (snapshot.hasError) {
-                    return Container();
-                  } else {
-                    bool isLiked = snapshot.requireData;
-
-                    return IconButton(
-                      splashRadius: 1,
-                      alignment: Alignment.bottomRight,
-                      onPressed: () {
-                        isLiked
-                            ? BlocProvider.of<BookDetailBloc>(context)
-                                .add(UnlikedEvent(bookID: book.id))
-                            : BlocProvider.of<BookDetailBloc>(context)
-                                .add(LikedEvent(bookID: book.id));
-                      },
-                      icon: Icon(
-                        isLiked ? Icons.favorite : Icons.favorite_border,
-                        color: isLiked ? Colors.red : Colors.grey.shade400,
-                      ),
-                      iconSize: 60,
-                    );
-                  }
-                },
-              ),
-            ),
-          ],
-        ),
-      );
-
-  Widget _buildBottomContainer(BuildContext context, Book book) => Expanded(
         flex: 1,
         child: Container(
           padding: const EdgeInsets.only(
@@ -160,13 +123,53 @@ class BookDetailView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  book.title,
-                  style: GoogleFonts.robotoSlab(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    textStyle: Theme.of(context).textTheme.headlineSmall,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        book.title,
+                        style: GoogleFonts.robotoSlab(
+                          color: Theme.of(context).colorScheme.onSurface,
+                          textStyle: Theme.of(context).textTheme.headlineSmall,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    StreamBuilder<bool>(
+                      stream: likeStream,
+                      builder: (BuildContext context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Container();
+                        } else if (snapshot.hasError) {
+                          return Container();
+                        } else {
+                          bool isLiked = snapshot.requireData;
+
+                          return IconButton(
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                            splashRadius: 1,
+                            onPressed: () {
+                              isLiked
+                                  ? BlocProvider.of<BookDetailBloc>(context)
+                                      .add(UnlikedEvent(bookID: book.id))
+                                  : BlocProvider.of<BookDetailBloc>(context)
+                                      .add(LikedEvent(bookID: book.id));
+                            },
+                            icon: Icon(
+                              isLiked ? Icons.bookmark : Icons.bookmark_border,
+                              color: isLiked
+                                  ? Theme.of(context).colorScheme.primary
+                                  : Theme.of(context).colorScheme.primary,
+                            ),
+                            iconSize: 40,
+                          );
+                        }
+                      },
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 8),
                 Text(
