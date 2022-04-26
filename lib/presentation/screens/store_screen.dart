@@ -70,8 +70,8 @@ class StoreView extends StatelessWidget {
             Expanded(
               child: Container(
                 padding: const EdgeInsets.only(
-                  left: 10,
-                  right: 10,
+                  left: 16,
+                  right: 16,
                 ),
                 child: BlocBuilder(
                   bloc: BlocProvider.of<StoreBloc>(context),

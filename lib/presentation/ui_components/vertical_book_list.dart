@@ -29,20 +29,26 @@ class VerticalBookList extends StatelessWidget {
 
           if (books.isNotEmpty) {
             return ListView.separated(
-              itemCount: books.length,
-              separatorBuilder: (context, index) => const SizedBox(height: 10),
-              itemBuilder: (context, index) => VerticalBookListItem(
-                book: books[index],
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          BookDetailScreen(bookID: books[index].id),
-                    ),
+                physics: const BouncingScrollPhysics(),
+                itemCount: books.length + 1,
+                separatorBuilder: (context, index) => const SizedBox(height: 8),
+                itemBuilder: (context, index) {
+                  if (index == books.length) {
+                    return const SizedBox();
+                  }
+
+                  return VerticalBookListItem(
+                    book: books[index],
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              BookDetailScreen(bookID: books[index].id),
+                        ),
+                      );
+                    },
                   );
-                },
-              ),
-            );
+                });
           } else {
             return Center(
               child: Text(AppLocalizations.of(context)?.no_favourites ?? ''),

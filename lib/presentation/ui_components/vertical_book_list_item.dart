@@ -65,13 +65,15 @@ class VerticalBookListItem extends StatelessWidget {
                       const SizedBox(
                         height: 4,
                       ),
-                      Row(children: [
-                        Icon(
-                          Icons.star,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        Text(book.popular.toString()),
-                      ]),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.star,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          Text(book.popular.toString()),
+                        ],
+                      ),
                       Wrap(
                         spacing: 4,
                         children: [
