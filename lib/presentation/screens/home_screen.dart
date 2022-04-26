@@ -154,45 +154,7 @@ class HomeView extends StatelessWidget {
                               bookList: state.popularBooks,
                             ),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              TextButton.icon(
-                                onPressed: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const FavouriteBooksScreen(),
-                                    ),
-                                  );
-                                },
-                                icon: const Icon(Icons.favorite),
-                                label: Text(
-                                  AppLocalizations.of(context)?.favourites ??
-                                      '',
-                                  style: GoogleFonts.robotoSlab(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              TextButton.icon(
-                                onPressed: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => const StoreScreen(),
-                                    ),
-                                  );
-                                },
-                                icon: const Icon(Icons.store),
-                                label: Text(
-                                  AppLocalizations.of(context)?.store ?? '',
-                                  style: GoogleFonts.robotoSlab(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                          const SizedBox(height: 30),
                         ],
                       ),
                     ),
@@ -236,10 +198,58 @@ class HomeView extends StatelessWidget {
           return Container();
         },
       ),
+      bottomNavigationBar: const BottomNavigation(),
     );
   }
 
   void _signOutEvent(context) {
     BlocProvider.of<HomeBloc>(context).add(SignOutEvent());
+  }
+}
+
+class BottomNavigation extends StatelessWidget {
+  const BottomNavigation({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+      selectedLabelStyle: GoogleFonts.robotoSlab(
+        textStyle: Theme.of(context).textTheme.labelLarge,
+        fontWeight: FontWeight.bold,
+      ),
+      unselectedLabelStyle: GoogleFonts.robotoSlab(
+        textStyle: Theme.of(context).textTheme.labelLarge,
+        fontWeight: FontWeight.bold,
+      ),
+      unselectedItemColor: Theme.of(context).colorScheme.primary,
+      items: [
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.favorite),
+          label: AppLocalizations.of(context)?.favourites ?? '',
+        ),
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.store),
+          label: AppLocalizations.of(context)?.store ?? '',
+        ),
+      ],
+      onTap: (index) {
+        switch (index) {
+          case 0:
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const FavouriteBooksScreen(),
+              ),
+            );
+            break;
+          case 1:
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const StoreScreen(),
+              ),
+            );
+            break;
+        }
+      },
+    );
   }
 }
