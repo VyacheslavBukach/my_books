@@ -9,10 +9,11 @@ import 'package:my_books/presentation/screens/favorite_books_screen.dart';
 import 'package:my_books/presentation/screens/main_screen.dart';
 import 'package:my_books/presentation/screens/store_screen.dart';
 
-import '../../domain/usecases/auth/get_current_user_email_usecase.dart';
 import '../../domain/usecases/auth/logout_usecase.dart';
 import '../../domain/usecases/firestore/get_new_books_usecase.dart';
 import '../ui_components/horizontal_book_list.dart';
+
+const _kLogout = 'logout';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -21,7 +22,6 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => HomeBloc(
-        getCurrentUserEmailUseCase: getIt<GetCurrentUserEmailUseCase>(),
         logoutUseCase: getIt<LogoutUseCase>(),
         getPopularBooksUseCase: getIt<GetPopularBooksUseCase>(),
         getNewBooksUseCase: getIt<GetNewBooksUseCase>(),
@@ -90,58 +90,55 @@ class HomeView extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Expanded(
-                                flex: 9,
-                                child: RichText(
-                                  text: TextSpan(
-                                    text:
-                                        AppLocalizations.of(context)?.welcome ??
-                                            '',
-                                    style: GoogleFonts.robotoSlab(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onPrimary,
-                                      textStyle: Theme.of(context)
-                                          .textTheme
-                                          .headlineSmall,
-                                    ),
-                                    children: [
-                                      const TextSpan(text: ', '),
-                                      TextSpan(text: state.email),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: IconButton(
-                                  onPressed: () {
-                                    _signOutEvent(context);
-                                  },
-                                  icon: Icon(
-                                    Icons.logout,
+                                child: Text(
+                                  AppLocalizations.of(context)
+                                          ?.what_do_you_want_to_read ??
+                                      '',
+                                  style: GoogleFonts.robotoSlab(
                                     color:
                                         Theme.of(context).colorScheme.onPrimary,
+                                    textStyle: Theme.of(context)
+                                        .textTheme
+                                        .headlineLarge,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),
+                              PopupMenuButton<String>(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                onSelected: (value) {
+                                  switch (value) {
+                                    case _kLogout:
+                                      _signOutEvent(context);
+                                      break;
+                                  }
+                                },
+                                icon: Icon(
+                                  Icons.settings,
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                ),
+                                itemBuilder: (context) => [
+                                  PopupMenuItem<String>(
+                                    value: _kLogout,
+                                    child: ListTile(
+                                      contentPadding: EdgeInsets.zero,
+                                      leading: const Icon(Icons.logout),
+                                      title: Text(AppLocalizations.of(context)
+                                              ?.logout ??
+                                          ''),
+                                    ),
+                                  ),
+                                ],
+                              )
                             ],
                           ),
-                          const SizedBox(height: 20),
-                          Text(
-                            AppLocalizations.of(context)
-                                    ?.what_do_you_want_to_read ??
-                                '',
-                            style: GoogleFonts.robotoSlab(
-                              color: Theme.of(context).colorScheme.onPrimary,
-                              textStyle:
-                                  Theme.of(context).textTheme.headlineMedium,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 50),
                           Text(
                             AppLocalizations.of(context)?.popular ?? '',
                             style: GoogleFonts.robotoSlab(

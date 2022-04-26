@@ -3,7 +3,7 @@
   "email": "E-mail",
   "password": "Password",
   "register": "Register",
-  "welcome": "Welcome",
+  "logout": "Logout",
   "forgot_password": "Forgot password",
   "welcome_to_mybooks": "Welcome to myBooks",
   "app_desc": "Your library in your pocket. Any time. Any place.",
