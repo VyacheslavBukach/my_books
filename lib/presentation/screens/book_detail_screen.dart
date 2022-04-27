@@ -204,7 +204,14 @@ class BookDetailView extends StatelessWidget {
                     Icons.star,
                     color: Theme.of(context).colorScheme.primary,
                   ),
-                  Text(book.popular.toString()),
+                  Text(
+                    book.popular.toString(),
+                    style: GoogleFonts.robotoSlab(
+                      color: Theme.of(context).colorScheme.onSurface,
+                      fontWeight: FontWeight.bold,
+                      textStyle: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ),
                 ],
               ),
               Wrap(

@@ -28,27 +28,29 @@ class VerticalBookList extends StatelessWidget {
           var books = snapshot.requireData;
 
           if (books.isNotEmpty) {
-            return ListView.separated(
-                physics: const BouncingScrollPhysics(),
-                itemCount: books.length + 1,
-                separatorBuilder: (context, index) => const SizedBox(height: 8),
-                itemBuilder: (context, index) {
-                  if (index == books.length) {
-                    return const SizedBox();
-                  }
-
-                  return VerticalBookListItem(
-                    book: books[index],
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              BookDetailScreen(bookID: books[index].id),
-                        ),
-                      );
-                    },
-                  );
-                });
+            return GridView.builder(
+              physics: const BouncingScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                mainAxisExtent: 270,
+                crossAxisCount: 2,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8,
+              ),
+              itemCount: books.length,
+              itemBuilder: (context, index) {
+                return VerticalBookListItem(
+                  book: books[index],
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            BookDetailScreen(bookID: books[index].id),
+                      ),
+                    );
+                  },
+                );
+              },
+            );
           } else {
             return Center(
               child: Text(AppLocalizations.of(context)?.no_favourites ?? ''),

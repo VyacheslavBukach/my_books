@@ -24,69 +24,58 @@ class VerticalBookListItem extends StatelessWidget {
       child: InkWell(
         splashColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.12),
         onTap: onTap,
-        child: SizedBox(
-          height: 165,
-          child: Row(
-            children: [
-              Ink.image(
-                width: 120,
-                image: NetworkImage(book.posterUrl),
-                fit: BoxFit.fitWidth,
-              ),
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.only(
-                    left: 8,
-                    right: 8,
-                    top: 8,
+        child: Column(
+          children: [
+            Ink.image(
+              height: 200,
+              image: NetworkImage(book.posterUrl),
+              fit: BoxFit.fitWidth,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    book.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.robotoSlab(
+                      color: Theme.of(context).colorScheme.onSurface,
+                      fontWeight: FontWeight.bold,
+                      textStyle: Theme.of(context).textTheme.titleSmall,
+                    ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Text(
+                    book.author,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.robotoSlab(
+                      color: Theme.of(context).colorScheme.onSurface,
+                      textStyle: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ),
+                  Row(
                     children: [
+                      Icon(
+                        Icons.star,
+                        color: Theme.of(context).colorScheme.primary,
+                        size: 20,
+                      ),
                       Text(
-                        book.title,
-                        maxLines: 3,
-                        overflow: TextOverflow.fade,
+                        book.popular.toString(),
                         style: GoogleFonts.robotoSlab(
                           color: Theme.of(context).colorScheme.onSurface,
                           fontWeight: FontWeight.bold,
-                          textStyle: Theme.of(context).textTheme.titleMedium,
+                          textStyle: Theme.of(context).textTheme.bodySmall,
                         ),
-                      ),
-                      Text(
-                        book.author,
-                        maxLines: 1,
-                        overflow: TextOverflow.fade,
-                        style: GoogleFonts.robotoSlab(
-                          color: Theme.of(context).colorScheme.onSurface,
-                          textStyle: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 4,
-                      ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.star,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                          Text(book.popular.toString()),
-                        ],
-                      ),
-                      Wrap(
-                        spacing: 4,
-                        children: [
-                          for (final genre in book.genre)
-                            Chip(label: Text(genre)),
-                        ],
                       ),
                     ],
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
