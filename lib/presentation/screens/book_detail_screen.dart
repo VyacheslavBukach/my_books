@@ -86,21 +86,39 @@ class BookDetailView extends StatelessWidget {
     Stream<bool> likeStream,
   ) =>
       Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _buildTopContainer(book),
+          Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              _buildTopContainer(context, book),
+              _buildBoxContainer(context),
+            ],
+          ),
           _buildBottomContainer(context, book, likeStream),
         ],
       );
 
-  Widget _buildTopContainer(Book book) => Expanded(
-        flex: 1,
-        child: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: NetworkImage(book.posterUrl),
-              fit: BoxFit.cover,
-            ),
+  Widget _buildTopContainer(
+    BuildContext context,
+    Book book,
+  ) =>
+      Container(
+        height: MediaQuery.of(context).size.height / 2,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage(book.posterUrl),
+            fit: BoxFit.cover,
+          ),
+        ),
+      );
+
+  Widget _buildBoxContainer(BuildContext context) => Container(
+        height: 24,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(24),
+            topRight: Radius.circular(24),
           ),
         ),
       );
@@ -110,110 +128,110 @@ class BookDetailView extends StatelessWidget {
     Book book,
     Stream<bool> likeStream,
   ) =>
-      Expanded(
-        flex: 1,
-        child: Container(
-          padding: const EdgeInsets.only(
-            left: 16,
-            right: 16,
-            top: 16,
-          ),
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        book.title,
-                        style: GoogleFonts.robotoSlab(
-                          color: Theme.of(context).colorScheme.onSurface,
-                          textStyle: Theme.of(context).textTheme.headlineSmall,
-                          fontWeight: FontWeight.bold,
-                        ),
+      Container(
+        height: MediaQuery.of(context).size.height / 2,
+        padding: const EdgeInsets.only(
+          left: 16,
+          right: 16,
+        ),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+        ),
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Text(
+                      book.title,
+                      style: GoogleFonts.robotoSlab(
+                        color: Theme.of(context).colorScheme.onSurface,
+                        textStyle: Theme.of(context).textTheme.headlineSmall,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    StreamBuilder<bool>(
-                      stream: likeStream,
-                      builder: (BuildContext context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Container();
-                        } else if (snapshot.hasError) {
-                          return Container();
-                        } else {
-                          bool isLiked = snapshot.requireData;
+                  ),
+                  StreamBuilder<bool>(
+                    stream: likeStream,
+                    builder: (BuildContext context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Container();
+                      } else if (snapshot.hasError) {
+                        return Container();
+                      } else {
+                        bool isLiked = snapshot.requireData;
 
-                          return IconButton(
-                            padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(),
-                            splashRadius: 1,
-                            onPressed: () {
-                              isLiked
-                                  ? BlocProvider.of<BookDetailBloc>(context)
-                                      .add(UnlikedEvent(bookID: book.id))
-                                  : BlocProvider.of<BookDetailBloc>(context)
-                                      .add(LikedEvent(bookID: book.id));
-                            },
-                            icon: Icon(
-                              isLiked ? Icons.bookmark : Icons.bookmark_border,
-                              color: isLiked
-                                  ? Theme.of(context).colorScheme.primary
-                                  : Theme.of(context).colorScheme.primary,
-                            ),
-                            iconSize: 40,
-                          );
-                        }
-                      },
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  book.author,
-                  style: GoogleFonts.robotoSlab(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    textStyle: Theme.of(context).textTheme.titleLarge,
+                        return IconButton(
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
+                          splashRadius: 1,
+                          onPressed: () {
+                            isLiked
+                                ? BlocProvider.of<BookDetailBloc>(context)
+                                    .add(UnlikedEvent(bookID: book.id))
+                                : BlocProvider.of<BookDetailBloc>(context)
+                                    .add(LikedEvent(bookID: book.id));
+                          },
+                          icon: Icon(
+                            isLiked ? Icons.bookmark : Icons.bookmark_border,
+                            color: isLiked
+                                ? Theme.of(context).colorScheme.primary
+                                : Theme.of(context).colorScheme.primary,
+                          ),
+                          iconSize: 40,
+                        );
+                      }
+                    },
                   ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Text(
+                book.author,
+                style: GoogleFonts.robotoSlab(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  textStyle: Theme.of(context).textTheme.titleLarge,
                 ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.star,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    Text(book.popular.toString()),
-                  ],
-                ),
-                Wrap(
-                  spacing: 4,
-                  children: [
-                    for (final genre in book.genre) Chip(label: Text(genre)),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  AppLocalizations.of(context)?.about ?? '',
-                  style: GoogleFonts.robotoSlab(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    textStyle: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Icon(
+                    Icons.star,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
+                  Text(book.popular.toString()),
+                ],
+              ),
+              Wrap(
+                spacing: 4,
+                children: [
+                  for (final genre in book.genre) Chip(label: Text(genre)),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Text(
+                AppLocalizations.of(context)?.about ?? '',
+                style: GoogleFonts.robotoSlab(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  textStyle: Theme.of(context).textTheme.titleLarge,
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  book.description,
-                  textAlign: TextAlign.justify,
-                  style: GoogleFonts.robotoSlab(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    textStyle: Theme.of(context).textTheme.bodyLarge,
-                  ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                book.description,
+                textAlign: TextAlign.justify,
+                style: GoogleFonts.robotoSlab(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  textStyle: Theme.of(context).textTheme.bodyLarge,
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 16),
+            ],
           ),
         ),
       );
