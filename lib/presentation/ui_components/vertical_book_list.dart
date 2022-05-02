@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../domain/entities/book.dart';
 import '../screens/book_detail_screen.dart';
@@ -53,7 +54,12 @@ class VerticalBookList extends StatelessWidget {
             );
           } else {
             return Center(
-              child: Text(AppLocalizations.of(context)?.no_favourites ?? ''),
+              child: Text(
+                AppLocalizations.of(context)?.no_found ?? '',
+                style: GoogleFonts.robotoSlab(
+                  textStyle: Theme.of(context).textTheme.headlineLarge,
+                ),
+              ),
             );
           }
         }

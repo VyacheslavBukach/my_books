@@ -88,7 +88,7 @@ class BookSearchDelegate extends SearchDelegate {
                     child: Text(
                       AppLocalizations.of(context)?.no_found ?? '',
                       style: GoogleFonts.robotoSlab(
-                        textStyle: Theme.of(context).textTheme.displaySmall,
+                        textStyle: Theme.of(context).textTheme.headlineLarge,
                       ),
                     ),
                   );
