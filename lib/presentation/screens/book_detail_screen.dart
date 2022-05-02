@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -102,13 +103,19 @@ class BookDetailView extends StatelessWidget {
     BuildContext context,
     Book book,
   ) =>
-      Container(
-        height: MediaQuery.of(context).size.height / 2,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(book.posterUrl),
-            fit: BoxFit.cover,
+      CachedNetworkImage(
+        imageUrl: book.posterUrl,
+        imageBuilder: (context, imageProvider) => Container(
+          height: MediaQuery.of(context).size.height / 2,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: imageProvider,
+              fit: BoxFit.cover,
+            ),
           ),
+        ),
+        placeholder: (context, url) => const Center(
+          child: CircularProgressIndicator(),
         ),
       );
 

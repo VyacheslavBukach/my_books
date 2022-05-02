@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -16,7 +17,15 @@ class SearchResultItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       tileColor: Colors.white,
-      leading: Image.network(book.posterUrl),
+      leading: CachedNetworkImage(
+        imageUrl: book.posterUrl,
+        imageBuilder: (context, imageProvider) => Image(
+          image: imageProvider,
+        ),
+        placeholder: (context, url) => const Center(
+          child: CircularProgressIndicator(),
+        ),
+      ),
       title: Text(
         book.title,
         style: GoogleFonts.robotoSlab(

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -26,10 +27,16 @@ class VerticalBookListItem extends StatelessWidget {
         onTap: onTap,
         child: Column(
           children: [
-            Ink.image(
+            CachedNetworkImage(
+              imageUrl: book.posterUrl,
               height: 200,
-              image: NetworkImage(book.posterUrl),
-              fit: BoxFit.fitWidth,
+              imageBuilder: (context, imageProvider) => Ink.image(
+                image: imageProvider,
+                fit: BoxFit.fitWidth,
+              ),
+              placeholder: (context, url) => const Center(
+                child: CircularProgressIndicator(),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
