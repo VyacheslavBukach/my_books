@@ -22,5 +22,7 @@
   "no_found": "Не найдено",
   "invalid_password": "Введите минимум 6 символов",
   "invalid_email": "Введите действительный email",
-  "no_favourites": "Нет избранных"
+  "no_favourites": "Нет избранных",
+  "search": "Поиск",
+  "found": "Найдено"
 }

@@ -7,5 +7,8 @@ class Themes {
     colorScheme: ColorScheme.fromSwatch(
       primarySwatch: Colors.indigo,
     ).copyWith(),
+    textSelectionTheme: TextSelectionThemeData(
+      selectionHandleColor: Colors.indigo.shade200,
+    ),
   );
 }

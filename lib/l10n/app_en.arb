@@ -22,5 +22,7 @@
   "no_found": "No found",
   "invalid_password": "Enter min 6 characters",
   "invalid_email": "Enter a valid email",
-  "no_favourites": "No favourites"
+  "no_favourites": "No favourites",
+  "search": "Search",
+  "found": "Found"
 }
