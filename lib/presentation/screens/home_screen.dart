@@ -108,6 +108,8 @@ class HomeView extends StatelessWidget {
                                 ),
                               ),
                               PopupMenuButton<String>(
+                                offset:
+                                    Offset(0.0, AppBar().preferredSize.height),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(16),
                                 ),
