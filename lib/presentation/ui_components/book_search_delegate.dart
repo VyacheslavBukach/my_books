@@ -68,6 +68,7 @@ class BookSearchDelegate extends SearchDelegate {
                       top: 10,
                     ),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _buildResultWidget(context, books.length),
                         const SizedBox(height: 8),
