@@ -70,7 +70,6 @@ class HomeView extends StatelessWidget {
                       padding: const EdgeInsets.only(
                         left: 8,
                         right: 8,
-                        top: 8,
                       ),
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
@@ -93,50 +92,77 @@ class HomeView extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Expanded(
-                                child: Text(
-                                  AppLocalizations.of(context)
-                                          ?.what_do_you_want_to_read ??
-                                      '',
-                                  style: GoogleFonts.robotoSlab(
-                                    color:
-                                        Theme.of(context).colorScheme.onPrimary,
-                                    textStyle: Theme.of(context)
-                                        .textTheme
-                                        .headlineLarge,
-                                    fontWeight: FontWeight.bold,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 8),
+                                  child: Text(
+                                    AppLocalizations.of(context)
+                                            ?.what_do_you_want_to_read ??
+                                        '',
+                                    style: GoogleFonts.robotoSlab(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimary,
+                                      textStyle: Theme.of(context)
+                                          .textTheme
+                                          .headlineLarge,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               ),
-                              PopupMenuButton<String>(
-                                offset:
-                                    Offset(0.0, AppBar().preferredSize.height),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                onSelected: (value) {
-                                  switch (value) {
-                                    case _kLogout:
-                                      _signOutEvent(context);
-                                      break;
-                                  }
-                                },
-                                icon: Icon(
-                                  Icons.settings,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                                itemBuilder: (context) => [
-                                  PopupMenuItem<String>(
-                                    value: _kLogout,
-                                    child: ListTile(
-                                      contentPadding: EdgeInsets.zero,
-                                      leading: const Icon(Icons.logout),
-                                      title: Text(AppLocalizations.of(context)
-                                              ?.logout ??
-                                          ''),
-                                    ),
+                              SizedBox(
+                                height: kToolbarHeight,
+                                child: PopupMenuButton<String>(
+                                  offset: const Offset(0, kToolbarHeight * 0.8),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16),
                                   ),
-                                ],
+                                  onSelected: (value) {
+                                    switch (value) {
+                                      case _kLogout:
+                                        _signOutEvent(context);
+                                        break;
+                                    }
+                                  },
+                                  icon: Icon(
+                                    Icons.more_vert,
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary,
+                                  ),
+                                  itemBuilder: (context) => [
+                                    PopupMenuItem<String>(
+                                      value: _kLogout,
+                                      child: ListTile(
+                                        visualDensity: const VisualDensity(
+                                          horizontal: -4,
+                                          vertical: -4,
+                                        ),
+                                        contentPadding: EdgeInsets.zero,
+                                        minLeadingWidth: 8,
+                                        leading: Icon(
+                                          Icons.logout,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary
+                                              .withOpacity(0.54),
+                                        ),
+                                        title: Text(
+                                          AppLocalizations.of(context)
+                                                  ?.logout ??
+                                              '',
+                                          style: GoogleFonts.robotoSlab(
+                                            textStyle: Theme.of(context)
+                                                .textTheme
+                                                .bodyText1,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSurface,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               )
                             ],
                           ),
