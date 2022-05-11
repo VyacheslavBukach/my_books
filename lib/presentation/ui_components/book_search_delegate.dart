@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:my_books/presentation/ui_components/vertical_book_list_item.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:my_books/presentation/ui_components/search_result_item.dart';
+import 'package:my_books/themes.dart';
 
 import '../../blocs/search_bloc/search_bloc.dart';
 import '../../domain/entities/book.dart';
-import '../screens/book_detail_screen.dart';
 
 class BookSearchDelegate extends SearchDelegate {
   String selectedResult = '';
@@ -66,27 +67,31 @@ class BookSearchDelegate extends SearchDelegate {
                       right: 10,
                       top: 10,
                     ),
-                    child: ListView.separated(
-                      itemCount: books.length,
-                      separatorBuilder: (context, index) =>
-                          const SizedBox(height: 10),
-                      itemBuilder: (context, index) => VerticalBookListItem(
-                        book: books[index],
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => BookDetailScreen(
-                                bookID: books[index].id,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildResultWidget(context, books.length),
+                        const SizedBox(height: 8),
+                        Expanded(
+                          child: ListView.separated(
+                            itemCount: books.length,
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(height: 10),
+                            itemBuilder: (context, index) =>
+                                SearchResultItem(book: books[index]),
+                          ),
+                        ),
+                      ],
                     ),
                   );
                 } else {
                   return Center(
-                    child: Text(AppLocalizations.of(context)?.no_found ?? ''),
+                    child: Text(
+                      AppLocalizations.of(context)?.no_found ?? '',
+                      style: GoogleFonts.robotoSlab(
+                        textStyle: Theme.of(context).textTheme.headlineLarge,
+                      ),
+                    ),
                   );
                 }
               }
@@ -98,4 +103,38 @@ class BookSearchDelegate extends SearchDelegate {
       },
     );
   }
+
+  @override
+  ThemeData appBarTheme(BuildContext context) {
+    return Themes.lightTheme.copyWith(
+      scaffoldBackgroundColor: Theme.of(context).colorScheme.background,
+      inputDecorationTheme: InputDecorationTheme(
+        border: InputBorder.none,
+        hintStyle: TextStyle(
+          color: Theme.of(context).colorScheme.onPrimary,
+        ),
+      ),
+      textSelectionTheme: TextSelectionThemeData(
+        selectionColor: Theme.of(context).colorScheme.background,
+        cursorColor: Theme.of(context).colorScheme.onPrimary,
+      ),
+      textTheme: Theme.of(context).textTheme.copyWith(
+            headline6:
+                TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+          ),
+    );
+  }
+
+  Widget _buildResultWidget(BuildContext context, int size) => RichText(
+        text: TextSpan(
+          text: AppLocalizations.of(context)?.found ?? '',
+          children: [
+            const TextSpan(text: ': '),
+            TextSpan(text: '$size'),
+          ],
+          style: GoogleFonts.robotoSlab(
+            textStyle: Theme.of(context).textTheme.bodyLarge,
+          ),
+        ),
+      );
 }

@@ -9,10 +9,11 @@ import 'package:my_books/presentation/screens/favorite_books_screen.dart';
 import 'package:my_books/presentation/screens/main_screen.dart';
 import 'package:my_books/presentation/screens/store_screen.dart';
 
-import '../../domain/usecases/auth/get_current_user_email_usecase.dart';
 import '../../domain/usecases/auth/logout_usecase.dart';
 import '../../domain/usecases/firestore/get_new_books_usecase.dart';
 import '../ui_components/horizontal_book_list.dart';
+
+const _kLogout = 'logout';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -21,7 +22,6 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => HomeBloc(
-        getCurrentUserEmailUseCase: getIt<GetCurrentUserEmailUseCase>(),
         logoutUseCase: getIt<LogoutUseCase>(),
         getPopularBooksUseCase: getIt<GetPopularBooksUseCase>(),
         getNewBooksUseCase: getIt<GetNewBooksUseCase>(),
@@ -70,7 +70,6 @@ class HomeView extends StatelessWidget {
                       padding: const EdgeInsets.only(
                         left: 8,
                         right: 8,
-                        top: 8,
                       ),
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
@@ -90,58 +89,84 @@ class HomeView extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Expanded(
-                                flex: 9,
-                                child: RichText(
-                                  text: TextSpan(
-                                    text:
-                                        AppLocalizations.of(context)?.welcome ??
-                                            '',
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 8),
+                                  child: Text(
+                                    AppLocalizations.of(context)
+                                            ?.what_do_you_want_to_read ??
+                                        '',
                                     style: GoogleFonts.robotoSlab(
                                       color: Theme.of(context)
                                           .colorScheme
                                           .onPrimary,
                                       textStyle: Theme.of(context)
                                           .textTheme
-                                          .headlineSmall,
+                                          .headlineLarge,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    children: [
-                                      const TextSpan(text: ', '),
-                                      TextSpan(text: state.email),
-                                    ],
                                   ),
                                 ),
                               ),
-                              Expanded(
-                                flex: 1,
-                                child: IconButton(
-                                  onPressed: () {
-                                    _signOutEvent(context);
+                              SizedBox(
+                                height: kToolbarHeight,
+                                child: PopupMenuButton<String>(
+                                  offset: const Offset(0, kToolbarHeight * 0.8),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  onSelected: (value) {
+                                    switch (value) {
+                                      case _kLogout:
+                                        _signOutEvent(context);
+                                        break;
+                                    }
                                   },
                                   icon: Icon(
-                                    Icons.logout,
+                                    Icons.more_vert,
                                     color:
                                         Theme.of(context).colorScheme.onPrimary,
                                   ),
+                                  itemBuilder: (context) => [
+                                    PopupMenuItem<String>(
+                                      value: _kLogout,
+                                      child: ListTile(
+                                        visualDensity: const VisualDensity(
+                                          horizontal: -4,
+                                          vertical: -4,
+                                        ),
+                                        contentPadding: EdgeInsets.zero,
+                                        minLeadingWidth: 8,
+                                        leading: Icon(
+                                          Icons.logout,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary
+                                              .withOpacity(0.54),
+                                        ),
+                                        title: Text(
+                                          AppLocalizations.of(context)
+                                                  ?.logout ??
+                                              '',
+                                          style: GoogleFonts.robotoSlab(
+                                            textStyle: Theme.of(context)
+                                                .textTheme
+                                                .bodyText1,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSurface,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
+                              )
                             ],
                           ),
-                          const SizedBox(height: 20),
-                          Text(
-                            AppLocalizations.of(context)
-                                    ?.what_do_you_want_to_read ??
-                                '',
-                            style: GoogleFonts.robotoSlab(
-                              color: Theme.of(context).colorScheme.onPrimary,
-                              textStyle:
-                                  Theme.of(context).textTheme.headlineMedium,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 50),
                           Text(
                             AppLocalizations.of(context)?.popular ?? '',
                             style: GoogleFonts.robotoSlab(
@@ -157,45 +182,7 @@ class HomeView extends StatelessWidget {
                               bookList: state.popularBooks,
                             ),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              TextButton.icon(
-                                onPressed: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const FavouriteBooksScreen(),
-                                    ),
-                                  );
-                                },
-                                icon: const Icon(Icons.favorite),
-                                label: Text(
-                                  AppLocalizations.of(context)?.favourites ??
-                                      '',
-                                  style: GoogleFonts.robotoSlab(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              TextButton.icon(
-                                onPressed: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => const StoreScreen(),
-                                    ),
-                                  );
-                                },
-                                icon: const Icon(Icons.store),
-                                label: Text(
-                                  AppLocalizations.of(context)?.store ?? '',
-                                  style: GoogleFonts.robotoSlab(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                          const SizedBox(height: 30),
                         ],
                       ),
                     ),
@@ -239,10 +226,58 @@ class HomeView extends StatelessWidget {
           return Container();
         },
       ),
+      bottomNavigationBar: const BottomNavigation(),
     );
   }
 
   void _signOutEvent(context) {
     BlocProvider.of<HomeBloc>(context).add(SignOutEvent());
+  }
+}
+
+class BottomNavigation extends StatelessWidget {
+  const BottomNavigation({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+      selectedLabelStyle: GoogleFonts.robotoSlab(
+        textStyle: Theme.of(context).textTheme.labelLarge,
+        fontWeight: FontWeight.bold,
+      ),
+      unselectedLabelStyle: GoogleFonts.robotoSlab(
+        textStyle: Theme.of(context).textTheme.labelLarge,
+        fontWeight: FontWeight.bold,
+      ),
+      unselectedItemColor: Theme.of(context).colorScheme.primary,
+      items: [
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.favorite),
+          label: AppLocalizations.of(context)?.favourites ?? '',
+        ),
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.store),
+          label: AppLocalizations.of(context)?.store ?? '',
+        ),
+      ],
+      onTap: (index) {
+        switch (index) {
+          case 0:
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const FavouriteBooksScreen(),
+              ),
+            );
+            break;
+          case 1:
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const StoreScreen(),
+              ),
+            );
+            break;
+        }
+      },
+    );
   }
 }

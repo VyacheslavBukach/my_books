@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class HorizontalBookListItem extends StatelessWidget {
@@ -20,10 +21,16 @@ class HorizontalBookListItem extends StatelessWidget {
       clipBehavior: Clip.antiAliasWithSaveLayer,
       child: InkWell(
         splashColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.12),
-        child: Ink.image(
+        child: CachedNetworkImage(
+          imageUrl: posterUrl,
           width: width,
-          image: NetworkImage(posterUrl),
-          fit: BoxFit.cover,
+          imageBuilder: (context, imageProvider) => Ink.image(
+            image: imageProvider,
+            fit: BoxFit.cover,
+          ),
+          placeholder: (context, url) => const Center(
+            child: CircularProgressIndicator(),
+          ),
         ),
         onTap: onClick,
       ),

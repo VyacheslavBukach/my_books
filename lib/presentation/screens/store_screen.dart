@@ -113,23 +113,18 @@ class _FilterContainerState extends State<FilterContainer> {
         children: [
           for (final genre in Genre.values)
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 2),
+              padding: const EdgeInsets.symmetric(horizontal: 4),
               child: FilterChip(
-                checkmarkColor:
-                    Theme.of(context).colorScheme.onSecondaryContainer,
-                selectedColor: Theme.of(context).colorScheme.secondaryContainer,
+                checkmarkColor: Theme.of(context).colorScheme.onPrimary,
+                selectedColor: Theme.of(context).colorScheme.primary,
                 pressElevation: 0,
-                backgroundColor: Theme.of(context).colorScheme.outline,
-                shape: StadiumBorder(
-                  side: BorderSide(
-                    color: Theme.of(context).colorScheme.outline,
-                  ),
-                ),
+                backgroundColor:
+                    Theme.of(context).colorScheme.onSurface.withOpacity(0.12),
                 label: Text(genre.name),
                 labelStyle: TextStyle(
                   color: _filters.contains(genre.name)
-                      ? Theme.of(context).colorScheme.onSecondaryContainer
-                      : Theme.of(context).colorScheme.onSurfaceVariant,
+                      ? Theme.of(context).colorScheme.onPrimary
+                      : Theme.of(context).colorScheme.onSurface,
                 ),
                 selected: _filters.contains(genre.name),
                 onSelected: (bool selected) {
