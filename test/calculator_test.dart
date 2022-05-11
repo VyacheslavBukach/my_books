@@ -8,7 +8,7 @@ void main() {
     calculator = Calculator();
   });
 
-  test('Sum_Test', () {
+  test('sum test', () {
     var result1 = calculator.sum(number1: 1, number2: 1);
     expect(result1, 2);
     var result2 = calculator.sum(number1: 2, number2: 2);
@@ -17,7 +17,7 @@ void main() {
     expect(result3, 6);
   });
 
-  test('Difference_Test', () {
+  test('difference test', () {
     var result1 = calculator.difference(number1: 1, number2: 1);
     expect(result1, 0);
     var result2 = calculator.difference(number1: 2, number2: 2);
@@ -26,7 +26,7 @@ void main() {
     expect(result3, 0);
   });
 
-  test('Multiply_Test', () {
+  test('multiply test', () {
     var result1 = calculator.multiply(number1: 1, number2: 1);
     expect(result1, 1);
     var result2 = calculator.multiply(number1: 2, number2: 2);
@@ -35,7 +35,7 @@ void main() {
     expect(result3, 9);
   });
 
-  test('Divide_Test', () {
+  test('division test', () {
     var result1 = calculator.divide(number1: 1, number2: 1);
     expect(result1, 1);
     var result2 = calculator.divide(number1: 2, number2: 2);
