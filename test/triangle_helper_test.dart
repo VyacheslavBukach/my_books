@@ -25,8 +25,18 @@ void main() {
     when(calculator.sum(number1: 3, number2: 4)).thenReturn(7);
     when(calculator.sum(number1: 7, number2: 5)).thenReturn(12);
 
-    var perimeter = triangleHelper.findPerimeter();
+    final perimeter = triangleHelper.findPerimeter();
 
     expect(perimeter, 12);
+  });
+
+  test('calculate square', () {
+    when(calculator.divide(number1: 1, number2: 2)).thenReturn(0.5);
+    when(calculator.multiply(number1: 0.5, number2: 5)).thenReturn(2.5);
+    when(calculator.multiply(number1: 2.5, number2: 10)).thenReturn(25);
+
+    final square = triangleHelper.findSquare();
+
+    expect(square, 25);
   });
 }
