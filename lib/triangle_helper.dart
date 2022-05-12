@@ -2,17 +2,13 @@ import 'package:my_books/calculator.dart';
 
 class TriangleHelper {
   final Calculator calculator;
-  final double oneSide;
-  final double secondSide;
-  final double thirdSide;
-  final double height;
+  double oneSide = 0.0;
+  double secondSide = 0.0;
+  double thirdSide = 0.0;
+  double height = 0.0;
 
   TriangleHelper({
     required this.calculator,
-    required this.oneSide,
-    required this.secondSide,
-    required this.thirdSide,
-    required this.height,
   });
 
   double findSquare() {
