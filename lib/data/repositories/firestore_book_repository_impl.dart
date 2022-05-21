@@ -11,17 +11,16 @@ const _kGenre = 'genre';
 const _kBookSearch = 'bookSearch';
 
 class FirestoreBookRepositoryImpl implements BookRepository {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore firestore;
 
-  @override
-  FirebaseFirestore get firestore => _firestore;
+  FirestoreBookRepositoryImpl({required this.firestore});
 
   @override
   Future<void> addBookToFavourite({
     required String userID,
     required String bookID,
   }) async {
-    await _firestore
+    await firestore
         .collection(_kUsers)
         .doc(userID)
         .collection(_kFavourites)
@@ -34,7 +33,7 @@ class FirestoreBookRepositoryImpl implements BookRepository {
     required String userID,
     required String bookID,
   }) async {
-    await _firestore
+    await firestore
         .collection(_kUsers)
         .doc(userID)
         .collection(_kFavourites)
@@ -44,7 +43,7 @@ class FirestoreBookRepositoryImpl implements BookRepository {
 
   @override
   Stream<List<Book>> getAllBooks() {
-    var stream = _firestore
+    var stream = firestore
         .collection(_kBooks)
         .withConverter<Book>(
           fromFirestore: (snapshot, _) => Book.fromJson(snapshot.data() ?? {}),
@@ -61,7 +60,7 @@ class FirestoreBookRepositoryImpl implements BookRepository {
     required String userID,
     required String bookID,
   }) {
-    var stream = _firestore
+    var stream = firestore
         .collection(_kUsers)
         .doc(userID)
         .collection(_kFavourites)
@@ -75,7 +74,7 @@ class FirestoreBookRepositoryImpl implements BookRepository {
   Stream<List<Book>> getFavouriteBooks({required String userID}) async* {
     List<Book> books = [];
 
-    Stream<List<String>> streamIdList = _firestore
+    Stream<List<String>> streamIdList = firestore
         .collection(_kUsers)
         .doc(userID)
         .collection(_kFavourites)
@@ -96,7 +95,7 @@ class FirestoreBookRepositoryImpl implements BookRepository {
 
   @override
   Future<Book?> getBookByID(String id) async {
-    return await _firestore
+    return await firestore
         .collection(_kBooks)
         .doc(id)
         .withConverter<Book>(
@@ -111,7 +110,7 @@ class FirestoreBookRepositoryImpl implements BookRepository {
   Future<List<Book>> getPopularBooks() async {
     List<Book> books = [];
 
-    await _firestore
+    await firestore
         .collection(_kBooks)
         .orderBy(_kPopular, descending: true)
         .limit(10)
@@ -133,7 +132,7 @@ class FirestoreBookRepositoryImpl implements BookRepository {
   Future<List<Book>> getNewBooks() async {
     List<Book> books = [];
 
-    await _firestore
+    await firestore
         .collection(_kBooks)
         .orderBy(_kCreatedAt, descending: true)
         .limit(10)
@@ -153,7 +152,7 @@ class FirestoreBookRepositoryImpl implements BookRepository {
 
   @override
   Stream<List<Book>> getFilteredBooks(List<String> genres) {
-    var stream = _firestore
+    var stream = firestore
         .collection(_kBooks)
         .where(_kGenre, arrayContainsAny: genres)
         .withConverter<Book>(
@@ -168,7 +167,7 @@ class FirestoreBookRepositoryImpl implements BookRepository {
 
   @override
   Stream<List<Book>> getBooksByQuery(String query) {
-    var stream = _firestore
+    var stream = firestore
         .collection(_kBooks)
         .where(_kBookSearch, arrayContains: query)
         .withConverter<Book>(

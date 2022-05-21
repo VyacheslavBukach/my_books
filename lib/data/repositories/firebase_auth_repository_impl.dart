@@ -11,18 +11,17 @@ const _kOperationNotAllowed = 'operation-not-allowed';
 const _kEmailAlreadyInUse = 'email-already-in-use';
 
 class FirebaseAuthRepositoryImpl implements AuthRepository {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseAuth firebaseAuth;
+
+  FirebaseAuthRepositoryImpl({required this.firebaseAuth});
 
   @override
-  FirebaseAuth get firebaseAuth => _firebaseAuth;
-
-  @override
-  User? get currentUser => _firebaseAuth.currentUser;
+  User? get currentUser => firebaseAuth.currentUser;
 
   @override
   Future<void> signIn(String email, String password) async {
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(
+      await firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
     } on FirebaseAuthException catch (e) {
       if (e.code == _kUserNotFound) {
@@ -42,7 +41,7 @@ class FirebaseAuthRepositoryImpl implements AuthRepository {
   @override
   Future<void> signUp(String email, String password) async {
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
+      await firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
     } on FirebaseAuthException catch (e) {
       if (e.code == _kWeakPassword) {
@@ -62,12 +61,12 @@ class FirebaseAuthRepositoryImpl implements AuthRepository {
   @override
   Future<void> signOut() async {
     try {
-      await _firebaseAuth.signOut();
+      await firebaseAuth.signOut();
     } catch (e) {
       throw Exception(e);
     }
   }
 
   @override
-  Stream<User?> authStateChanges() => _firebaseAuth.authStateChanges();
+  Stream<User?> authStateChanges() => firebaseAuth.authStateChanges();
 }

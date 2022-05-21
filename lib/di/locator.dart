@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:my_books/data/repositories/firebase_auth_repository_impl.dart';
 import 'package:my_books/data/repositories/firestore_book_repository_impl.dart';
@@ -21,10 +23,10 @@ final getIt = GetIt.instance;
 void initGetIt() {
   // Firebase
   getIt.registerSingleton(
-    FirebaseAuthRepositoryImpl(),
+    FirebaseAuthRepositoryImpl(firebaseAuth: FirebaseAuth.instance),
   );
   getIt.registerSingleton(
-    FirestoreBookRepositoryImpl(),
+    FirestoreBookRepositoryImpl(firestore: FirebaseFirestore.instance),
   );
   // Use cases
   getIt.registerSingleton(
