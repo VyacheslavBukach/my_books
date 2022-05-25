@@ -8,7 +8,7 @@ import 'package:my_books/domain/usecases/firestore/add_book_to_favourite_usecase
 
 import 'add_book_to_favourite_usecase_test.mocks.dart';
 
-class BookRepositoryMock extends Mock implements BookRepository {}
+// class BookRepositoryMock extends Mock implements BookRepository {}
 
 @GenerateMocks([BookRepository, AuthRepository, User])
 void main() {
@@ -18,7 +18,7 @@ void main() {
   late User user;
 
   setUp(() {
-    bookRepository = BookRepositoryMock();
+    bookRepository = MockBookRepository();
     authRepository = MockAuthRepository();
     user = MockUser();
 
