@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:my_books/data/repositories/firestore_book_repository_impl.dart';
 import 'package:my_books/domain/entities/book.dart';
 import 'package:my_books/domain/repositories/book_repository.dart';
