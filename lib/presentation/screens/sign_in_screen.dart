@@ -145,17 +145,6 @@ class _SignInViewState extends State<SignInView> {
                                 _authenticateWithEmailAndPassword(context);
                               },
                             ),
-                            // TODO
-                            // TextButton(
-                            //   style: ButtonStyle(
-                            //     overlayColor: MaterialStateProperty.all(
-                            //         Colors.transparent),
-                            //   ),
-                            //   child: Text(AppLocalizations.of(context)
-                            //           ?.forgot_password ??
-                            //       ''),
-                            //   onPressed: () {},
-                            // ),
                           ],
                         ),
                       ),

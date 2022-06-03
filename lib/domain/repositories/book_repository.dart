@@ -1,9 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:my_books/domain/entities/book.dart';
 
 abstract class BookRepository {
-  FirebaseFirestore get firestore;
-
   Future<Book?> getBookByID(String id);
 
   Stream<bool> checkBookLike({
