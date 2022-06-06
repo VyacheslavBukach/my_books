@@ -4,9 +4,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_books/di/locator.dart';
 import 'package:my_books/domain/entities/book.dart';
-import 'package:my_books/domain/usecases/auth/logout_usecase.dart';
-import 'package:my_books/domain/usecases/firestore/get_new_books_usecase.dart';
-import 'package:my_books/domain/usecases/firestore/get_popular_books_usecase.dart';
 import 'package:my_books/presentation/blocs/home_bloc/home_bloc.dart';
 import 'package:my_books/presentation/screens/favorite_books_screen.dart';
 import 'package:my_books/presentation/screens/main_screen.dart';
@@ -21,11 +18,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomeBloc(
-        logoutUseCase: getIt<LogoutUseCase>(),
-        getPopularBooksUseCase: getIt<GetPopularBooksUseCase>(),
-        getNewBooksUseCase: getIt<GetNewBooksUseCase>(),
-      )..add(InitialEvent()),
+      create: (context) => getIt<HomeBloc>()..add(InitialEvent()),
       child: const _Content(),
     );
   }

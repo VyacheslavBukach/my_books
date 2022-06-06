@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_books/di/locator.dart';
-import 'package:my_books/domain/usecases/auth/register_usecase.dart';
 import 'package:my_books/presentation/blocs/register_bloc/register_bloc.dart';
 import 'package:my_books/presentation/screens/home_screen.dart';
 import 'package:my_books/presentation/ui_components/auth_text_field.dart';
@@ -15,8 +14,7 @@ class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          RegisterBloc(registerUseCase: getIt<RegisterUseCase>()),
+      create: (context) => getIt<RegisterBloc>(),
       child: const _Content(),
     );
   }

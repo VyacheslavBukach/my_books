@@ -3,9 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_books/di/locator.dart';
 import 'package:my_books/domain/entities/genre.dart';
-import 'package:my_books/domain/usecases/firestore/get_all_books_usecase.dart';
-import 'package:my_books/domain/usecases/firestore/get_books_from_search_usecase.dart';
-import 'package:my_books/domain/usecases/firestore/get_filtered_books_usecase.dart';
 import 'package:my_books/presentation/blocs/search_bloc/search_bloc.dart';
 import 'package:my_books/presentation/blocs/store_bloc/store_bloc.dart';
 import 'package:my_books/presentation/ui_components/book_search_delegate.dart';
@@ -19,15 +16,10 @@ class StoreScreen extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => StoreBloc(
-            getAllBooksUseCase: getIt<GetAllBooksUseCase>(),
-            getFilteredBooksUseCase: getIt<GetFilteredBooksUseCase>(),
-          )..add(FilterByDefaultEvent()),
+          create: (context) => getIt<StoreBloc>()..add(FilterByDefaultEvent()),
         ),
         BlocProvider(
-          create: (context) => SearchBloc(
-            getBooksFromSearchUseCase: getIt<GetBooksFromSearchUseCase>(),
-          ),
+          create: (context) => getIt<SearchBloc>(),
         ),
       ],
       child: const _Content(),

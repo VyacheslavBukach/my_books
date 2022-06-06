@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_books/di/locator.dart';
-import 'package:my_books/domain/usecases/auth/login_usecase.dart';
 import 'package:my_books/presentation/blocs/login_bloc/login_bloc.dart';
 import 'package:my_books/presentation/screens/home_screen.dart';
 import 'package:my_books/presentation/ui_components/auth_text_field.dart';
@@ -15,7 +14,7 @@ class SignInScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => LoginBloc(loginUseCase: getIt<LoginUseCase>()),
+      create: (context) => getIt<LoginBloc>(),
       child: const _Content(),
     );
   }
