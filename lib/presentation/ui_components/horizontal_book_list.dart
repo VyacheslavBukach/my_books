@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:my_books/domain/entities/book.dart';
 import 'package:my_books/presentation/screens/book_detail_screen.dart';
-
-import '../../domain/entities/book.dart';
-import 'horizontal_book_list_item.dart';
+import 'package:my_books/presentation/ui_components/horizontal_book_list_item.dart';
 
 class HorizontalBookList extends StatelessWidget {
   final double bookWidth;

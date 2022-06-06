@@ -1,6 +1,5 @@
+import 'package:my_books/domain/entities/book.dart';
 import 'package:my_books/domain/repositories/book_repository.dart';
-
-import '../../entities/book.dart';
 
 class GetBooksFromSearchUseCase {
   final BookRepository bookRepository;

@@ -1,10 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:my_books/domain/entities/book.dart';
+import 'package:my_books/domain/usecases/auth/logout_usecase.dart';
 import 'package:my_books/domain/usecases/firestore/get_new_books_usecase.dart';
 import 'package:my_books/domain/usecases/firestore/get_popular_books_usecase.dart';
-
-import '../../domain/entities/book.dart';
-import '../../domain/usecases/auth/logout_usecase.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';

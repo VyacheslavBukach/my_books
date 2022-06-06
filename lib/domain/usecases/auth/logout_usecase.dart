@@ -1,4 +1,4 @@
-import '../../repositories/auth_repository.dart';
+import 'package:my_books/domain/repositories/auth_repository.dart';
 
 class LogoutUseCase {
   final AuthRepository authRepo;

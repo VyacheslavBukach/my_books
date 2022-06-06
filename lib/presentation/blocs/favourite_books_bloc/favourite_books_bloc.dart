@@ -1,9 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:my_books/domain/entities/book.dart';
 import 'package:my_books/domain/usecases/firestore/check_book_like_usecase.dart';
 import 'package:my_books/domain/usecases/firestore/get_favourite_books_usecase.dart';
-
-import '../../domain/entities/book.dart';
 
 part 'favourite_books_event.dart';
 part 'favourite_books_state.dart';

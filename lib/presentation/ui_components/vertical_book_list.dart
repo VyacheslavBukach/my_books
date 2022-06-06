@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import '../../domain/entities/book.dart';
-import '../screens/book_detail_screen.dart';
-import 'vertical_book_list_item.dart';
+import 'package:my_books/domain/entities/book.dart';
+import 'package:my_books/presentation/screens/book_detail_screen.dart';
+import 'package:my_books/presentation/ui_components/vertical_book_list_item.dart';
 
 class VerticalBookList extends StatelessWidget {
   final Stream<List<Book>> bookList;

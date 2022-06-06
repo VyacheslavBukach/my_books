@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:my_books/domain/entities/book.dart';
+import 'package:my_books/presentation/blocs/search_bloc/search_bloc.dart';
 import 'package:my_books/presentation/ui_components/search_result_item.dart';
 import 'package:my_books/themes.dart';
-
-import '../../blocs/search_bloc/search_bloc.dart';
-import '../../domain/entities/book.dart';
 
 class BookSearchDelegate extends SearchDelegate {
   String selectedResult = '';

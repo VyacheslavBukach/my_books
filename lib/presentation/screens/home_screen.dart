@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:my_books/blocs/home_bloc/home_bloc.dart';
 import 'package:my_books/di/locator.dart';
+import 'package:my_books/domain/usecases/auth/logout_usecase.dart';
+import 'package:my_books/domain/usecases/firestore/get_new_books_usecase.dart';
 import 'package:my_books/domain/usecases/firestore/get_popular_books_usecase.dart';
+import 'package:my_books/presentation/blocs/home_bloc/home_bloc.dart';
 import 'package:my_books/presentation/screens/favorite_books_screen.dart';
 import 'package:my_books/presentation/screens/main_screen.dart';
 import 'package:my_books/presentation/screens/store_screen.dart';
-
-import '../../domain/usecases/auth/logout_usecase.dart';
-import '../../domain/usecases/firestore/get_new_books_usecase.dart';
-import '../ui_components/horizontal_book_list.dart';
+import 'package:my_books/presentation/ui_components/horizontal_book_list.dart';
 
 const _kLogout = 'logout';
 

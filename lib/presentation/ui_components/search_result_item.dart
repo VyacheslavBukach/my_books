@@ -3,9 +3,8 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import '../../domain/entities/book.dart';
-import '../screens/book_detail_screen.dart';
+import 'package:my_books/domain/entities/book.dart';
+import 'package:my_books/presentation/screens/book_detail_screen.dart';
 
 class SearchResultItem extends StatelessWidget {
   final Book book;

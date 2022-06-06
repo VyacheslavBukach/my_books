@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:my_books/blocs/book_detail_bloc/book_detail_bloc.dart';
-
-import '../../di/locator.dart';
-import '../../domain/entities/book.dart';
-import '../../domain/usecases/firestore/add_book_to_favourite_usecase.dart';
-import '../../domain/usecases/firestore/check_book_like_usecase.dart';
-import '../../domain/usecases/firestore/delete_book_from_favourite_usecase.dart';
-import '../../domain/usecases/firestore/get_book_by_id_usecase.dart';
+import 'package:my_books/di/locator.dart';
+import 'package:my_books/domain/entities/book.dart';
+import 'package:my_books/domain/usecases/firestore/add_book_to_favourite_usecase.dart';
+import 'package:my_books/domain/usecases/firestore/check_book_like_usecase.dart';
+import 'package:my_books/domain/usecases/firestore/delete_book_from_favourite_usecase.dart';
+import 'package:my_books/domain/usecases/firestore/get_book_by_id_usecase.dart';
+import 'package:my_books/presentation/blocs/book_detail_bloc/book_detail_bloc.dart';
 
 class BookDetailScreen extends StatelessWidget {
   final String bookID;

@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_books/di/locator.dart';
+import 'package:my_books/domain/usecases/firestore/check_book_like_usecase.dart';
+import 'package:my_books/domain/usecases/firestore/get_favourite_books_usecase.dart';
+import 'package:my_books/presentation/blocs/favourite_books_bloc/favourite_books_bloc.dart';
 import 'package:my_books/presentation/ui_components/vertical_book_list.dart';
-
-import '../../blocs/favourite_books_bloc/favourite_books_bloc.dart';
-import '../../domain/usecases/firestore/check_book_like_usecase.dart';
-import '../../domain/usecases/firestore/get_favourite_books_usecase.dart';
 
 class FavouriteBooksScreen extends StatelessWidget {
   const FavouriteBooksScreen({Key? key}) : super(key: key);

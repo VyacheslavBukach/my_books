@@ -1,8 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import '../../domain/entities/book.dart';
+import 'package:my_books/domain/entities/book.dart';
 
 class VerticalBookListItem extends StatelessWidget {
   final Book book;

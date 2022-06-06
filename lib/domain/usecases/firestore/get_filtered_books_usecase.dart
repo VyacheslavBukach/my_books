@@ -1,5 +1,5 @@
-import '../../entities/book.dart';
-import '../../repositories/book_repository.dart';
+import 'package:my_books/domain/entities/book.dart';
+import 'package:my_books/domain/repositories/book_repository.dart';
 
 class GetFilteredBooksUseCase {
   final BookRepository bookRepository;

@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:my_books/blocs/search_bloc/search_bloc.dart';
-import 'package:my_books/blocs/store_bloc/store_bloc.dart';
 import 'package:my_books/di/locator.dart';
 import 'package:my_books/domain/entities/genre.dart';
 import 'package:my_books/domain/usecases/firestore/get_all_books_usecase.dart';
+import 'package:my_books/domain/usecases/firestore/get_books_from_search_usecase.dart';
+import 'package:my_books/domain/usecases/firestore/get_filtered_books_usecase.dart';
+import 'package:my_books/presentation/blocs/search_bloc/search_bloc.dart';
+import 'package:my_books/presentation/blocs/store_bloc/store_bloc.dart';
 import 'package:my_books/presentation/ui_components/book_search_delegate.dart';
 import 'package:my_books/presentation/ui_components/vertical_book_list.dart';
-
-import '../../domain/usecases/firestore/get_books_from_search_usecase.dart';
-import '../../domain/usecases/firestore/get_filtered_books_usecase.dart';
 
 class StoreScreen extends StatelessWidget {
   const StoreScreen({Key? key}) : super(key: key);

@@ -1,11 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:my_books/domain/entities/book.dart';
 import 'package:my_books/domain/usecases/firestore/add_book_to_favourite_usecase.dart';
 import 'package:my_books/domain/usecases/firestore/check_book_like_usecase.dart';
+import 'package:my_books/domain/usecases/firestore/delete_book_from_favourite_usecase.dart';
 import 'package:my_books/domain/usecases/firestore/get_book_by_id_usecase.dart';
-
-import '../../domain/entities/book.dart';
-import '../../domain/usecases/firestore/delete_book_from_favourite_usecase.dart';
 
 part 'book_detail_event.dart';
 part 'book_detail_state.dart';

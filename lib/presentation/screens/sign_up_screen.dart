@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:my_books/blocs/register_bloc/register_bloc.dart';
+import 'package:my_books/di/locator.dart';
+import 'package:my_books/domain/usecases/auth/register_usecase.dart';
+import 'package:my_books/presentation/blocs/register_bloc/register_bloc.dart';
 import 'package:my_books/presentation/screens/home_screen.dart';
-
-import '../../di/locator.dart';
-import '../../domain/usecases/auth/register_usecase.dart';
-import '../ui_components/auth_text_field.dart';
-import '../ui_components/rounded_button.dart';
+import 'package:my_books/presentation/ui_components/auth_text_field.dart';
+import 'package:my_books/presentation/ui_components/rounded_button.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({Key? key}) : super(key: key);

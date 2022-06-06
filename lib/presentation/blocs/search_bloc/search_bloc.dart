@@ -2,9 +2,8 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-
-import '../../domain/entities/book.dart';
-import '../../domain/usecases/firestore/get_books_from_search_usecase.dart';
+import 'package:my_books/domain/entities/book.dart';
+import 'package:my_books/domain/usecases/firestore/get_books_from_search_usecase.dart';
 
 part 'search_event.dart';
 part 'search_state.dart';
