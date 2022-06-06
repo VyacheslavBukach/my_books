@@ -6,7 +6,7 @@ import 'package:my_books/data/repositories/firebase_auth_repository_impl.dart';
 import 'package:my_books/di/locator.dart';
 import 'package:my_books/presentation/screens/home_screen.dart';
 import 'package:my_books/presentation/screens/main_screen.dart';
-import 'package:my_books/themes.dart';
+import 'package:my_books/utils/themes.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

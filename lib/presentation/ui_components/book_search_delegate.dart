@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:my_books/domain/entities/book.dart';
 import 'package:my_books/presentation/blocs/search_bloc/search_bloc.dart';
 import 'package:my_books/presentation/ui_components/search_result_item.dart';
-import 'package:my_books/themes.dart';
+import 'package:my_books/utils/themes.dart';
 
 class BookSearchDelegate extends SearchDelegate {
   String selectedResult = '';
