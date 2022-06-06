@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_books/di/locator.dart';
+import 'package:my_books/domain/entities/book.dart';
 import 'package:my_books/domain/usecases/auth/logout_usecase.dart';
 import 'package:my_books/domain/usecases/firestore/get_new_books_usecase.dart';
 import 'package:my_books/domain/usecases/firestore/get_popular_books_usecase.dart';
@@ -63,160 +64,8 @@ class _Content extends StatelessWidget {
             return SafeArea(
               child: Column(
                 children: [
-                  Expanded(
-                    flex: 2,
-                    child: Container(
-                      padding: const EdgeInsets.only(
-                        left: 8,
-                        right: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Theme.of(context).colorScheme.primary,
-                            Theme.of(context).colorScheme.surface,
-                          ],
-                          stops: const [
-                            0.1,
-                            1.0,
-                          ],
-                        ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 8),
-                                  child: Text(
-                                    AppLocalizations.of(context)
-                                            ?.what_do_you_want_to_read ??
-                                        '',
-                                    style: GoogleFonts.robotoSlab(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onPrimary,
-                                      textStyle: Theme.of(context)
-                                          .textTheme
-                                          .headlineLarge,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: kToolbarHeight,
-                                child: PopupMenuButton<String>(
-                                  offset: const Offset(0, kToolbarHeight * 0.8),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                  onSelected: (value) {
-                                    switch (value) {
-                                      case _kLogout:
-                                        _signOutEvent(context);
-                                        break;
-                                    }
-                                  },
-                                  icon: Icon(
-                                    Icons.more_vert,
-                                    color:
-                                        Theme.of(context).colorScheme.onPrimary,
-                                  ),
-                                  itemBuilder: (context) => [
-                                    PopupMenuItem<String>(
-                                      value: _kLogout,
-                                      child: ListTile(
-                                        visualDensity: const VisualDensity(
-                                          horizontal: -4,
-                                          vertical: -4,
-                                        ),
-                                        contentPadding: EdgeInsets.zero,
-                                        minLeadingWidth: 8,
-                                        leading: Icon(
-                                          Icons.logout,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary
-                                              .withOpacity(0.54),
-                                        ),
-                                        title: Text(
-                                          AppLocalizations.of(context)
-                                                  ?.logout ??
-                                              '',
-                                          style: GoogleFonts.robotoSlab(
-                                            textStyle: Theme.of(context)
-                                                .textTheme
-                                                .bodyText1,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onSurface,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                          const SizedBox(height: 50),
-                          Text(
-                            AppLocalizations.of(context)?.popular ?? '',
-                            style: GoogleFonts.robotoSlab(
-                              color: Theme.of(context).colorScheme.onPrimary,
-                              fontWeight: FontWeight.bold,
-                              textStyle: Theme.of(context).textTheme.titleLarge,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Expanded(
-                            child: HorizontalBookList(
-                              bookWidth: 150,
-                              bookList: state.popularBooks,
-                            ),
-                          ),
-                          const SizedBox(height: 30),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      color: Theme.of(context).colorScheme.surface,
-                      padding: const EdgeInsets.only(
-                        bottom: 16,
-                        left: 16,
-                        right: 16,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            AppLocalizations.of(context)?.new_releases ?? '',
-                            style: GoogleFonts.robotoSlab(
-                              color: Theme.of(context).colorScheme.onSurface,
-                              fontWeight: FontWeight.bold,
-                              textStyle: Theme.of(context).textTheme.titleLarge,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Expanded(
-                            child: HorizontalBookList(
-                              bookWidth: 125,
-                              bookList: state.releaseBooks,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
+                  _TopContent(books: state.popularBooks),
+                  _BottomContent(books: state.releaseBooks),
                 ],
               ),
             );
@@ -225,17 +74,182 @@ class _Content extends StatelessWidget {
           return Container();
         },
       ),
-      bottomNavigationBar: const BottomNavigation(),
+      bottomNavigationBar: const _BottomNavigation(),
     );
-  }
-
-  void _signOutEvent(context) {
-    BlocProvider.of<HomeBloc>(context).add(SignOutEvent());
   }
 }
 
-class BottomNavigation extends StatelessWidget {
-  const BottomNavigation({Key? key}) : super(key: key);
+class _TopContent extends StatelessWidget {
+  final Future<List<Book>> books;
+
+  const _TopContent({
+    Key? key,
+    required this.books,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      flex: 2,
+      child: Container(
+        padding: const EdgeInsets.only(
+          left: 8,
+          right: 8,
+        ),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Theme.of(context).colorScheme.primary,
+              Theme.of(context).colorScheme.surface,
+            ],
+            stops: const [
+              0.1,
+              1.0,
+            ],
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Text(
+                      AppLocalizations.of(context)?.what_do_you_want_to_read ??
+                          '',
+                      style: GoogleFonts.robotoSlab(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        textStyle: Theme.of(context).textTheme.headlineLarge,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: kToolbarHeight,
+                  child: PopupMenuButton<String>(
+                    offset: const Offset(0, kToolbarHeight * 0.8),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    onSelected: (value) {
+                      switch (value) {
+                        case _kLogout:
+                          BlocProvider.of<HomeBloc>(context)
+                              .add(SignOutEvent());
+                          break;
+                      }
+                    },
+                    icon: Icon(
+                      Icons.more_vert,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                    itemBuilder: (context) => [
+                      PopupMenuItem<String>(
+                        value: _kLogout,
+                        child: ListTile(
+                          visualDensity: const VisualDensity(
+                            horizontal: -4,
+                            vertical: -4,
+                          ),
+                          contentPadding: EdgeInsets.zero,
+                          minLeadingWidth: 8,
+                          leading: Icon(
+                            Icons.logout,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .primary
+                                .withOpacity(0.54),
+                          ),
+                          title: Text(
+                            AppLocalizations.of(context)?.logout ?? '',
+                            style: GoogleFonts.robotoSlab(
+                              textStyle: Theme.of(context).textTheme.bodyText1,
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(height: 50),
+            Text(
+              AppLocalizations.of(context)?.popular ?? '',
+              style: GoogleFonts.robotoSlab(
+                color: Theme.of(context).colorScheme.onPrimary,
+                fontWeight: FontWeight.bold,
+                textStyle: Theme.of(context).textTheme.titleLarge,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Expanded(
+              child: HorizontalBookList(
+                bookWidth: 150,
+                bookList: books,
+              ),
+            ),
+            const SizedBox(height: 30),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _BottomContent extends StatelessWidget {
+  final Future<List<Book>> books;
+
+  const _BottomContent({
+    Key? key,
+    required this.books,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      flex: 1,
+      child: Container(
+        color: Theme.of(context).colorScheme.surface,
+        padding: const EdgeInsets.only(
+          bottom: 16,
+          left: 16,
+          right: 16,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              AppLocalizations.of(context)?.new_releases ?? '',
+              style: GoogleFonts.robotoSlab(
+                color: Theme.of(context).colorScheme.onSurface,
+                fontWeight: FontWeight.bold,
+                textStyle: Theme.of(context).textTheme.titleLarge,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Expanded(
+              child: HorizontalBookList(
+                bookWidth: 125,
+                bookList: books,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _BottomNavigation extends StatelessWidget {
+  const _BottomNavigation({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
