@@ -30,13 +30,13 @@ class StoreScreen extends StatelessWidget {
           ),
         ),
       ],
-      child: const StoreView(),
+      child: const _Content(),
     );
   }
 }
 
-class StoreView extends StatelessWidget {
-  const StoreView({Key? key}) : super(key: key);
+class _Content extends StatelessWidget {
+  const _Content({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -16,19 +16,19 @@ class SignInScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => LoginBloc(loginUseCase: getIt<LoginUseCase>()),
-      child: const SignInView(),
+      child: const _Content(),
     );
   }
 }
 
-class SignInView extends StatefulWidget {
-  const SignInView({Key? key}) : super(key: key);
+class _Content extends StatefulWidget {
+  const _Content({Key? key}) : super(key: key);
 
   @override
-  State<SignInView> createState() => _SignInViewState();
+  State<_Content> createState() => _ContentState();
 }
 
-class _SignInViewState extends State<SignInView> {
+class _ContentState extends State<_Content> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();

@@ -35,14 +35,14 @@ class BookDetailScreen extends StatelessWidget {
           backgroundColor: Colors.transparent,
           elevation: 0,
         ),
-        body: const BookDetailView(),
+        body: const _Content(),
       ),
     );
   }
 }
 
-class BookDetailView extends StatelessWidget {
-  const BookDetailView({Key? key}) : super(key: key);
+class _Content extends StatelessWidget {
+  const _Content({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

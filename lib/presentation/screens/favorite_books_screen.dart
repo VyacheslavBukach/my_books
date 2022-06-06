@@ -17,13 +17,13 @@ class FavouriteBooksScreen extends StatelessWidget {
         checkBookLikeUseCase: getIt<CheckBookLikeUseCase>(),
         getFavouriteBooksUseCase: getIt<GetFavouriteBooksUseCase>(),
       )..add(InitialEvent()),
-      child: const FavouriteBooksView(),
+      child: const _Content(),
     );
   }
 }
 
-class FavouriteBooksView extends StatelessWidget {
-  const FavouriteBooksView({Key? key}) : super(key: key);
+class _Content extends StatelessWidget {
+  const _Content({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

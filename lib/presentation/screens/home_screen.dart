@@ -25,13 +25,13 @@ class HomeScreen extends StatelessWidget {
         getPopularBooksUseCase: getIt<GetPopularBooksUseCase>(),
         getNewBooksUseCase: getIt<GetNewBooksUseCase>(),
       )..add(InitialEvent()),
-      child: const HomeView(),
+      child: const _Content(),
     );
   }
 }
 
-class HomeView extends StatelessWidget {
-  const HomeView({Key? key}) : super(key: key);
+class _Content extends StatelessWidget {
+  const _Content({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
