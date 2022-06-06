@@ -28,72 +28,72 @@ void initGetIt() {
     FirestoreBookRepositoryImpl(firestore: FirebaseFirestore.instance),
   );
   // Use cases
-  getIt.registerSingleton(
-    LoginUseCase(
+  getIt.registerFactory(
+    () => LoginUseCase(
       authRepo: getIt<FirebaseAuthRepositoryImpl>(),
     ),
   );
-  getIt.registerSingleton(
-    RegisterUseCase(
+  getIt.registerFactory(
+    () => RegisterUseCase(
       authRepo: getIt<FirebaseAuthRepositoryImpl>(),
     ),
   );
-  getIt.registerSingleton(
-    LogoutUseCase(
+  getIt.registerFactory(
+    () => LogoutUseCase(
       authRepo: getIt<FirebaseAuthRepositoryImpl>(),
     ),
   );
-  getIt.registerSingleton(
-    GetPopularBooksUseCase(
+  getIt.registerFactory(
+    () => GetPopularBooksUseCase(
       bookRepository: getIt<FirestoreBookRepositoryImpl>(),
     ),
   );
-  getIt.registerSingleton(
-    GetNewBooksUseCase(
+  getIt.registerFactory(
+    () => GetNewBooksUseCase(
       bookRepository: getIt<FirestoreBookRepositoryImpl>(),
     ),
   );
-  getIt.registerSingleton(
-    GetBookByIDUseCase(
+  getIt.registerFactory(
+    () => GetBookByIDUseCase(
       bookRepository: getIt<FirestoreBookRepositoryImpl>(),
     ),
   );
-  getIt.registerSingleton(
-    AddBookToFavouriteUseCase(
-      bookRepository: getIt<FirestoreBookRepositoryImpl>(),
-      authRepository: getIt<FirebaseAuthRepositoryImpl>(),
-    ),
-  );
-  getIt.registerSingleton(
-    DeleteBookFromFavouriteUseCase(
+  getIt.registerFactory(
+    () => AddBookToFavouriteUseCase(
       bookRepository: getIt<FirestoreBookRepositoryImpl>(),
       authRepository: getIt<FirebaseAuthRepositoryImpl>(),
     ),
   );
-  getIt.registerSingleton(
-    CheckBookLikeUseCase(
+  getIt.registerFactory(
+    () => DeleteBookFromFavouriteUseCase(
       bookRepository: getIt<FirestoreBookRepositoryImpl>(),
       authRepository: getIt<FirebaseAuthRepositoryImpl>(),
     ),
   );
-  getIt.registerSingleton(
-    GetFavouriteBooksUseCase(
+  getIt.registerFactory(
+    () => CheckBookLikeUseCase(
       bookRepository: getIt<FirestoreBookRepositoryImpl>(),
       authRepository: getIt<FirebaseAuthRepositoryImpl>(),
     ),
   );
-  getIt.registerSingleton(
-    GetAllBooksUseCase(
+  getIt.registerFactory(
+    () => GetFavouriteBooksUseCase(
+      bookRepository: getIt<FirestoreBookRepositoryImpl>(),
+      authRepository: getIt<FirebaseAuthRepositoryImpl>(),
+    ),
+  );
+  getIt.registerFactory(
+    () => GetAllBooksUseCase(
       bookRepository: getIt<FirestoreBookRepositoryImpl>(),
     ),
   );
-  getIt.registerSingleton(
-    GetFilteredBooksUseCase(
+  getIt.registerFactory(
+    () => GetFilteredBooksUseCase(
       bookRepository: getIt<FirestoreBookRepositoryImpl>(),
     ),
   );
-  getIt.registerSingleton(
-    GetBooksFromSearchUseCase(
+  getIt.registerFactory(
+    () => GetBooksFromSearchUseCase(
       bookRepository: getIt<FirestoreBookRepositoryImpl>(),
     ),
   );
