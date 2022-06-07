@@ -128,7 +128,6 @@ void initGetIt() {
   );
   getIt.registerFactory(
     () => FavouriteBooksBloc(
-      checkBookLikeUseCase: getIt<CheckBookLikeUseCase>(),
       getFavouriteBooksUseCase: getIt<GetFavouriteBooksUseCase>(),
     ),
   );
